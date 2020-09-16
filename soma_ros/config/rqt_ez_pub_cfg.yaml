@@ -1,0 +1,4 @@
+publish_interval: 100
+settings:
+  /soma/cmd/data: {is_repeat: false, max: 0, min: 0}
+texts: [/soma/cmd/data]

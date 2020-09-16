@@ -1,0 +1,6 @@
+image: /home/hayashi/soma_ws/src/soma_ros_pkg/soma_ros/config/forestmap_test1.png
+resolution: 0.05
+origin: [0.0, 0.0, 0.0]
+occupied_thresh: 0.65
+free_thresh: 0.196
+negate: 0

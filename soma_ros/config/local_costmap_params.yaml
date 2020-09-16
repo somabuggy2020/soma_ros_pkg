@@ -1,0 +1,22 @@
+local_costmap:
+  plugins: 
+    - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
+  global_frame: foot_print
+  robot_base_frame: soma_link
+  # footprint: [[-0.2, -0.12], [-0.2, 0.12], [0.05, 0.12], [0.05, -0.12]]
+  rolling_window: true
+  width: 10.0
+  height: 10.0
+  resolution: 0.1
+  update_frequency: 3.0
+  publish_frequency: 3.0
+  always_send_full_costmap: false
+
+  obstacle_layer:
+    observation_sources: point_cloud_sensor
+    point_cloud_sensor: 
+      sensor_frame: camera_link
+      topic: obstacle_points
+      data_type: PointCloud2
+      marking: true
+      clearing: true

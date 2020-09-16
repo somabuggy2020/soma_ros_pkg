@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- launch velodyne VLP16 -->
+  <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch" />
+
+  <!-- launch xsense MTi30-->
+  <include file="$(find xsens_driver)/launch/xsens_driver.launch" />
+</launch>

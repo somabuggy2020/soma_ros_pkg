@@ -1,0 +1,10 @@
+<launch>
+
+    <arg name="topics" value="/tf /tf_static /velodyne_points /imu/data /imu_data_str /imu/mag /hdl_graph_slam/map_points"/>
+
+    <node pkg="rosbag" type="record" name="record"
+    args="$(arg topics) -o $(find soma_ros)/bag/">
+
+    </node>
+
+</launch>

@@ -1,0 +1,485 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 89
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1/Tree1
+        - /octomap voxel1/Namespaces1
+        - /Imu1/Box properties1
+        - /Imu1/Axes properties1
+        - /Imu1/Acceleration properties1
+        - /Odometry1
+        - /Odometry1/Shape1
+      Splitter Ratio: 0.538888872
+    Tree Height: 738
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.588679016
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: velodyne points
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 1
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 255; 255; 255
+      Enabled: true
+      Line Style:
+        Line Width: 0.0299999993
+        Value: Billboards
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 30
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        foot_print:
+          Value: false
+        imu:
+          Value: true
+        odom_dr:
+          Value: true
+        soma_link:
+          Value: true
+        velodyne:
+          Value: true
+      Marker Scale: 5
+      Name: TF
+      Show Arrows: false
+      Show Axes: true
+      Show Names: true
+      Tree:
+        odom_dr:
+          soma_link:
+            foot_print:
+              {}
+            imu:
+              {}
+            velodyne:
+              {}
+      Update Interval: 0
+      Value: true
+    - Align Bottom: false
+      Background Alpha: 1
+      Background Color: 0; 0; 0
+      Class: jsk_rviz_plugin/OverlayText
+      Enabled: true
+      Foreground Alpha: 1
+      Foreground Color: 25; 255; 240
+      Name: soma txt
+      Overtake Color Properties: true
+      Overtake Position Properties: true
+      Topic: /soma/txt
+      Value: true
+      font: DejaVu Sans Mono
+      height: 100
+      left: 15
+      line width: 2
+      text size: 14
+      top: 5
+      width: 180
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.100000001
+      Class: rviz/Pose
+      Color: 85; 255; 255
+      Enabled: true
+      Head Length: 0.5
+      Head Radius: 0.5
+      Name: Xt
+      Shaft Length: 1
+      Shaft Radius: 0.5
+      Shape: Arrow
+      Topic: /soma/Xt
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/PointStamped
+      Color: 204; 41; 204
+      Enabled: true
+      History Length: 1
+      Name: Pg (map)
+      Radius: 0.5
+      Topic: /soma/Pg
+      Unreliable: false
+      Value: true
+    - Buffer length: 100
+      Class: jsk_rviz_plugin/Plotter2D
+      Enabled: false
+      Name: steer in
+      Show Value: true
+      Topic: /soma/steer
+      Value: false
+      auto color change: false
+      auto scale: true
+      background color: 0; 0; 0
+      backround alpha: 1
+      border: true
+      foreground alpha: 1
+      foreground color: 25; 255; 240
+      height: 80
+      left: 360
+      linewidth: 1
+      max color: 255; 0; 0
+      max value: 1
+      min value: -1
+      show caption: true
+      text size: 12
+      top: 5
+      update interval: 0.0399999991
+      width: 100
+    - Buffer length: 100
+      Class: jsk_rviz_plugin/Plotter2D
+      Enabled: false
+      Name: odom.v
+      Show Value: true
+      Topic: ""
+      Value: false
+      auto color change: false
+      auto scale: true
+      background color: 0; 0; 0
+      backround alpha: 1
+      border: true
+      foreground alpha: 1
+      foreground color: 25; 255; 240
+      height: 80
+      left: 250
+      linewidth: 1
+      max color: 255; 0; 0
+      max value: 1
+      min value: -1
+      show caption: true
+      text size: 12
+      top: 5
+      update interval: 0.0399999991
+      width: 100
+    - Alpha: 0.699999988
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: localcostmap
+      Topic: /behavior_node/local_costmap/costmap
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: obstacles
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 1
+      Size (m): 0.00999999978
+      Style: Points
+      Topic: /obstacle_points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 255; 0; 0
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Lines
+      Line Width: 0.0299999993
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /behavior_node/dwa_local_planner/global_plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 25; 255; 0
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Billboards
+      Line Width: 0.0500000007
+      Name: motion
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /behavior_node/dwa_local_planner/local_plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 17.8153133
+        Min Value: -0.321700335
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 100
+      Min Color: 0; 0; 0
+      Min Intensity: 1
+      Name: velodyne points
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 1
+      Style: Points
+      Topic: /velodyne_points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /occupied_cells_vis_array
+      Name: octomap voxel
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 3.54999995
+        Min Value: 0.349999994
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: octomap points
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Points
+      Topic: /octomap_point_cloud_centers
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 0
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: hdl graph slam map
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.100000001
+      Style: Boxes
+      Topic: /hdl_graph_slam/map_points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Acceleration properties:
+        Acc. vector alpha: 1
+        Acc. vector color: 255; 0; 0
+        Acc. vector scale: 1
+        Derotate acceleration: true
+        Enable acceleration: false
+      Axes properties:
+        Axes scale: 1
+        Enable axes: true
+      Box properties:
+        Box alpha: 1
+        Box color: 255; 0; 0
+        Enable box: false
+        x_scale: 10
+        y_scale: 10
+        z_scale: 10
+      Class: rviz_imu_plugin/Imu
+      Enabled: true
+      Name: Imu
+      Topic: /imu/data
+      Unreliable: false
+      Value: true
+      fixed_frame_orientation: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.5
+        Head Radius: 0.800000012
+        Shaft Length: 1.39999998
+        Shaft Radius: 0.5
+        Value: Arrow
+      Topic: /soma/odom_dr
+      Unreliable: false
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 170; 255; 255
+    Default Light: true
+    Fixed Frame: odom_dr
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 29.9862595
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 4.3798008
+        Y: 0.709602952
+        Z: 1.60108042
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.00999999978
+      Pitch: 0.809796572
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 3.80777526
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: true
+  Height: 1033
+  Hide Left Dock: true
+  Hide Right Dock: true
+  QMainWindow State: 000000ff00000000fd00000004000000000000016a0000037afc0200000008fb000000100044006900730070006c00610079007300000000370000037a000000f100fffffffb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006f00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000037afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007300000000280000037a000000b700fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000003ae0000003efc0100000002fb0000000800540069006d00650100000000000003ae000001f300fffffffb0000000800540069006d00650100000000000004500000000000000000000003ae0000037a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: true
+  Width: 942
+  X: 969
+  Y: 38

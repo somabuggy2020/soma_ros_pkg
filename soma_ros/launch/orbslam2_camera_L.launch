@@ -1,0 +1,12 @@
+<launch>
+
+  <include file="$(find soma_ros)/launch/orbslam2_rgbd.launch">
+    <arg name="node_name" default="orbslam2_L"/>
+    <arg name="color_image" default="/camera_L/color/image_raw"/>
+    <arg name="depth_image" default="/camera_L/aligned_depth_to_color/image_raw"/>
+    <arg name="camera_info" default="/camera_L/color/camera_info"/>
+    <arg name="camera_frame_id" default="camera_L_link"/>
+    <arg name="map_frame_id" default="orb_map_L"/>
+  </include>
+
+</launch>

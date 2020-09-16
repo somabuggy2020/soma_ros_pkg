@@ -1,0 +1,43 @@
+<launch>
+  <arg name="frame_id" default="soma_link"/>
+  <arg name="camera" default="camera_B"/>
+  <arg name="pan" default="20"/>
+
+  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+    <arg name="camera" value="$(arg camera)"/>
+    <arg name="external_manager" value="false"/>
+    <arg name="manager" value="realsense2_manager_$(arg camera)"/>
+
+    <arg name="serial_no" value="843112071843" />
+
+    <arg name="enable_fisheye" value="false"/>
+    <arg name="enable_infra1" value="false"/>
+    <arg name="enable_infra2" value="false"/>
+    <arg name="enable_gyro" value="false"/>
+    <arg name="enable_accel" value="false"/>
+    <arg name="enable_pointcloud" value="true" />
+    <arg name="color_fps" value="6" />
+    <arg name="depth_fps" value="6" />
+
+    <!-- <arg name="filters" value="spatial,temporal,pointcloud"/> -->
+
+  </include>
+
+  <arg name="Pi" default="3.1415" />
+  <arg name="Pi_15" default="$(eval 15.0/180.0*arg('Pi'))"/>
+  <arg name="Pi_pan" default="$(eval arg('pan')/180.0*arg('Pi'))"/>
+  <arg name="tf_param" default="0 0 0.3 $(arg Pi) $(arg Pi_15) 0"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="CameraB2Base" args="$(arg tf_param) $(arg frame_id) $(arg camera)_link"/>
+
+  <group ns="$(arg camera)">
+    <node pkg="nodelet" type="nodelet" name="prefiltering_nodelet" args="load soma_vision/PrefilteringNodelet /$(arg camera)/realsense2_manager_$(arg camera)">
+      <remap from="input_points" to="/$(arg camera)/depth_registered/points"/>
+      <param name="distance_near_thresh" value="0.1"/>
+      <param name="distance_far_thresh" value="5.5"/>
+      <param name="down_sample_leaf_size" value="0.03"/>
+    </node>
+  </group>
+
+</launch>
+
+ 

@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<launch>
+	<arg name="frame_id" default="soma_link"/>
+	<arg name="foot_print" default="foot_print"/>
+	<arg name="map_frame_id" default="map" />
+	<arg name="timer_T" default="0.1" />
+
+	<arg name="gps_topic" default="/fix" />
+	<arg name="imu_topic" default="/imu/data" />
+
+	<arg name="odom_topic" default="/soma/odom"/>
+	<arg name="cmd_topic" default="/soma/cmd"/>
+	<arg name="cmd_vel_topic" default="/soma/cmd_vel"/>
+
+
+	<!-- transform soma_link to foot_print -->
+	<node pkg="tf" type="static_transform_publisher"
+	name="tfBase2foot_print" args="0 0 -0.2 0 0 0 $(arg frame_id) $(arg foot_print) 100"/>
+
+
+	<!-- dead recogning node launch -->
+	<node pkg="soma_ros" type="dead_recogning_node.py" name="soma_dead_recogning"/>
+
+
+	<!-- run behavior node -->
+	<node pkg="soma_ros" type="behavior_node_MSE" name="behavior_node_MSE" output="screen">
+	
+		<param name="frame_id" value="$(arg frame_id)"/>
+		<param name="map_frame_id" value="$(adrg map_frame_id)"/>
+		<param name="timer_T" value="$(arg timer_T)" type="double" />
+
+		<!-- <param name="gps_topic" value="$(arg gps_topic)"/> -->
+		<!-- <param name="imu_topic" value="$(arg imu_topic)"/> -->
+		<param name="cmd_topic" value="$(arg cmd_topic)"/>
+		<param name="odom_topic" value="$(arg odom_topic)"/>
+		<param name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
+
+		<rosparam command="load" file="$(find soma_ros)/config/local_costmap_params.yaml"/>
+		<rosparam command="load" file="$(find soma_ros)/config/local_planner_param.yaml"/>
+
+	</node>
+
+	<!-- load rqt ez publisher for /soma/cmd -->
+	<node pkg="rqt_ez_publisher" type="rqt_ez_publisher" name="rqtpub"/>
+
+	<!-- load rviz configulation -->
+	<node type="rviz" name="rviz" pkg="rviz" args="-d $(find soma_ros)/rviz/rviz.rviz" />
+
+</launch>

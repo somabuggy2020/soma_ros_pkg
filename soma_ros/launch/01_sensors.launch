@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="base_link" default="soma_link"/>
+
+    <!-- Lidar launch -->
+    <include file="$(find soma_ros)/launch/sensors/lidar.launch"/>
+
+    <!-- IMU (xsense, MTi30) node launch -->
+    <include file="$(find soma_ros)/launch/sensors/imu.launch"/>
+
+    <!-- GPS node launch -->
+    <include file="$(find nmea_navsat_driver)/launch/nmea_serial_driver.launch"/>
+
+    <!-- launch udp reciever node launch -->
+    <!-- 制御入力ベクトル [lambda, v] ステアリング切れ角[rad],速度[m/s]-->
+    <!-- このノードはFloat32配列型のトピックしか出さない -->
+    <node pkg="soma_ros" type="rot_steer_recv_node" name="rot_steer_recv_node" />
+
+</launch>
