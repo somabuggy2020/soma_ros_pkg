@@ -22,4 +22,11 @@
     </description>
   </class>
 
+  <class name="soma_ros/CloudPlaneSegmentator" 
+      type="soma_ros::CloudPlaneSegmentator" 
+      base_class_type="nodelet::Nodelet">
+  <description>
+  </description>
+  </class>
+
 </library>

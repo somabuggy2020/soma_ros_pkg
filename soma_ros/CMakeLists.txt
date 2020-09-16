@@ -26,6 +26,8 @@ find_package(catkin REQUIRED COMPONENTS
   base_local_planner
   dwa_local_planner
   navfn
+  pcl_conversions
+  eigen_conversions
 )
 
 find_package(PCL 1.7.2 REQUIRED EXACT)
@@ -169,6 +171,10 @@ add_library(soma_points_marge_nodelet
   src/points_marge_nodelet.cpp
 )
 
+add_library(tomokawa_seg
+  src/nodes/tomokawa_seg_nodelet.cpp
+)
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -210,6 +216,10 @@ add_executable(behavior_node_MSE
   src/Behavior/MoveTo.cpp
   src/Behavior/Home.cpp
   include/soma_ros/Behavior/MotionControl/PurePursuit.h
+)
+
+add_executable(tomokawa_loader 
+  src/nodes/tomokawa_loader_node.cpp
 )
 
 
@@ -267,6 +277,16 @@ target_link_libraries(behavior_node_MSE
    ${catkin_LIBRARIES}
    ${QT_LIBRARIES}
 )
+
+target_link_libraries(tomokawa_seg
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(tomokawa_loader 
+  ${catkin_LIBRARIES} 
+  ${PCL_LIBRARIES}
+)
+
 
 
 #############
