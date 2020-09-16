@@ -28,7 +28,8 @@ find_package(catkin REQUIRED COMPONENTS
   navfn
 )
 
-find_package(PCL 1.7.2 REQUIRED EXACT)
+find_package(PCL 1.7 REQUIRED)
+#find_package(PCL 1.7.2 REQUIRED EXACT)
 
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 ${rviz_QT_VERSION} EXACT REQUIRED

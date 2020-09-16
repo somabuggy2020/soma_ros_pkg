@@ -5,31 +5,31 @@
 		<Option title="SOMAMoveDriver"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\;CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="SOMAMoveDriver">
-				<Option output="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option output="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -38,9 +38,9 @@
 					<Add option="-DQT_GUI_LIB"/>
 					<Add option="-DQT_CORE_LIB"/>
 					<Add option="-DQT_NETWORK_LIB"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/include"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/include"/>
 					<Add directory="/usr/local/include/EposCmdLib"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
@@ -58,15 +58,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="SOMAMoveDriver/fast">
-				<Option output="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option output="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -75,9 +75,9 @@
 					<Add option="-DQT_GUI_LIB"/>
 					<Add option="-DQT_CORE_LIB"/>
 					<Add option="-DQT_NETWORK_LIB"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver"/>
-					<Add directory="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/include"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver"/>
+					<Add directory="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/include"/>
 					<Add directory="/usr/local/include/EposCmdLib"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
@@ -95,209 +95,209 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="SOMAMoveDriver_autogen">
-				<Option working_dir="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build"/>
+				<Option working_dir="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver_autogen"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 SOMAMoveDriver_autogen"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/definitions.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/definitions.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/statevector.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/statevector.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.ui">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.ui">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwareinfo.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwareinfo.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/main.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/main.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.cpp">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.cpp">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.h">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.h">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.ui">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.ui">
 			<Option target="SOMAMoveDriver"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/CMakeLists.txt">
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5Config.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ModuleLocation.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5ModuleLocation.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
 		</Unit>
-		<Unit filename="/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/../../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		<Unit filename="/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/../../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

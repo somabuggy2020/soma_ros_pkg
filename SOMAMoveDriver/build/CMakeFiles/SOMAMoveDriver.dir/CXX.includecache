@@ -6,89 +6,89 @@
 
 #IncludeRegexTransform: 
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/FVDDSLI6YC/moc_motor.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/FVDDSLI6YC/moc_motor.cpp
 ../../../src/Hardware/Motor/motor.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/GKJDUS42HY/moc_rotary.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/GKJDUS42HY/moc_rotary.cpp
 ../../../src/Hardware/Rotary/rotary.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/J2WOI4U6YC/moc_data.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/J2WOI4U6YC/moc_data.cpp
 ../../../src/Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardware.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardware.cpp
 ../../../src/Hardware/hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardwaredataviewer.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardwaredataviewer.cpp
 ../../../src/Hardware/hardwaredataviewer.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/TSNLRCZLDD/moc_xbox.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/TSNLRCZLDD/moc_xbox.cpp
 ../../../src/Xbox/xbox.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/UVLADIE3JM/moc_mainwindow.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/UVLADIE3JM/moc_mainwindow.cpp
 ../../../src/mainwindow.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/ZCLRWTGPZJ/moc_clutch.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/ZCLRWTGPZJ/moc_clutch.cpp
 ../../../src/Hardware/Clutch/clutch.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp
 J2WOI4U6YC/moc_data.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/J2WOI4U6YC/moc_data.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/J2WOI4U6YC/moc_data.cpp
 ZCLRWTGPZJ/moc_clutch.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/ZCLRWTGPZJ/moc_clutch.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/ZCLRWTGPZJ/moc_clutch.cpp
 FVDDSLI6YC/moc_motor.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/FVDDSLI6YC/moc_motor.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/FVDDSLI6YC/moc_motor.cpp
 GKJDUS42HY/moc_rotary.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/GKJDUS42HY/moc_rotary.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/GKJDUS42HY/moc_rotary.cpp
 RDNA3BFBHR/moc_hardware.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardware.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardware.cpp
 RDNA3BFBHR/moc_hardwaredataviewer.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardwaredataviewer.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/RDNA3BFBHR/moc_hardwaredataviewer.cpp
 TSNLRCZLDD/moc_xbox.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/TSNLRCZLDD/moc_xbox.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/TSNLRCZLDD/moc_xbox.cpp
 UVLADIE3JM/moc_mainwindow.cpp
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/UVLADIE3JM/moc_mainwindow.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/UVLADIE3JM/moc_mainwindow.cpp
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/QLClient/qlclient.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/QLClient/qlclient.h
 QObject
 -
 QDebug
@@ -100,7 +100,7 @@ QSettings
 QTcpSocket
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stacking.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stacking.h
 QObject
 -
 QString
@@ -108,103 +108,105 @@ QString
 QDebug
 -
 ../statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.cpp
 starting.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.h
 ../../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 ../../Hardware/hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 ../statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.cpp
 stop.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.h
 ../../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 ../../Hardware/hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 ../statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.cpp
 stopping.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.h
 ../../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 ../../Hardware/hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 ../statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.cpp
 traveling.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.h
 QThread
 -
 ../../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 ../statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 ../QLClient/qlclient.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/QLClient/qlclient.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/QLClient/qlclient.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.cpp
 behavior.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.h
 QString
 -
 QDebug
 -
 QMap
 -
+../Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 ../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 States/stop.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.h
 States/starting.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.h
 States/traveling.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.h
 States/stopping.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.h
 States/stacking.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stacking.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stacking.h
 States/stacking.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stacking.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stacking.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.cpp
 statebase.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.h
 QString
 -
 QDebug
 -
 ../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 ../Hardware/Motor/motorinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/definitions.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/definitions.h
 QtMath
 -
 QString
@@ -212,17 +214,17 @@ QString
 QDebug
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/statevector.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/statevector.h
 QDebug
 -
 QString
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.cpp
 data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 QDebug
 -
 QString
@@ -244,21 +246,21 @@ QtMath
 QRectF
 -
 ../Common/configfilepath.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 ../Common/statevector.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/statevector.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/statevector.h
 ../Common/definitions.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/definitions.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/definitions.h
 ../Hardware/hardwareinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwareinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwareinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Clutch/clutchinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Clutch/clutchinfo.h
 QString
 -
 QDebug
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Motor/motorinfo.h
 QString
 -
 QDebug
@@ -266,13 +268,13 @@ QDebug
 QtMath
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Rotary/rotaryinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Rotary/rotaryinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp
 clutch.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
 QObject
 -
 QString
@@ -290,21 +292,21 @@ QThread
 QDateTime
 -
 ../../Common/configfilepath.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 clutchinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
 QString
 -
 QDebug
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.cpp
 motor.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.h
 QObject
 -
 QString
@@ -318,11 +320,11 @@ QDir
 Epos.h
 -
 ../../Common/configfilepath.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 motorinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
 QString
 -
 QDebug
@@ -330,11 +332,11 @@ QDebug
 QtMath
 -
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp
 rotary.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
 QObject
 -
 QString
@@ -348,17 +350,17 @@ QUdpSocket
 QSettings
 -
 ../../Common/configfilepath.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/configfilepath.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/configfilepath.h
 rotaryinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.cpp
 hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 QObject
 -
 QDebug
@@ -366,21 +368,21 @@ QDebug
 QString
 -
 ../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 Motor/motor.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.h
 Clutch/clutch.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.h
 Rotary/rotary.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp
 hardwaredataviewer.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
 ui_hardwaredataviewer.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/ui_hardwaredataviewer.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/ui_hardwaredataviewer.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
 QWidget
 -
 QDebug
@@ -394,31 +396,31 @@ QTreeWidgetItem
 QMap
 -
 ../Common/definitions.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Common/definitions.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Common/definitions.h
 ../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 Motor/motorinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motorinfo.h
 Clutch/clutchinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutchinfo.h
 Rotary/rotaryinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotaryinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwareinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwareinfo.h
 ./Motor/motorinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Motor/motorinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Motor/motorinfo.h
 ./Clutch/clutchinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Clutch/clutchinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Clutch/clutchinfo.h
 ./Rotary/rotaryinfo.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/./Rotary/rotaryinfo.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/./Rotary/rotaryinfo.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.cpp
 xbox.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.h
 QObject
 -
 QString
@@ -426,23 +428,23 @@ QString
 QDebug
 -
 Gamepad/gamepad.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.h
 ../Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/main.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/main.cpp
 QApplication
 -
 mainwindow.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.cpp
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.cpp
 mainwindow.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.h
 ui_mainwindow.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/ui_mainwindow.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/ui_mainwindow.h
 
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.h
 QMainWindow
 -
 QString
@@ -458,15 +460,15 @@ QTimer
 QDockWidget
 -
 Data/data.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.h
 Hardware/hardware.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.h
 Behavior/behavior.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.h
 Xbox/xbox.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.h
 Hardware/hardwaredataviewer.h
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.h
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QDateTime
 qdatetime.h

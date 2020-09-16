@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver
+CMAKE_SOURCE_DIR = /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build
+CMAKE_BINARY_DIR = /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/SOMAMoveDriver.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/SOMAMoveDriver.dir/flags.make
 
 CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/main.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/main.cpp > CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/main.cpp > CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/main.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/main.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/main.cpp.o.provides.build: CMakeFiles/SOMAMove
 
 CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o: ../src/mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.cpp > CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.cpp > CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/mainwindow.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/mainwindow.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/mainwindow.cpp.o.provides.build: CMakeFiles/SO
 
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: ../src/Data/data.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Data/data.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Data/data.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o.provides.build: CMakeFiles/SOM
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o: ../src/Hardware/hardware.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardware.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardware.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardware.cpp.o.provides.build: CMakeF
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: ../src/Hardware/hardwaredataviewer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/hardwaredataviewer.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o.provides.bui
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o: ../src/Hardware/Motor/motor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Motor/motor.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Motor/motor.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o.requires:
 
@@ -203,16 +203,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Motor/motor.cpp.o.provides.build: CMa
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o: ../src/Hardware/Clutch/clutch.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Clutch/clutch.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o.requires:
 
@@ -227,16 +227,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Clutch/clutch.cpp.o.provides.build: C
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o: ../src/Hardware/Rotary/rotary.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Hardware/Rotary/rotary.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o.requires:
 
@@ -251,16 +251,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/Rotary/rotary.cpp.o.provides.build: C
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o: ../src/Behavior/behavior.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/behavior.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/behavior.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o.requires:
 
@@ -275,16 +275,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/behavior.cpp.o.provides.build: CMakeF
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: ../src/Behavior/statebase.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/statebase.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/statebase.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o.requires:
 
@@ -299,16 +299,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o.provides.build: CMake
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o: ../src/Behavior/States/stop.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stop.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stop.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o.requires:
 
@@ -323,16 +323,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stop.cpp.o.provides.build: CMa
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o: ../src/Behavior/States/starting.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/starting.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/starting.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o.requires:
 
@@ -347,16 +347,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/starting.cpp.o.provides.build:
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o: ../src/Behavior/States/traveling.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/traveling.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/traveling.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o.requires:
 
@@ -371,16 +371,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/traveling.cpp.o.provides.build
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o: ../src/Behavior/States/stopping.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Behavior/States/stopping.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Behavior/States/stopping.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o.requires:
 
@@ -395,16 +395,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/States/stopping.cpp.o.provides.build:
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: ../src/Xbox/xbox.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.cpp > CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/xbox.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/xbox.cpp -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o.requires:
 
@@ -419,16 +419,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o.provides.build: CMakeFiles/SOM
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o: ../src/Xbox/Gamepad/gamepad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o   -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o   -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c > CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c > CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.i
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/src/Xbox/Gamepad/gamepad.c -o CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.s
 
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o.requires:
 
@@ -443,16 +443,16 @@ CMakeFiles/SOMAMoveDriver.dir/src/Xbox/Gamepad/gamepad.c.o.provides.build: CMake
 
 CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o: CMakeFiles/SOMAMoveDriver.dir/flags.make
 CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o: SOMAMoveDriver_autogen/mocs_compilation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o -c /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o -c /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp
 
 CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp > CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp > CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp -o CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/SOMAMoveDriver_autogen/mocs_compilation.cpp -o CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/SOMAMoveDriver.dir/SOMAMoveDriver_autogen/mocs_compilation.cpp.o.requires:
 
@@ -511,7 +511,7 @@ SOMAMoveDriver: /usr/lib/x86_64-linux-gnu/libQt5Network.so.5.9.5
 SOMAMoveDriver: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.9.5
 SOMAMoveDriver: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.9.5
 SOMAMoveDriver: CMakeFiles/SOMAMoveDriver.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable SOMAMoveDriver"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable SOMAMoveDriver"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SOMAMoveDriver.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -544,6 +544,6 @@ CMakeFiles/SOMAMoveDriver.dir/clean:
 .PHONY : CMakeFiles/SOMAMoveDriver.dir/clean
 
 CMakeFiles/SOMAMoveDriver.dir/depend:
-	cd /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SOMAMoveDriver.dir/depend
 

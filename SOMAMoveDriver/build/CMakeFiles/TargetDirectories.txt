@@ -1,4 +1,4 @@
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles/rebuild_cache.dir
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver.dir
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles/edit_cache.dir
-/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/rebuild_cache.dir
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver.dir
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/edit_cache.dir
+/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir

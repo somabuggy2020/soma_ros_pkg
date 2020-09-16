@@ -71,10 +71,10 @@ void Hardware::finalize()
 	TRACE("Hardware finalize");
 
 	TRACE("Actuator set home position");
-	steering->moveto(MotorPos::Home);
-	rearBrake->moveto(MotorPos::Home);
-	frontBrake->moveto(MotorPos::Home);
-	accel->moveto(MotorPos::Home);
+	steering->moveto(0.0);
+	rearBrake->moveto(0.0);
+	frontBrake->moveto(0.0);
+	accel->moveto(0.0);
 	//  pan->move(0.0);
 	//  tilt->move(0.0);
 	//	weedingMechanism.setTrgtPos(0.0);

@@ -27,6 +27,7 @@ void MainWindow::main()
 	//end main process
 
 	if(isFin){
+		hardware->finalize();
 		this->thread->exit(0);
 		return;
 	}
@@ -59,8 +60,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	behavior = new Behavior();
 	xbox = new Xbox();
 
-	if(hardware->initialize() == -1){}
-	if(behavior->initialize() == -1){}
+	if(hardware->initialize() == -1){ exit(-1); }
+	if(behavior->initialize() == -1){ exit(-1); }
 
 	qRegisterMetaType<StateVector>("StateVector");
 	qRegisterMetaType<HardwareData>("HardwareData");

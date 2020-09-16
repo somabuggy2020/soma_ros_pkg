@@ -78,7 +78,11 @@ namespace MotorInfo {
     double MinPos;
 
     friend QDebug operator<<(QDebug dbg, const Config_t &mcfg){
-      dbg << mcfg.Node
+			dbg << mcfg.DeviceName
+					<< mcfg.ProtocolStackName
+					<< mcfg.InterfaceName
+					<< mcfg.PortName
+					<< mcfg.Node
           << mcfg.MaxRPM
           << mcfg.Accel
           << mcfg.Decel

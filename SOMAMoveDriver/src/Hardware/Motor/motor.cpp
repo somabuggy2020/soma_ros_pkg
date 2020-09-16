@@ -64,10 +64,10 @@ int Motor::initialize()
 	cfg->endGroup();
 
 	cfg->beginGroup(name);
-	mcfg.DeviceName = cfg->value("DeviceName").toString();
-	mcfg.ProtocolStackName = cfg->value("ProtocolStackName").toString();
-	mcfg.InterfaceName = cfg->value("InterfaceName").toString();
-	mcfg.PortName = cfg->value("PortName").toString();
+	mcfg.DeviceName = cfg->value("DEVICE_NAME").toString();
+	mcfg.ProtocolStackName = cfg->value("PROTOCOL_STACK_NAME").toString();
+	mcfg.InterfaceName = cfg->value("INTERFACE_NAME").toString();
+	mcfg.PortName = cfg->value("PORT_NAME").toString();
 
 	mcfg.Node		= cfg->value("NODE").toUInt();
 	mcfg.MaxRPM	= cfg->value("MAXRPM").toUInt();
@@ -77,6 +77,8 @@ int Motor::initialize()
 	mcfg.GearRatio	= cfg->value("GEARRATIO").toDouble();
 	mcfg.MaxPos = cfg->value("MAXPOS").toDouble();
 	mcfg.MinPos = cfg->value("MINPOS").toDouble();
+
+	qDebug() << mcfg;
 	cfg->endGroup();
 
 	return 0;
@@ -92,44 +94,57 @@ int Motor::open()
 
 	qInfo() << "Open" << name << "/" << role;
 
-	if(MainHandle == NULL){
-		if(FindMainHandle() == -1) return -1;
-		else handle = MainHandle;
-	}
+	FindMainHandle();
 
-	if(SubHandle == NULL){
-		if(FindSubHandle() == -1) return -1;
+	//	if(MainHandle == NULL){
+	//		if(FindMainHandle() == -1) return -1;
+	//		else handle = MainHandle;
+	//	}
+	//	else{
+	//		handle = MainHandle;
+	//	}
 
-	}
-	else handle = SubHandle;
+	//	if(SubHandle == NULL){
+	//		if(FindSubHandle() == -1) return -1;
+	//	}
+	//	else handle = SubHandle;
 
 	unsigned int error = 0;
 	int ret = true;
 
 	//(1) Clear Faults
 	ret = VCS_ClearFault(handle, (unsigned short)mcfg.Node, &error);
-	if(!ret){
+	if(ret == -1){
+		qCritical() << name << ":" << strVCSError(error);
+		return -1;
+	}
+
+	ret = VCS_SetProtocolStackSettings(handle,
+																		 100000,
+																		 50,
+																		 &error);
+	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
 	}
 
 	//(2) Set Enable
 	ret = VCS_SetEnableState(handle, (unsigned short)mcfg.Node, &error);
-	if(!ret){
+	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
 	}
 
 	//(3) Set Operation Mode (Profile Position Mode)
 	ret = VCS_SetOperationMode(handle, (unsigned short)mcfg.Node, OMD_PROFILE_POSITION_MODE, &error);
-	if(!ret){
+	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
 	}
 
 	//(4) Set Max Following Error
 	ret = VCS_SetMaxFollowingError(handle, (unsigned short)mcfg.Node, 30000, &error);
-	if(!ret){
+	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
 	}
@@ -141,7 +156,7 @@ int Motor::open()
 															 mcfg.Accel,
 															 mcfg.Decel,
 															 &error);
-	if(!ret){
+	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
 	}
@@ -300,26 +315,42 @@ int Motor::FindMainHandle()
 {
 	unsigned int error = 0;
 
-	char *DeviceName = new char[mcfg.DeviceName.length()];
-	char *ProtocolStackName = new char[mcfg.ProtocolStackName.length()];
-	char *InterfaceName = new char[mcfg.InterfaceName.length()];
-	char *PortName = new char[mcfg.PortName.length()];
+	char *DeviceName = new char[32];
+	char *ProtocolStackName = new char[32];
+	char *InterfaceName = new char[32];
+	char *PortName = new char[32];
+
+	memset(DeviceName, 0x00, 32);
+	memset(ProtocolStackName, 0x00, 32);
+	memset(InterfaceName, 0x00, 32);
+	memset(PortName, 0x00, 32);
 
 	memcpy(DeviceName, mcfg.DeviceName.toStdString().c_str(), mcfg.DeviceName.length());
 	memcpy(ProtocolStackName, mcfg.ProtocolStackName.toStdString().c_str(), mcfg.ProtocolStackName.length());
 	memcpy(InterfaceName, mcfg.InterfaceName.toStdString().c_str(), mcfg.InterfaceName.length());
 	memcpy(PortName, mcfg.PortName.toStdString().c_str(), mcfg.PortName.length());
 
-	MainHandle = VCS_OpenDevice(DeviceName,
-															ProtocolStackName,
-															InterfaceName,
-															PortName,
-															&error);
+	//	qDebug() << DeviceName;
+	//	qDebug() << ProtocolStackName;
+	//	qDebug() << InterfaceName;
+	//	qDebug() << PortName;
 
-	if(MainHandle == NULL){
+	if(MainHandle == nullptr){
+		MainHandle = VCS_OpenDevice(DeviceName,
+														ProtocolStackName,
+														InterfaceName,
+														PortName,
+														&error);
+	}
+
+	if(MainHandle == nullptr){
+		qDebug() << error;
 		qCritical() << QString("%1 : Device Open Failed").arg(name);
+		qDebug() << error << strVCSError(error);
 		return -1;
 	}
+
+	handle = MainHandle;
 
 	return 0;
 }
@@ -332,9 +363,9 @@ int Motor::FindSubHandle()
 {
 	unsigned int error = 0;
 
-	char DeviceName[mcfg.DeviceName.length()] = {'\0'};
-	char ProtocolStackName[mcfg.ProtocolStackName.length()] = {'\0'};
-	char InterfaceName[mcfg.InterfaceName.length()] = {'\0'};
+	char DeviceName[32] = {'\0'};
+	char ProtocolStackName[32] = {'\0'};
+	char InterfaceName[32] = {'\0'};
 
 	memcpy(DeviceName, mcfg.DeviceName.toStdString().c_str(), mcfg.DeviceName.length());
 	memcpy(ProtocolStackName, mcfg.ProtocolStackName.toStdString().c_str(), mcfg.ProtocolStackName.length());
@@ -345,6 +376,7 @@ int Motor::FindSubHandle()
 				DeviceName,
 				ProtocolStackName,
 				&error);
+	qDebug() << SubHandle;
 
 	if(SubHandle == NULL){
 		qCritical() << QString("%1 : Device Open Failed").arg(name);

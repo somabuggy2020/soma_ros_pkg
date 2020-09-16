@@ -1,4 +1,4 @@
-# Install script for directory: /home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver
+# Install script for directory: /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/soma/Documents/Qt/NUC2Projects/1.4.2/SOMAMoveDriver/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
