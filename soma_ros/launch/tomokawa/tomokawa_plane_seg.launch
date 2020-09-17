@@ -5,7 +5,6 @@
   <!-- CloudLoader -->
   <!-- <node name="cloud_loader" pkg="soma_ros" type="cloud_loader" /> -->
 
-
   <!-- PassThrough -->
   <node pkg="nodelet" type="nodelet" name="passthrough_z" args="load pcl/PassThrough pcl_manager" >
     <!-- <remap from="~input" to="/cloud_raw" /> -->
@@ -29,18 +28,6 @@
       filter_limit_negative: False
     </rosparam>
   </node>
-  
-  
-  <!-- StatisticalOutlierRemoval -->
-  <node pkg="nodelet" type="nodelet" name="statistical_outlier_removal" args="load pcl/StatisticalOutlierRemoval pcl_manager" >
-    <remap from="~input" to="/cloud_passthrough" />
-    <remap from="~output" to="/cloud_filtered" />
-    <rosparam>
-      mean_k: 10
-      stddev: 0.15
-    </rosparam>
-  </node>
-
 
   <!-- VoxelGrid -->
   <node pkg="nodelet" type="nodelet" name="voxel_grid_z" args="load pcl/VoxelGrid pcl_manager" >
@@ -54,8 +41,18 @@
      leaf_size: 0.01
     </rosparam>
   </node>
+  
+  <!-- StatisticalOutlierRemoval -->
+  <node pkg="nodelet" type="nodelet" name="statistical_outlier_removal" args="load pcl/StatisticalOutlierRemoval pcl_manager" >
+    <remap from="~input" to="/cloud_passthrough" />
+    <remap from="~output" to="/cloud_filtered" />
+    <rosparam>
+      mean_k: 10
+      stddev: 0.15
+    </rosparam>
+  </node>
 
-  <node pkg="nodelet" type="nodelet" name="voxel_grid_y" args="load pcl/VoxelGrid pcl_manager" >
+  <!-- <node pkg="nodelet" type="nodelet" name="voxel_grid_y" args="load pcl/VoxelGrid pcl_manager" >
     <remap from="~input" to="/cloud_downsampled_z" />
     <remap from="~output" to="/cloud_downsampled" />
     <rosparam>
@@ -65,7 +62,7 @@
      filter_limit_negative: False
      leaf_size: 0.01
     </rosparam>
-  </node>
+  </node> -->
 
 
   <!-- PlaneSegmentation -->
@@ -75,5 +72,5 @@
 
 
   <!-- <node name="cloud_planar_segmenter" pkg="buggy_segmentation" type="cloud_planar_segmenter" /> -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find soma_ros_pkg)/rviz/tomokawa_plane_seg.rviz" required="true" />
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find soma_ros)/rviz/tomokawa_plane_seg.rviz" required="true" /> -->
 </launch>
