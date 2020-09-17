@@ -48,6 +48,7 @@ namespace soma_vision
             distance_near_thresh = pnh.param<double>("distance_near_thresh", 1.0);
             distance_far_thresh = pnh.param<double>("distance_far_thresh", 100.0);
 
+            use_down_sampling = pnh.param<bool>("use_down_sampling", true);
             downsample_leaf_size = pnh.param<double>("down_sample_leaf_size", 0.1);
 
             sor_k = pnh.param<int>("sor_k", 20);
@@ -139,6 +140,7 @@ namespace soma_vision
         double distance_near_thresh;
         double distance_far_thresh;
 
+        bool use_down_sampling;
         double downsample_leaf_size;
 
         int sor_k;
