@@ -3,12 +3,13 @@
   <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" />
 
   <!-- CloudLoader -->
-  <node name="cloud_loader" pkg="soma_ros" type="cloud_loader" />
+  <!-- <node name="cloud_loader" pkg="soma_ros" type="cloud_loader" /> -->
 
 
   <!-- PassThrough -->
   <node pkg="nodelet" type="nodelet" name="passthrough_z" args="load pcl/PassThrough pcl_manager" >
-    <remap from="~input" to="/cloud_raw" />
+    <!-- <remap from="~input" to="/cloud_raw" /> -->
+    <remap from="~input" to="/camera_L/depth_registered/points"/>
     <remap from="~output" to="/cloud_passthrough_z" />
     <rosparam>
       filter_field_name: z
