@@ -1,7 +1,7 @@
 # soma_ros_pkg
 林研究室 林業用ロボット"SOMA"のROSパッケージ
 
-[外部パッケージ要求(Required packages)]
+#[外部パッケージ要求(Required packages)]
 	hdl_graph_slam : LiDARに対応した３次元slamパッケージ
 	ethzasl_xsens_driver : xsensのIMUを扱うパッケージ
 	nmea_navsat_driver : USB接続のGPSを扱うパッケージ
