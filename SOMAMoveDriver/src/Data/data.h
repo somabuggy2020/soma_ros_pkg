@@ -16,7 +16,6 @@
 #include "../Common/statevector.h"
 #include "../Common/definitions.h"
 #include "../Hardware/hardwareinfo.h"
-//#include "../Communicate/commInfo.h"
 
 namespace VeloControlMode
 {
@@ -62,7 +61,7 @@ public:
 	void updateState();
 
 	//Setters
-	void setGlobalReferencePoint(QPointF pg);
+	//	void setGlobalReferencePoint(QPointF pg);
 
 	//Config managment
 	void restoreConfig();

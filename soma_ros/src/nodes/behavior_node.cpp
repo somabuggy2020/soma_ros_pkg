@@ -82,7 +82,7 @@ public:
     cmd_sub = nh.subscribe<std_msgs::String>(cmd_topic, 3, &Behavior::cmd_callback, this);
 
     //publishers
-    state_pub = nh.advertise<std_msgs::String>("/soma/state", 3);
+    state_pub = nh.advertise<sstring>("/soma/state", 3);
     Pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma/Pg", 3);
     Xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma/Xt", 3);
     Uin_pub = nh.advertise<std_msgs::Float32MultiArray>("/soma/uin", 3);
@@ -196,6 +196,9 @@ private:
   }
 };
 
+//--------------------------------------------------
+//--------------------------------------------------
+//--------------------------------------------------
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "behavior_node");

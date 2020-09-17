@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_HardwareDataViewer_t {
     QByteArrayData data[5];
-    char stringdata0[48];
+    char stringdata0[42];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,14 +32,14 @@ struct qt_meta_stringdata_HardwareDataViewer_t {
 static const qt_meta_stringdata_HardwareDataViewer_t qt_meta_stringdata_HardwareDataViewer = {
     {
 QT_MOC_LITERAL(0, 0, 18), // "HardwareDataViewer"
-QT_MOC_LITERAL(1, 19, 7), // "setData"
-QT_MOC_LITERAL(2, 27, 0), // ""
-QT_MOC_LITERAL(3, 28, 12), // "HardwareData"
-QT_MOC_LITERAL(4, 41, 6) // "hdData"
+QT_MOC_LITERAL(1, 19, 3), // "set"
+QT_MOC_LITERAL(2, 23, 0), // ""
+QT_MOC_LITERAL(3, 24, 12), // "HardwareData"
+QT_MOC_LITERAL(4, 37, 4) // "data"
 
     },
-    "HardwareDataViewer\0setData\0\0HardwareData\0"
-    "hdData"
+    "HardwareDataViewer\0set\0\0HardwareData\0"
+    "data"
 };
 #undef QT_MOC_LITERAL
 
