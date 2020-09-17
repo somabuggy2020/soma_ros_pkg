@@ -30,7 +30,7 @@ find_package(catkin REQUIRED COMPONENTS
   eigen_conversions
 )
 
-find_package(PCL 1.7.2 REQUIRED EXACT)
+find_package(PCL 1.7.2 REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 ${rviz_QT_VERSION} EXACT REQUIRED
@@ -218,9 +218,9 @@ add_executable(behavior_node_MSE
   include/soma_ros/Behavior/MotionControl/PurePursuit.h
 )
 
-add_executable(tomokawa_loader 
-  src/nodes/tomokawa_loader_node.cpp
-)
+# add_executable(tomokawa_loader 
+#   src/nodes/tomokawa_loader_node.cpp
+# )
 
 
 ## Rename C++ executable without prefix
@@ -282,10 +282,10 @@ target_link_libraries(tomokawa_seg
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(tomokawa_loader 
-  ${catkin_LIBRARIES} 
-  ${PCL_LIBRARIES}
-)
+# target_link_libraries(tomokawa_loader 
+#   ${catkin_LIBRARIES} 
+#   ${PCL_LIBRARIES}
+# )
 
 
 
