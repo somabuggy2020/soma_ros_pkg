@@ -7,7 +7,7 @@
 
 namespace MotorRPM
 {
-  const unsigned long Default = ULONG_MAX;
+	const unsigned int Default = UINT_MAX;
 }
 
 namespace MotorInfo {
@@ -17,7 +17,7 @@ namespace MotorInfo {
     struct In_t
     {
       double pos;
-      unsigned long rpm;
+			unsigned int rpm;
 
       In_t() : pos(0.0), rpm(MotorRPM::Default) {}
     };
@@ -67,7 +67,7 @@ namespace MotorInfo {
     QString ProtocolStackName;
     QString InterfaceName;
     QString PortName;
-    unsigned int Node;
+		unsigned short Node;
 
     unsigned int MaxRPM;
     unsigned int Accel;

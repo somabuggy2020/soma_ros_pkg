@@ -766,6 +766,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QFile
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QMap
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QRectF
+CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QString
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QTextStream
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtMath
@@ -821,6 +822,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qscopedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h
+CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Behavior/statebase.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h
@@ -854,6 +856,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QFile
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QMap
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QRectF
+CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QString
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QTextStream
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtMath
@@ -909,6 +912,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qscopedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h
+CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Data/data.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h
@@ -1293,6 +1297,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/includ
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QFile
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QMap
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QRectF
+CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QString
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QTextStream
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariant
@@ -1356,6 +1361,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/includ
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qscopedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h
+CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Hardware/hardwaredataviewer.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h
@@ -1462,6 +1468,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QMap
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QObject
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QRectF
+CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QSettings
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QString
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QTextStream
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtMath
@@ -1517,6 +1524,7 @@ CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qscopedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h
+CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsettings.h
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h
 CMakeFiles/SOMAMoveDriver.dir/src/Xbox/xbox.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h

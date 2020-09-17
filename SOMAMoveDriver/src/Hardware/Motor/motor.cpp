@@ -1,7 +1,7 @@
 #include "motor.h"
 
-void* Motor::MainHandle = NULL;
-void* Motor::SubHandle = NULL;
+void* Motor::MainHandle = nullptr;
+void* Motor::SubHandle = nullptr;
 
 #define IS_TRACE 0
 #if IS_TRACE == 1
@@ -17,7 +17,7 @@ void* Motor::SubHandle = NULL;
  */
 Motor::Motor(QObject *parent) : QObject(parent)
 {
-	handle = NULL;
+	handle = nullptr;
 	dTrgPos = 0.0;
 }
 
@@ -69,7 +69,7 @@ int Motor::initialize()
 	mcfg.InterfaceName = cfg->value("INTERFACE_NAME").toString();
 	mcfg.PortName = cfg->value("PORT_NAME").toString();
 
-	mcfg.Node		= cfg->value("NODE").toUInt();
+	mcfg.Node		= (unsigned short)cfg->value("NODE").toInt();
 	mcfg.MaxRPM	= cfg->value("MAXRPM").toUInt();
 	mcfg.Accel	= cfg->value("ACCEL").toUInt();
 	mcfg.Decel	= cfg->value("DECEL").toUInt();
@@ -93,8 +93,7 @@ int Motor::open()
 	if(!isUse) return 0;
 
 	qInfo() << "Open" << name << "/" << role;
-
-	FindMainHandle();
+	if(FindMainHandle() == -1) return -1;
 
 	//	if(MainHandle == NULL){
 	//		if(FindMainHandle() == -1) return -1;
@@ -113,7 +112,7 @@ int Motor::open()
 	int ret = true;
 
 	//(1) Clear Faults
-	ret = VCS_ClearFault(handle, (unsigned short)mcfg.Node, &error);
+	ret = VCS_ClearFault(handle, mcfg.Node, &error);
 	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
@@ -121,7 +120,7 @@ int Motor::open()
 
 	ret = VCS_SetProtocolStackSettings(handle,
 																		 100000,
-																		 50,
+																		 100,
 																		 &error);
 	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
@@ -129,7 +128,7 @@ int Motor::open()
 	}
 
 	//(2) Set Enable
-	ret = VCS_SetEnableState(handle, (unsigned short)mcfg.Node, &error);
+	ret = VCS_SetEnableState(handle, mcfg.Node, &error);
 	if(ret == -1){
 		qCritical() << name << ":" << strVCSError(error);
 		return -1;
@@ -171,16 +170,17 @@ int Motor::open()
 void Motor::close()
 {
 	if(!isUse) return;
-	if(handle == NULL) return;
+	if(handle == nullptr) return;
 
 	unsigned int error = 0;
 
-	if(MainHandle != NULL && SubHandle != NULL){
-		VCS_CloseAllDevices(&error);
-	}
+//	if(MainHandle != NULL && SubHandle != NULL){
+//		VCS_CloseAllDevices(&error);
+//	}
+	VCS_CloseDevice(handle, &error);
 
-	SubHandle = NULL;
-	MainHandle = NULL;
+//	SubHandle = ;
+	MainHandle = nullptr;
 
 	qInfo() << "Closed" << name << "/" << role;
 
@@ -230,9 +230,9 @@ int Motor::moveto(double pos, bool minmax, bool immediatery)
 	return 0;
 }
 
-int Motor::setMaxRPM(unsigned long MaxRPM)
+int Motor::setMaxRPM(unsigned int MaxRPM)
 {
-	MaxRPM = std::min<unsigned long>(MaxRPM, mcfg.MaxRPM);
+	MaxRPM = std::min<unsigned int>(MaxRPM, mcfg.MaxRPM);
 
 	if(!isUse){
 		return 0;
@@ -252,7 +252,6 @@ int Motor::setMaxRPM(unsigned long MaxRPM)
 		return -1;
 	}
 
-	TRACE("Success set target RPM");
 	return 0;
 }
 
@@ -351,7 +350,6 @@ int Motor::FindMainHandle()
 	}
 
 	handle = MainHandle;
-
 	return 0;
 }
 

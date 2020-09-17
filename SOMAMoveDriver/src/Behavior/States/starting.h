@@ -10,6 +10,8 @@ class Starting : public StateBase
 {
 public:
 	Starting();
+	virtual ~Starting() {}
+
 	int _isTransition(Data *data);
 	int _Enter(Data *data);
 	int _Process(Data *data);
@@ -17,7 +19,6 @@ public:
 
 private:
 	double T;
-	unsigned long RearLowRPM;
 };
 
 #endif // STARTING_H

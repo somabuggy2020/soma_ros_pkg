@@ -26,7 +26,7 @@ public:
 	void close();
 
 	int moveto(double pos, bool minmax = true, bool immediatery = true);
-	int setMaxRPM(unsigned long MaxRPM);
+	int setMaxRPM(unsigned int MaxRPM);
 	int recv(MotorInfo::Data_t &d);
 
 private:

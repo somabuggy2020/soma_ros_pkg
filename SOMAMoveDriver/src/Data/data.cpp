@@ -3,7 +3,7 @@
 Data::Data(QObject *parent)
 	: QObject(parent)
 {
-	//	cfg = new Config();
+	cfg = new QSettings();
 
 	st = QDateTime::currentDateTime();
 	ct = QDateTime::currentDateTime();
@@ -36,10 +36,10 @@ Data::Data(QObject *parent)
 	//	outGPS = new QTextStream();
 
 	//Hardware profiles
-	//  hardware.accelProfs.PosOffset		= cfg->getDouble("ACCEL_PROFILE", "OFFSET");
-	//  hardware.accelProfs.PosRegular	= cfg->getDouble("ACCEL_PROFILE", "REGULAR");
-	//  hardware.accelProfs.PosPush			= cfg->getDouble("ACCEL_PROFILE", "PUSH");
-	//  hardware.accelProfs.PushTime		= cfg->getDouble("ACCEL_PROFILE", "PUSH_TIME");
+	hardware.accelProfs.PosOffset		= 0.0;
+	hardware.accelProfs.PosRegular	= 6.0;
+	hardware.accelProfs.PosPush			= 12.0;
+	hardware.accelProfs.PushTime		= 2.0;
 
 	VeloController = VeloControlMode::FIX;
 	//  P = cfg->getDouble("VELOCITY_CONTROL", "P");

@@ -142,6 +142,5 @@ void Hardware::send(Data *data)
 	frontBrake->moveto(data->hardware.frontBrake.In.pos);
 	accel->moveto(data->hardware.accel.In.pos);
 
-
 	return;
 }

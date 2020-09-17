@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include <QtMath>
 #include <QRectF>
+#include <QSettings>
 
 #include "../Common/configfilepath.h"
 #include "../Common/statevector.h"
@@ -77,6 +78,7 @@ private:
 public:
 
 private:
+	QSettings *cfg;
 	QDateTime st, ct; //time stamp
 
 public:

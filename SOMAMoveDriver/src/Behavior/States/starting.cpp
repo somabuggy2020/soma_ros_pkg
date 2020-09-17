@@ -2,8 +2,6 @@
 
 Starting::Starting()
 {
-	//	cfg = new Config();
-	//  RearLowRPM = (long)cfg->getInteger("STARTING", "REAR_LOW_RPM");
 	T = 0.0;
 }
 
@@ -45,7 +43,7 @@ int Starting::_Enter(Data *data)
 	}
 
 	data->hardware.steering.In.pos = data->cmd.steer;
-	data->hardware.rearBrake.In.rpm = RearLowRPM;
+	data->hardware.rearBrake.In.rpm = 100;
 	data->hardware.accel.In.rpm = 250;
 
 	T = 0.0;
@@ -55,10 +53,9 @@ int Starting::_Enter(Data *data)
 int Starting::_Process(Data *data)
 {
 	//Wait for clutch state change
-	//  if(data->hardware.clutch.In != data->hardware.clutch.Out) return 0;
+	if(data->hardware.clutch.In != data->hardware.clutch.Out) return 0;
 
 	data->hardware.steering.In.pos = data->cmd.steer;
-
 	data->hardware.rearBrake.In.pos = MotorPos::Min;
 	data->hardware.frontBrake.In.pos = MotorPos::Min;
 	data->hardware.accel.In.pos = data->hardware.accelProfs.PosRegular;

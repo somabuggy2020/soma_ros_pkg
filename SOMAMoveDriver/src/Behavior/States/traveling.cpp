@@ -58,7 +58,7 @@ int Traveling::_Enter(Data *data)
 int Traveling::_Process(Data *data)
 {
 	// steering position
-	//  data->hardware.steering.In.pos = data->cmd.lambda;
+	data->hardware.steering.In.pos = data->cmd.steer;
 
 	switch(data->VeloController){
 		case VeloControlMode::FIX:
