@@ -71,7 +71,7 @@ void HardwareDataViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         HardwareDataViewer *_t = static_cast<HardwareDataViewer *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->setData((*reinterpret_cast< HardwareData(*)>(_a[1]))); break;
+        case 0: _t->set((*reinterpret_cast< HardwareData(*)>(_a[1]))); break;
         default: ;
         }
     }

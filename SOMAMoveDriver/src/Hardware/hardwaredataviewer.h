@@ -26,23 +26,21 @@ class HardwareDataViewer : public QWidget
 	Q_OBJECT
 
 public:
-	explicit HardwareDataViewer(QWidget *parent = 0);
+	explicit HardwareDataViewer(QWidget *parent = nullptr);
 	~HardwareDataViewer();
 
 private slots:
-	void setData(HardwareData hdData);
+	void set(HardwareData data);
 
 private:
 	Ui::HardwareDataViewer *ui;
 
-	QTreeWidgetItem *twiClutch;
 	TWI_Actuator *twiSteering;
 	TWI_Actuator *twiRearBrake;
 	TWI_Actuator *twiFrontBrake;
 	TWI_Actuator *twiAccel;
+	QTreeWidgetItem *twiClutch;
 	TWI_Rotary *twiRotary;
-
-	QMap<int, QString> mapStrClutchState;
 };
 
 /*!
@@ -52,13 +50,13 @@ class TWI_Actuator
 {
 public:
 	TWI_Actuator(QTreeWidget *parent, QString name);
-	void setData(MotorInfo::Data_t data);
+	void set(MotorInfo::Data_t data);
 
 private:
 	QTreeWidget *parent;
 	QTreeWidgetItem *label;
 	QTreeWidgetItem *pos, *trgt_pos;
-	QTreeWidgetItem *max_rmp;
+	QTreeWidgetItem *rpm;
 };
 
 /*!
@@ -68,7 +66,7 @@ class TWI_Rotary
 {
 public:
 	TWI_Rotary(QTreeWidget *parent);
-	void setData(RotaryInfo::Data_t data);
+	void set(RotaryInfo::Data_t data);
 private:
 	QTreeWidget *parent;
 	QTreeWidgetItem *label;
