@@ -60,10 +60,10 @@ publish_acceleration: false
 #     3a. Set your "world_frame" to your map_frame value
 #     3b. MAKE SURE something else is generating the odom->base_link transform. Note that this can even be another state
 #         estimation node from robot_localization! However, that instance should *not* fuse the global data.
-map_frame: map              # Defaults to "map" if unspecified
+#map_frame: map              # Defaults to "map" if unspecified
 odom_frame: odom            # Defaults to "odom" if unspecified
 base_link_frame: base_link  # Defaults to "base_link" if unspecified
-world_frame: map           # Defaults to the value of odom_frame if unspecified
+world_frame: odom           # Defaults to the value of odom_frame if unspecified
 
 # The filter accepts an arbitrary number of inputs from each input message type (nav_msgs/Odometry,
 # geometry_msgs/PoseWithCovarianceStamped, geometry_msgs/TwistWithCovarianceStamped,
@@ -141,7 +141,7 @@ pose0_config: [true,  true,  true,
                false, false, false,
                false, false, false]
 pose0_differential: true
-pose0_relative: false
+pose0_relative: true
 pose0_queue_size: 5
 pose0_rejection_threshold: 2  # Note the difference in parameter name
 pose0_nodelay: false
@@ -168,19 +168,19 @@ pose1_nodelay: false
 #twist0_rejection_threshold: 2
 #twist0_nodelay: false
 
-#imu0: imu/data
-#imu0_config: [false, false, false,
-#              true,  true,  true,
-#              false, false, false,
-#              true,  true,  true,
-#              false, false, false]
-#imu0_nodelay: false
-#imu0_differential: false
-#imu0_relative: true
-#imu0_queue_size: 5
-#imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
-#imu0_twist_rejection_threshold: 0.8                #
-#imu0_linear_acceleration_rejection_threshold: 0.8  #
+imu0: imu/data
+imu0_config: [false, false, false,
+              true,  true,  true,
+              false, false, false,
+              true,  true,  true,
+              true,  true,  true]
+imu0_nodelay: false
+imu0_differential: true
+imu0_relative: true
+imu0_queue_size: 5
+imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
+imu0_twist_rejection_threshold: 0.8                #
+imu0_linear_acceleration_rejection_threshold: 0.8  #
 
 # [ADVANCED] Some IMUs automatically remove acceleration due to gravity, and others don't. If yours doesn't, please set
 # this to true, and *make sure* your data conforms to REP-103, specifically, that the data is in ENU frame.
