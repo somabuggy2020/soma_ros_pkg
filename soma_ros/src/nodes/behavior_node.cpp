@@ -185,6 +185,7 @@ private:
       data->action = Action::Stop;
     }
     if(msg->data == "start"){
+      //start autonomous wander behavior
       data->action = Action::Start;
     }
 
@@ -195,6 +196,7 @@ private:
   {
     data->Xt = msg->pose.pose;
   }
+
 };
 
 //--------------------------------------------------

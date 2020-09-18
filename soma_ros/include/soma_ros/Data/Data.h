@@ -121,7 +121,6 @@ const int Home = 2;   // for Matsumoto
 const int Wander = 3;
 
 namespace WanderSubState {
-
 }
 
 const std::map<int, std::string> Str = {
