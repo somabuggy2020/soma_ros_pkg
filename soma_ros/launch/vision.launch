@@ -1,13 +1,10 @@
 <?xml version="1.0" ?>
 <launch>
-	<arg name="frame_id" default="soma_link"/>
-	<arg name="foot_print" default="foot_print"/>
+        <arg name="frame_id" default="soma_link"/>
+        <arg name="foot_print" default="foot_print"/>
 
-	<node pkg="soma_smpls" type="costmap_example" name="costmap_example" output="screen">
-		<rosparam command="load" file="$(find soma_smpls)/config/local_costmap.yaml"/>
-		<rosparam command="load" file="$(find soma_ros)/config/local_planner_param.yaml"/>
-	</node>
-
-
-
+        <node pkg="soma_smpls" type="costmap_example" name="costmap_example" output="screen">
+                <rosparam command="load" file="$(find soma_smpls)/config/local_costmap.yaml"/>
+                <rosparam command="load" file="$(find soma_ros)/config/local_planner_param.yaml"/>
+        </node>
 </launch>

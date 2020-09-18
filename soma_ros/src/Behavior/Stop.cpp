@@ -10,7 +10,7 @@ int Stop::_Transition(Data *data)
   if (data->action == Action::Home)
     return State::Home;
 
-  if (data->action == Action::Wander)
+  if (data->action == Action::Start)
     return State::Wander;
 
   return State::Stop;

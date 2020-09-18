@@ -139,7 +139,7 @@ private:
 
         //data publish
         std_msgs::String smsgs;
-        smsgs.data = data->state;
+        smsgs.data = std::to_string(data->state);
         state_pub.publish(smsgs);
 
         jsk_rviz_plugins::OverlayText jsktxt;
@@ -190,7 +190,6 @@ private:
         if (msg->data == "moveto")
         {
             //指定座標への移動
-            // data->action = Action::MoveTo;
             data->action = Action::MoveTo;
         }
         else if (msg->data == "home")

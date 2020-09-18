@@ -82,7 +82,7 @@ public:
     cmd_sub = nh.subscribe<std_msgs::String>(cmd_topic, 3, &Behavior::cmd_callback, this);
 
     //publishers
-    state_pub = nh.advertise<sstring>("/soma/state", 3);
+    state_pub = nh.advertise<std_msgs::String>("/soma/state", 3);
     Pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma/Pg", 3);
     Xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma/Xt", 3);
     Uin_pub = nh.advertise<std_msgs::Float32MultiArray>("/soma/uin", 3);
@@ -131,7 +131,7 @@ private:
     //data publishing
     //--------------------------------------------------
     std_msgs::String smsgs;
-    smsgs.data = data->state;
+    smsgs.data = std::to_string(data->state);
     state_pub.publish(smsgs);
 
     //Text
@@ -142,7 +142,6 @@ private:
     jsktxt.text += "STEER:" + std::to_string(RAD2DEG(data->Uin.lambda)) + "[deg]\n";
     jsktxt.text += "V ROT:" + std::to_string(data->Uin.v) + "[m/s]\n";
     txt_pub.publish(jsktxt);
-
 
     //Control input vector 2-d arrray
     //"/soma/uin"
@@ -182,9 +181,11 @@ private:
 
   void cmd_callback(const std_msgs::StringConstPtr &msg)
   {
-    if (msg->data == "stop")
-    {
+    if (msg->data == "stop"){
       data->action = Action::Stop;
+    }
+    if(msg->data == "start"){
+      data->action = Action::Start;
     }
 
     return;

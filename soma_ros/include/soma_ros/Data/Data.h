@@ -114,7 +114,6 @@ public:
 namespace State
 {
   const int Stop = 0;
-
   const int MoveTo = 1; // for Matsumoto
   const int Home = 2;   // for Matsumoto
 
@@ -128,9 +127,9 @@ namespace State
 namespace Action
 {
   const int Stop = 0;
-  const int MoveTo = 1;
-  const int Home = 2;
-  const int Wander = 3;
+  const int Start = 1; //Autonomous
+  const int MoveTo = 2;
+  const int Home = 3;
 
   const std::map<int, std::string> Str = {
       {Stop, "Stop"}, {MoveTo, "MoveTo"}, {Home, "Home"}, {Wander, "Wander"}};

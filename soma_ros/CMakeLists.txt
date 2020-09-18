@@ -2,46 +2,45 @@ cmake_minimum_required(VERSION 2.8.3)
 project(soma_ros)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14)
+#add_compile_options(-std=c++11)
 
 ## Release build
-IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
-ENDIF(NOT CMAKE_BUILD_TYPE)
+#IF(NOT CMAKE_BUILD_TYPE)
+#  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+#ENDIF(NOT CMAKE_BUILD_TYPE)
 
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  roscpp
-  sensor_msgs
-  std_msgs
-  pcl_ros
-  pluginlib
-  nodelet
-  tf
-  costmap_2d
-  base_local_planner
-  dwa_local_planner
-  navfn
-)
+    geometry_msgs
+    roscpp
+    sensor_msgs
+    std_msgs
+    pcl_ros
+    pluginlib
+    nodelet
+    tf
+    costmap_2d
+    base_local_planner
+    dwa_local_planner
+    navfn
+    )
 
 find_package(PCL 1.7 REQUIRED)
 #find_package(PCL 1.7.2 REQUIRED EXACT)
 
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5 ${rviz_QT_VERSION} EXACT REQUIRED
-  Core
-  Widgets
-  Network
-)
+    Core
+    Widgets
+    Network
+    )
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Network)
 set(QT_LIBRARIES Qt5::Widgets Qt5::Network)
 add_definitions(-DQT_NO_KEYWORDS)
-
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -132,11 +131,11 @@ add_definitions(-DQT_NO_KEYWORDS)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES soma_ros
-#  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
-#  DEPENDS system_lib
-)
+    #  INCLUDE_DIRS include
+    #  LIBRARIES soma_ros
+    #  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
+    #  DEPENDS system_lib
+    )
 
 ###########
 ## Build ##
@@ -145,10 +144,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}
-)
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
+    )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -159,16 +158,16 @@ file(GLOB_RECURSE src src *.cpp)
 file(GLOB_RECURSE headers include/soma_ros *.h)
 
 add_library(soma_prefiltering_nodelet
-  src/Vision/prefiltering_nodelet.cpp
-)
+    src/Vision/prefiltering_nodelet.cpp
+    )
 
 add_library(soma_vision_nodelet
-  src/vision_nodelet.cpp
-)
+    src/vision_nodelet.cpp
+    )
 
 add_library(soma_points_marge_nodelet
-  src/points_marge_nodelet.cpp
-)
+    src/points_marge_nodelet.cpp
+    )
 
 
 ## Add cmake target dependencies of the library
@@ -188,30 +187,30 @@ add_library(soma_points_marge_nodelet
 #   src/costmap_node.cpp
 # )
 add_executable(rot_steer_recv_node
-  src/nodes/rot_steer_recv_node.cpp
-)
+    src/nodes/rot_steer_recv_node.cpp
+    )
 add_executable(steer_send_node
-  src/nodes/steer_send_node.cpp
-)
+    src/nodes/steer_send_node.cpp
+    )
 
 add_executable(behavior_node
-  src/nodes/behavior_node.cpp
-  src/Data/Data.cpp
-  src/Communicate/Communicate.cpp
-  src/Behavior/StateBase/StateBase.cpp
-  src/Behavior/Stop.cpp
-)
+    src/nodes/behavior_node.cpp
+    src/Data/Data.cpp
+    src/Communicate/Communicate.cpp
+    src/Behavior/StateBase/StateBase.cpp
+    src/Behavior/Stop.cpp
+    )
 
 add_executable(behavior_node_MSE
-  src/behavior_node_MSE.cpp
-  src/Data/Data.cpp
-  src/Communicate/Communicate.cpp
-  src/Behavior/StateBase/StateBase.cpp
-  src/Behavior/Stop.cpp
-  src/Behavior/MoveTo.cpp
-  src/Behavior/Home.cpp
-  include/soma_ros/Behavior/MotionControl/PurePursuit.h
-)
+    src/behavior_node_MSE.cpp
+    src/Data/Data.cpp
+    src/Communicate/Communicate.cpp
+    src/Behavior/StateBase/StateBase.cpp
+    src/Behavior/Stop.cpp
+    src/Behavior/MoveTo.cpp
+    src/Behavior/Home.cpp
+    include/soma_ros/Behavior/MotionControl/PurePursuit.h
+    )
 
 
 ## Rename C++ executable without prefix
@@ -234,15 +233,15 @@ add_executable(behavior_node_MSE
 #   ${QT_LIBRARIES}
 # )
 target_link_libraries(soma_prefiltering_nodelet
-  ${catkin_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    )
 target_link_libraries(soma_vision_nodelet
-  ${catkin_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    )
 target_link_libraries(soma_points_marge_nodelet
-  ${catkin_LIBRARIES}
-  ${PCL_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    ${PCL_LIBRARIES}
+    )
 # target_link_libraries(global_target_point_sender
 #   ${catkin_LIBRARIES}
 # )
@@ -250,24 +249,24 @@ target_link_libraries(soma_points_marge_nodelet
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(rot_steer_recv_node
-  ${catkin_LIBRARIES}
-  ${QT_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    ${QT_LIBRARIES}
+    )
 
 target_link_libraries(steer_send_node
-  ${catkin_LIBRARIES}
-  ${QT_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    ${QT_LIBRARIES}
+    )
 
 target_link_libraries(behavior_node
-   ${catkin_LIBRARIES}
-   ${QT_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    ${QT_LIBRARIES}
+    )
 
 target_link_libraries(behavior_node_MSE
-   ${catkin_LIBRARIES}
-   ${QT_LIBRARIES}
-)
+    ${catkin_LIBRARIES}
+    ${QT_LIBRARIES}
+    )
 
 
 #############
