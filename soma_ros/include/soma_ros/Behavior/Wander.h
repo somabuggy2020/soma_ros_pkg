@@ -1,5 +1,4 @@
-#ifndef WANDER_H
-#define WANDER_H
+#pragma once
 
 #include "soma_ros/Behavior/StateBase/StateBase.h"
 #include "soma_ros/Data/Data.h"
@@ -18,6 +17,3 @@ public:
 private:
   std::map<int, StateBase *> states;
 };
-
-
-#endif

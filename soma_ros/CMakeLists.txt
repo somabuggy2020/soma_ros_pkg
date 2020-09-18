@@ -165,11 +165,6 @@ add_library(soma_vision_nodelet
     src/vision_nodelet.cpp
     )
 
-add_library(soma_points_marge_nodelet
-    src/points_marge_nodelet.cpp
-    )
-
-
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -199,6 +194,7 @@ add_executable(behavior_node
     src/Communicate/Communicate.cpp
     src/Behavior/StateBase/StateBase.cpp
     src/Behavior/Stop.cpp
+    src/Behavior/Wander.cpp
     )
 
 add_executable(behavior_node_MSE
@@ -238,16 +234,6 @@ target_link_libraries(soma_prefiltering_nodelet
 target_link_libraries(soma_vision_nodelet
     ${catkin_LIBRARIES}
     )
-target_link_libraries(soma_points_marge_nodelet
-    ${catkin_LIBRARIES}
-    ${PCL_LIBRARIES}
-    )
-# target_link_libraries(global_target_point_sender
-#   ${catkin_LIBRARIES}
-# )
-# target_link_libraries(costmap_node
-#   ${catkin_LIBRARIES}
-# )
 target_link_libraries(rot_steer_recv_node
     ${catkin_LIBRARIES}
     ${QT_LIBRARIES}

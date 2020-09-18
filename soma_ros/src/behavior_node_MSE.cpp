@@ -198,10 +198,6 @@ private:
             data->Pg.x = data->Pg.y = data->Pg.z = 0.0;
             data->action = Action::Home;
         }
-        else if (msg->data == "wander")
-        {
-            data->action = Action::Wander;
-        }
         else if (msg->data == "stop")
         {
             data->action = Action::Stop;

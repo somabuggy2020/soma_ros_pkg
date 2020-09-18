@@ -27,6 +27,7 @@ QUdpSocket sock_steer;
 int ROT_PORT = 12346;
 int STEER_PORT = 7002;
 
+//proto type difinition
 int sock_init();
 int recv_sock_rot(float *v);
 int recv_sock_steer(float *steer);
@@ -52,14 +53,6 @@ int main(int argc, char **argv)
        
         recv_sock_rot(&v);
         recv_sock_steer(&steer);
-
-
-        //data publish
-        // std_msgs::Float32 fmsgs;
-        // fmsgs.data = v;
-        // v_pub.publish(fmsgs);
-        // fmsgs.data = steer;
-        // steer_pub.publish(fmsgs);
 
         std_msgs::Float32MultiArray famsgs;
         famsgs.data.resize(2);

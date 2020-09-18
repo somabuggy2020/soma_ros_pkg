@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver
+CMAKE_SOURCE_DIR = /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build
+CMAKE_BINARY_DIR = /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build
 
 # Utility rule file for SOMAMoveDriver_autogen.
 
@@ -54,8 +54,8 @@ CMAKE_BINARY_DIR = /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build
 include CMakeFiles/SOMAMoveDriver_autogen.dir/progress.make
 
 CMakeFiles/SOMAMoveDriver_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC, UIC and RCC for target SOMAMoveDriver"
-	/usr/bin/cmake -E cmake_autogen /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir Debug
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC, UIC and RCC for target SOMAMoveDriver"
+	/usr/bin/cmake -E cmake_autogen /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir Release
 
 SOMAMoveDriver_autogen: CMakeFiles/SOMAMoveDriver_autogen
 SOMAMoveDriver_autogen: CMakeFiles/SOMAMoveDriver_autogen.dir/build.make
@@ -72,6 +72,6 @@ CMakeFiles/SOMAMoveDriver_autogen.dir/clean:
 .PHONY : CMakeFiles/SOMAMoveDriver_autogen.dir/clean
 
 CMakeFiles/SOMAMoveDriver_autogen.dir/depend:
-	cd /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/soma/catkin_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build /home/hayashi/soma_ws/src/soma_ros_pkg/SOMAMoveDriver/build/CMakeFiles/SOMAMoveDriver_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SOMAMoveDriver_autogen.dir/depend
 

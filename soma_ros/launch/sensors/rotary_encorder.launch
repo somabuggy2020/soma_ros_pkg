@@ -1,0 +1,4 @@
+
+<launch>
+    <node pkg="soma_ros" type="rot_steer_recv_node" name="rot_steer_recv_node"/>
+</launch>

@@ -1,6 +1,7 @@
 <!--
-
+ basic launch file for realsense camera (D435 or i)
 -->
+
 <launch>
     <arg name="base_link" default="soma_link"/>
 
