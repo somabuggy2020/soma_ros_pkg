@@ -7,7 +7,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
 
-#define ROS_DIST 1 //0:kinetic. 1:melodic
+#define ROS_DIST 0 //0:kinetic. 1:melodic
 
 int main(int argc, char **argv)
 {
