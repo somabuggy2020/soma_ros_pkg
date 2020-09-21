@@ -13,7 +13,8 @@
     <arg name="external_manager" value="false"/>
     <arg name="manager" value="realsense2_manager_$(arg camera)"/>
 
-    <arg name="serial_no" value="939622073512" />
+    <!-- <arg name="serial_no" value="939622073512" /> -->
+    <arg name="serial_no" value="843112071843" />
 
     <arg name="enable_fisheye" value="false"/>
     <arg name="enable_infra1" value="false"/>

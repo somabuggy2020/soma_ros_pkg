@@ -13,7 +13,6 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/filters/extract_indices.h>
-#include <pcl_ros/pcl_nodelet.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 
@@ -27,188 +26,218 @@
 
 #define PI 3.14159265359
 
-namespace plane_seg_pkg
+namespace soma_ros
 {
-    class CloudPlaneSegmentator : public nodelet::Nodelet
+class CloudPlaneSegmentator : public nodelet::Nodelet
+{
+public:
+  typedef pcl::PointXYZRGB PointT;
+
+  CloudPlaneSegmentator() {}
+  virtual ~CloudPlaneSegmentator() {}
+
+  virtual void onInit()
+  {
+    NODELET_INFO("Initializing PlaneSegmentator ");
+
+    nh = getNodeHandle();
+    pnh = getPrivateNodeHandle();
+
+    input_points_sub = nh.subscribe("input_points",
+                                    3,
+                                    &CloudPlaneSegmentator::cloud_callback,
+                                    this);
+    //advertise topics
+    floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
+    others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
+    slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
+    //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
+    //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
+    //    tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
+  }
+
+  /*!
+         * \brief cloud_callback
+         * \param input
+         *
+         * ポイントクラウドのコールバック関数
+         */
+
+private:
+  void cloud_callback(const pcl::PointCloud<PointT>::ConstPtr &input)
+  {
+    if (input->empty())
     {
+      return;
+    }
 
-    public:
-        typedef pcl::PointXYZRGB PointT;
+    const int times_of_repeats = 2;
+    const float setted_slope_tilt = 5.0;
 
-        CloudPlaneSegmentator() {}
-        virtual ~CloudPlaneSegmentator() {}
+    tilt_ary.data.resize(times_of_repeats);
 
-        virtual void onInit()
-        {
-            NODELET_INFO("Initializing PlaneSegmentator ");
-            nh = getNodeHandle();
-            pnh = getPrivateNodeHandle();
+    pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
+    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
+    pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
+    pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
 
-            input_points_sub = nh.subscribe("cloud_downsampled",
-                                            10,
-                                            &CloudPlaneSegmentator::cloud_callback,
-                                            this);
-            //advertise topics
-            floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
-            others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
-            slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
-            indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
-            coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
-            tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
-        }
 
-        void cloud_callback(pcl::PointCloud<PointT>::ConstPtr &input)
-        {
-            if (input->empty())
-            {
-                return;
-            }
-            const int times_of_repeats = 2;
-            const float setted_slope_tilt = 5.0;
-            tilt_ary.data.resize(times_of_repeats);
+    //perform segnemtation
+    segment(input, inliers, 0);
 
-            pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
 
-            pcl::PointCloud<pcl::PointXYZ>::Ptr pc_floor(new pcl::PointCloud<pcl::PointXYZ>);
-            pcl::PointCloud<pcl::PointXYZ>::Ptr pc_slope(new pcl::PointCloud<pcl::PointXYZ>);
-            pcl::PointCloud<pcl::PointXYZ>::Ptr pc_others(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::ExtractIndices<PointT> EI;
+    // Create the filtering object
+    EI.setInputCloud(input);
+    EI.setIndices(inliers);
+    // extraction the plannar inlier pointcloud from indices
+    EI.setNegative(true);
+    EI.filter(*pc_slope);
 
-            segment(input, inliers, 0);
-            if (tilt_ary.data[0] < setted_slope_tilt)
-            {
-                pc_floor = extract(input, inliers);
-            }
-            else
-            {
-                pc_slope = (input, inliers);
-            }
-            pc_others = extract_others(input, inliers);
+    EI.setNegative(false);
+    EI.filter(*pc_others);
 
-            for (int i = 1; i < times_of_repeats; i++)
-            {
-                segment(input, inliers, i);
-                if (tilt_ary.data[i] < setted_slope_tilt)
-                {
-                    pc_floor = extract(input, inliers);
-                }
-                else
-                {
-                    pc_slope = (input, inliers);
-                }
-                pc_others = extract_others(input, inliers);
-            }
 
-            // // Convert to ROS msg
-            // pcl::toROSMsg(pc_floor, pc_floor_ros);
-            // pcl::toROSMsg(pc_others, pc_others_ros);
-            // pcl::toROSMsg(pc_slope, pc_slope_ros);
-            publish();
-        }
+    //    if (tilt_ary.data[0] < setted_slope_tilt)
+    //    {
+    //      pc_floor = extract(input, inliers);
+    //    }
+    //    else
+    //    {
+    //      pc_slope = (input, inliers);
+    //    }
 
-        void publish()
-        {
-            floor_pub.publish(pc_floor_ros);
-            others_pub.publish(pc_others_ros);
-            slope_pub.publish(pc_slope_ros);
-            indices_pub.publish(indices_ros);
-            coeffs_pub.publish(coeffs_ros);
-            tilt_ary_pub.publish(tilt_ary);
-        }
+    //    pc_others = extract_others(input, inliers);
 
-        void segment(const pcl::PointCloud<PointT>::ConstPtr &input,
-                     pcl::PointIndices::Ptr inliers,
-                     int i)
-        {
-            pcl::PointCloud<PointT>::Ptr segmented(new pcl::PointCloud<PointT>());
+    //    for (int i = 1; i < times_of_repeats; i++)
+    //    {
+    //      segment(input, inliers, i);
+    //      if (tilt_ary.data[i] < setted_slope_tilt)
+    //      {
+    //        pc_floor = extract(input, inliers);
+    //      }
+    //      else
+    //      {
+    //        pc_slope = (input, inliers);
+    //      }
+    //      pc_others = extract_others(input, inliers);
+    //    }
 
-            pcl::ModelCoefficients coeffs;
-            pcl::SACSegmentation<pcl::PointXYZ> seg;
+    // // Convert to ROS msg
+    // pcl::toROSMsg(pc_floor, pc_floor_ros);
+    // pcl::toROSMsg(pc_others, pc_others_ros);
+    // pcl::toROSMsg(pc_slope, pc_slope_ros);
 
-            // Create the seg object
-            seg.setOptimizeCoefficients(true);
-            seg.setModelType(pcl::SACMODEL_PLANE);
-            seg.setMethodType(pcl::SAC_RANSAC);
-            seg.setMaxIterations(1000);
-            seg.setDistanceThreshold(0.03);
-            seg.setInputCloud(input);
-            seg.segment(*inliers, coeffs);
+    floor_pub.publish(pc_floor);
+    slope_pub.publish(pc_slope);
+    others_pub.publish(pc_others);
 
-            //Calc planar tilt
-            Eigen::Vector3d vertical(0, 1, 0);
-            Eigen::Vector3d slope(coeffs.values[0], coeffs.values[1], coeffs.values[2]);
-            calcTilt(vertical, slope, i);
+    //    publish();
+  }
 
-            pcl_conversions::fromPCL(*inliers, indices_ros);
-            pcl_conversions::fromPCL(coeffs, coeffs_ros);
-        }
+  //  void publish()
+  //  {
+  //            floor_pub.publish(pc_floor_ros);
+  //            others_pub.publish(pc_others_ros);
+  //            slope_pub.publish(pc_slope_ros);
+  //            indices_pub.publish(indices_ros);
+  //            coeffs_pub.publish(coeffs_ros);
+  //            tilt_ary_pub.publish(tilt_ary);
+  //  }
 
-        pcl::PointCloud<PointT>::ConstPtr extract(const pcl::PointCloud<PointT>::ConstPtr &input,
-                                                  pcl::PointIndices::Ptr inliers)
-        {
-            pcl::ExtractIndices<pcl::PointXYZ> extract;
-            pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
+  void segment(const pcl::PointCloud<PointT>::ConstPtr &input,
+               pcl::PointIndices::Ptr inliers,
+               int i)
+  {
+    //    pcl::PointCloud<PointT>::Ptr segmented(new pcl::PointCloud<PointT>());
 
-            // Create the filtering object
-            extract.setInputCloud(input);
-            extract.setIndices(inliers);
-            // Extract the plannar inlier pointcloud from indices
-            extract.setNegative(false);
-            extract.filter(*done);
+    pcl::ModelCoefficients coeffs;
+    pcl::SACSegmentation<PointT> seg;
 
-            return done;
-        }
+    // Create the seg object
+    seg.setOptimizeCoefficients(true);
+    seg.setModelType(pcl::SACMODEL_PLANE);
+    seg.setMethodType(pcl::SAC_RANSAC);
+    seg.setMaxIterations(1000);
+    seg.setDistanceThreshold(0.03);
+    seg.setInputCloud(input);
+    seg.segment(*inliers, coeffs);
 
-        pcl::PointCloud<PointT>::ConstPtr extract_others(const pcl::PointCloud<PointT>::ConstPtr &input,
-                                                         pcl::PointIndices::Ptr inliers)
-        {
-            pcl::ExtractIndices<pcl::PointXYZ> extract;
-            pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
+    //Calc planar tilt
+    Eigen::Vector3d vertical(0, 1, 0);
+    Eigen::Vector3d slope(coeffs.values[0], coeffs.values[1], coeffs.values[2]);
+    calcTilt(vertical, slope, i);
 
-            // Create the filtering object
-            extract.setInputCloud(input);
-            extract.setIndices(inliers);
-            // Extract the plannar inlier pointcloud from indices
-            extract.setNegative(true);
-            extract.filter(*done);
+    //    pcl_conversions::fromPCL(*inliers, indices_ros);
+    //    pcl_conversions::fromPCL(coeffs, coeffs_ros);
+  }
 
-            return done;
-        }
+  //  pcl::PointCloud<PointT>::ConstPtr extract(const pcl::PointCloud<PointT>::ConstPtr &input,
+  //                                            pcl::PointIndices::Ptr inliers)
+  //  {
+  //    pcl::ExtractIndices<PointT> extract;
+  //    pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
 
-        void calcTilt(Eigen::Vector3d v, Eigen::Vector3d w, int i)
-        {
-            float cos_sita = v.dot(w) / v.norm() * w.norm();
-            float sita = acos(cos_sita);
-            float tilt = sita * 180.0 / PI;
-            tilt = 180.0 - tilt;
+  //    // Create the filtering object
+  //    extract.setInputCloud(input);
+  //    extract.setIndices(inliers);
+  //    // Extract the plannar inlier pointcloud from indices
+  //    extract.setNegative(false);
+  //    extract.filter(*done);
 
-            //Store tilt data
-            tilt_ary.data[i] = tilt;
-        }
+  //    return done;
+  //  }
 
-    private:
-        ros::NodeHandle nh;
-        ros::NodeHandle pnh;
-        ros::Subscriber input_points_sub;
+  //  pcl::PointCloud<PointT>::ConstPtr extract_others(const pcl::PointCloud<PointT>::ConstPtr &input,
+  //                                                   pcl::PointIndices::Ptr inliers)
+  //  {
+  //    pcl::ExtractIndices<PointT> extract;
+  //    pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
 
-    protected:
-        ros::Publisher floor_pub;
-        ros::Publisher others_pub;
-        ros::Publisher slope_pub;
+  //    // Create the filtering object
+  //    extract.setInputCloud(input);
+  //    extract.setIndices(inliers);
+  //    // Extract the plannar inlier pointcloud from indices
+  //    extract.setNegative(true);
+  //    extract.filter(*done);
 
-        ros::Publisher indices_pub;
-        ros::Publisher coeffs_pub;
-        ros::Publisher tilt_ary_pub;
+  //    return done;
+  //  }
 
-        sensor_msgs::PointCloud2 pc_floor_ros;
-        sensor_msgs::PointCloud2 pc_others_ros;
-        sensor_msgs::PointCloud2 pc_slope_ros;
+  void calcTilt(Eigen::Vector3d v, Eigen::Vector3d w, int i)
+  {
+    float cos_sita = v.dot(w) / v.norm() * w.norm();
+    float sita = acos(cos_sita);
+    float tilt = sita * 180.0 / PI;
+    tilt = 180.0 - tilt;
 
-        pcl_msgs::PointIndices indices_ros;
-        pcl_msgs::ModelCoefficients coeffs_ros;
-        std_msgs::Float32MultiArray tilt_ary;
+    //Store tilt data
+    tilt_ary.data[i] = tilt;
+  }
 
-        pcl::PointCloud<pcl::PointXYZ> cloud_input_pcl_;
-    };
+private:
+  ros::NodeHandle nh;
+  ros::NodeHandle pnh;
+  ros::Subscriber input_points_sub;
+
+protected:
+  ros::Publisher floor_pub;
+  ros::Publisher others_pub;
+  ros::Publisher slope_pub;
+  ros::Publisher indices_pub;
+  ros::Publisher coeffs_pub;
+  ros::Publisher tilt_ary_pub;
+
+  //        sensor_msgs::PointCloud2 pc_floor_ros;
+  //        sensor_msgs::PointCloud2 pc_others_ros;
+  //        sensor_msgs::PointCloud2 pc_slope_ros;
+
+  //  pcl_msgs::PointIndices indices_ros;
+  //  pcl_msgs::ModelCoefficients coeffs_ros;
+  std_msgs::Float32MultiArray tilt_ary;
+
+  //  pcl::PointCloud<PointT> cloud_input_pcl_;
+};
 } // namespace plane_seg_pkg
 
-PLUGINLIB_EXPORT_CLASS(plane_seg_pkg::CloudPlaneSegmentator, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(soma_ros::CloudPlaneSegmentator, nodelet::Nodelet)
