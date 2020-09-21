@@ -1,6 +1,7 @@
 <launch>
   <arg name="frame_id" default="soma_link"/>
   <arg name="odom_frame_id" default="odom_vo"/>
+  
   <arg name="publish_tf" default="true"/>
   <arg name="tf_prefix" default=""/>
   <arg name="wait_for_transform" default="0.2"/>
@@ -19,28 +20,40 @@
   <arg name="subscribe_rgbd" default="false"/>
 
   <arg name="expected_update_rate" value="0"/>
-  <arg name="max_update_rate"      value="0"/>
+  <arg name="max_update_rate" value="0"/>
 
   <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-    <remap from="rgb/image"       to="/camera_R/color/image_raw"/>
-    <remap from="depth/image"     to="/camera_R/depth/image_rect_raw"/>
+    <!-- input image topic names -->
+    <remap from="rgb/image" to="/camera_R/color/image_raw"/>
+    <remap from="depth/image" to="/camera_R/depth/image_rect_raw"/>
     <remap from="rgb/camera_info" to="/camera_R/color/camera_info"/>
-    <remap from="odom"            to="/odom_vo"/>
 
-    <param name="frame_id"                    type="string" value="$(arg frame_id)"/>
-    <param name="odom_frame_id"               type="string" value="$(arg odom_frame_id)"/>
-    <param name="publish_tf"                  type="bool"   value="$(arg publish_tf)"/>
-    <param name="ground_truth_frame_id"       type="string" value="$(arg ground_truth_frame_id)"/>
-    <param name="ground_truth_base_frame_id"  type="string" value="$(arg ground_truth_base_frame_id)"/>
+    <!-- output odometry topic name -->
+    <remap from="odom" to="/odom_vo"/>
+
+    <param name="frame_id" type="string" value="$(arg frame_id)"/>
+    <param name="odom_frame_id" type="string" value="$(arg odom_frame_id)"/>
+
+    <param name="publish_tf" type="bool" value="$(arg publish_tf)"/>
+    <param name="ground_truth_frame_id" type="string" value="$(arg ground_truth_frame_id)"/>
+    <param name="ground_truth_base_frame_id" type="string" value="$(arg ground_truth_base_frame_id)"/>
     <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
-    <!-- <param name="wait_imu_to_init"            type="bool"   value="$(arg wait_imu_to_init)"/> -->
-    <param name="approx_sync"                 type="bool"   value="$(arg approx_sync)"/>
-    <param name="queue_size"                  type="int"    value="$(arg queue_size)"/>
-    <param name="subscribe_rgbd"              type="bool"   value="$(arg subscribe_rgbd)"/>
-    <param name="guess_frame_id"              type="string" value="$(arg guess_frame_id)"/>
-    <param name="guess_min_translation"       type="double" value="$(arg guess_min_translation)"/>
-    <param name="guess_min_rotation"          type="double" value="$(arg guess_min_rotation)"/>
-    <param name="expected_update_rate"        type="double" value="$(arg expected_update_rate)"/>
-    <param name="max_update_rate"             type="double" value="$(arg max_update_rate)"/>
+    <!-- <param name="wait_imu_to_init" type="bool" value="$(arg wait_imu_to_init)"/> -->
+    <param name="approx_sync" type="bool" value="$(arg approx_sync)"/>
+    <param name="queue_size" type="int" value="$(arg queue_size)"/>
+    <param name="subscribe_rgbd" type="bool" value="$(arg subscribe_rgbd)"/>
+    <param name="guess_frame_id" type="string" value="$(arg guess_frame_id)"/>
+    <param name="guess_min_translation" type="double" value="$(arg guess_min_translation)"/>
+    <param name="guess_min_rotation" type="double" value="$(arg guess_min_rotation)"/>
+    <param name="expected_update_rate" type="double" value="$(arg expected_update_rate)"/>
+    <param name="max_update_rate" type="double" value="$(arg max_update_rate)"/>
+
   </node>
+
+  <!-- Advanced setting parameters -->
+
+  <!-- select feature type -->
+  <!-- 0=SURF, 1=SIFT, 2=ORB, 3=FAST/FREAK 4=FAST/BRIEF, 5=GFTT/FREAK, 6=GFTT/BRIEF 7=BRISK, 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE, 11=SuperPoint -->
+  <param name="Vis/FeatureType" value="2"/>
+
 </launch>
