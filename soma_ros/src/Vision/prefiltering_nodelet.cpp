@@ -23,37 +23,37 @@
 
 namespace soma_vision
 {
-    class PrefilteringNodelet : public nodelet::Nodelet
-    {
-    public:
-        typedef pcl::PointXYZRGB PointT;
+class PrefilteringNodelet : public nodelet::Nodelet
+{
+public:
+  typedef pcl::PointXYZRGB PointT;
 
-        PrefilteringNodelet() {}
-        virtual ~PrefilteringNodelet() {}
+  PrefilteringNodelet() {}
+  virtual ~PrefilteringNodelet() {}
 
-        virtual void onInit()
-        {
-            nh = getNodeHandle();
-            pnh = getPrivateNodeHandle();
+  virtual void onInit()
+  {
+    nh = getNodeHandle();
+    pnh = getPrivateNodeHandle();
 
             input_points_sub = nh.subscribe("input_points",
                                             3,
                                             &PrefilteringNodelet::cloud_callback,
                                             this);
 
-            output_points_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_points", 3);
+    output_points_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_points", 3);
 
-            //distance filter parameter
-            use_distance_filter = pnh.param<bool>("use_distance_filter", true);
-            distance_near_thresh = pnh.param<double>("distance_near_thresh", 1.0);
-            distance_far_thresh = pnh.param<double>("distance_far_thresh", 100.0);
+    //distance filter parameter
+    use_distance_filter = pnh.param<bool>("use_distance_filter", true);
+    distance_near_thresh = pnh.param<double>("distance_near_thresh", 1.0);
+    distance_far_thresh = pnh.param<double>("distance_far_thresh", 100.0);
 
             use_down_sampling = pnh.param<bool>("use_down_sampling", true);
             downsample_leaf_size = pnh.param<double>("down_sample_leaf_size", 0.1);
 
-            sor_k = pnh.param<int>("sor_k", 20);
-            sor_stddev = pnh.param<double>("sor_stddev", 1.0);
-        }
+    sor_k = pnh.param<int>("sor_k", 20);
+    sor_stddev = pnh.param<double>("sor_stddev", 1.0);
+  }
 
     private:
         void cloud_callback(pcl::PointCloud<PointT>::ConstPtr input)
@@ -64,88 +64,88 @@ namespace soma_vision
                 return;
             }
 
-            pcl::PointCloud<PointT>::ConstPtr filtered = distance_filter(input);
-            filtered = downsample(filtered);
-            filtered = sor(filtered);
+    pcl::PointCloud<PointT>::ConstPtr filtered = distance_filter(input);
+    filtered = downsample(filtered);
+    filtered = sor(filtered);
 
-            output_points_pub.publish(filtered);
-        }
+    output_points_pub.publish(filtered);
+  }
 
-        //--------------------------------------------------
-        //Distance filter function
-        //--------------------------------------------------
-        pcl::PointCloud<PointT>::ConstPtr distance_filter(
-            const pcl::PointCloud<PointT>::ConstPtr &src) const
-        {
-            pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
-            filtered->reserve(src->size());
+  //--------------------------------------------------
+  //Distance filter function
+  //--------------------------------------------------
+  pcl::PointCloud<PointT>::ConstPtr distance_filter(
+      const pcl::PointCloud<PointT>::ConstPtr &src) const
+  {
+    pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
+    filtered->reserve(src->size());
 
-            if (!use_distance_filter)
-            {
-                pcl::copyPointCloud(*src, *filtered);
-                return filtered;
-            }
+    if (!use_distance_filter)
+    {
+      pcl::copyPointCloud(*src, *filtered);
+      return filtered;
+    }
 
-            std::copy_if(src->begin(), src->end(),
-                         std::back_inserter(filtered->points), [&](const PointT &p) {
-                             double d = p.getVector3fMap().norm();
-                             return d > distance_near_thresh && d < distance_far_thresh; });
+    std::copy_if(src->begin(), src->end(),
+                 std::back_inserter(filtered->points), [&](const PointT &p) {
+      double d = p.getVector3fMap().norm();
+      return d > distance_near_thresh && d < distance_far_thresh; });
 
-            filtered->width = filtered->size();
-            filtered->height = 1;
-            filtered->header = src->header;
-            return filtered;
-        }
+    filtered->width = filtered->size();
+    filtered->height = 1;
+    filtered->header = src->header;
+    return filtered;
+  }
 
-        //--------------------------------------------------
-        //Down sampling function
-        //--------------------------------------------------
-        pcl::PointCloud<PointT>::ConstPtr downsample(const pcl::PointCloud<PointT>::ConstPtr &src) const
-        {
-            pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
+  //--------------------------------------------------
+  //Down sampling function
+  //--------------------------------------------------
+  pcl::PointCloud<PointT>::ConstPtr downsample(const pcl::PointCloud<PointT>::ConstPtr &src) const
+  {
+    pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
 
-            pcl::VoxelGrid<PointT> filter;
-            filter.setInputCloud(src);
-            filter.setLeafSize(downsample_leaf_size, downsample_leaf_size, downsample_leaf_size);
-            filter.filter(*filtered);
-            filtered->header = src->header;
+    pcl::VoxelGrid<PointT> filter;
+    filter.setInputCloud(src);
+    filter.setLeafSize(downsample_leaf_size, downsample_leaf_size, downsample_leaf_size);
+    filter.filter(*filtered);
+    filtered->header = src->header;
 
-            return filtered;
-        }
+    return filtered;
+  }
 
-        //--------------------------------------------------
-        //Statistical Outlier Removal function
-        //--------------------------------------------------
-        pcl::PointCloud<PointT>::ConstPtr sor(const pcl::PointCloud<PointT>::ConstPtr &src) const
-        {
-            pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
+  //--------------------------------------------------
+  //Statistical Outlier Removal function
+  //--------------------------------------------------
+  pcl::PointCloud<PointT>::ConstPtr sor(const pcl::PointCloud<PointT>::ConstPtr &src) const
+  {
+    pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
 
-            pcl::StatisticalOutlierRemoval<PointT> filter;
-            filter.setInputCloud(src);
-            filter.setMeanK(sor_k);
-            filter.setStddevMulThresh(sor_stddev);
-            filter.filter(*filtered);
-            return filtered;
-        }
+    pcl::StatisticalOutlierRemoval<PointT> filter;
+    filter.setInputCloud(src);
+    filter.setMeanK(sor_k);
+    filter.setStddevMulThresh(sor_stddev);
+    filter.filter(*filtered);
+    return filtered;
+  }
 
-    private:
-        ros::NodeHandle nh;
-        ros::NodeHandle pnh;
+private:
+  ros::NodeHandle nh;
+  ros::NodeHandle pnh;
 
-        ros::Subscriber input_points_sub;
-        ros::Publisher output_points_pub;
-        tf::TransformListener tf_listener;
+  ros::Subscriber input_points_sub;
+  ros::Publisher output_points_pub;
+  tf::TransformListener tf_listener;
 
-        bool use_distance_filter;
-        double distance_near_thresh;
-        double distance_far_thresh;
+  bool use_distance_filter;
+  double distance_near_thresh;
+  double distance_far_thresh;
 
         bool use_down_sampling;
         double downsample_leaf_size;
 
-        int sor_k;
-        double sor_stddev;
-    };
+  int sor_k;
+  double sor_stddev;
+};
 } // namespace soma_vision
 
 PLUGINLIB_EXPORT_CLASS(soma_vision::PrefilteringNodelet, nodelet::Nodelet);
