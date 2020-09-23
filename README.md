@@ -10,12 +10,14 @@
 
 ## 外部パッケージ導入(Installation)
 * velodyne
-```sudo apt install ros-kinetic-velodyne
+```
+sudo apt install ros-kinetic-velodyne
 ```
 
 * hdl_graph_slam
 catkin_wsにソースコードをダウンロードしてcatkin_makeする
-```cd catkin_ws/src
+```
+cd catkin_ws/src
 git clone https://github.com/koide3/hdl_graph_slam.git
 cd ~/catkin_ws
 catkin_make
