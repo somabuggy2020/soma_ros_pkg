@@ -16,7 +16,9 @@ sudo apt install ros-kinetic-velodyne
 
 * hdl_graph_slam
 https://github.com/koide3/hdl_graph_slam
+
 catkin_wsにソースコードをダウンロードしてcatkin_makeする
+
 HDL Graph SLAMに必要なパッケージもインストールする必要がある
 ```
 # for kinetic
