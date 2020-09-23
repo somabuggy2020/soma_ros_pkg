@@ -8,7 +8,7 @@
   <!-- PassThrough -->
   <node pkg="nodelet" type="nodelet" name="passthrough_z" args="load pcl/PassThrough pcl_manager" >
     <!-- <remap from="~input" to="/cloud_raw" /> -->
-    <remap from="~input" to="/camera_L/depth_registered/points"/>
+    <remap from="~input" to="/camera_R/depth_registered/points"/>
     <remap from="~output" to="/cloud_passthrough_z" />
     <rosparam>
       filter_field_name: z
@@ -31,7 +31,7 @@
 
   <!-- VoxelGrid -->
   <node pkg="nodelet" type="nodelet" name="voxel_grid_z" args="load pcl/VoxelGrid pcl_manager" >
-    <remap from="~input" to="/cloud_filtered" />
+    <remap from="~input" to="/cloud_passthrough" />
     <remap from="~output" to="/cloud_downsampled_z" />
     <rosparam>
      filter_field_name: z
@@ -44,7 +44,7 @@
   
   <!-- StatisticalOutlierRemoval -->
   <node pkg="nodelet" type="nodelet" name="statistical_outlier_removal" args="load pcl/StatisticalOutlierRemoval pcl_manager" >
-    <remap from="~input" to="/cloud_passthrough" />
+    <remap from="~input" to="/cloud_downsampled_z" />
     <remap from="~output" to="/cloud_filtered" />
     <rosparam>
       mean_k: 10
@@ -68,6 +68,7 @@
   <!-- PlaneSegmentation -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
         args="load soma_ros/CloudPlaneSegmentator pcl_manager" >
+        <remap from="input_points" to="/cloud_filtered"/>
   </node>  
 
 

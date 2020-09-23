@@ -280,6 +280,7 @@ target_link_libraries(behavior_node_MSE
 
 target_link_libraries(tomokawa_seg
   ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 
 # target_link_libraries(tomokawa_loader 
