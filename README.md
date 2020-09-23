@@ -1,12 +1,12 @@
 # soma_ros_pkg
-林研究室 林業用ロボット"SOMA"のROSパッケージ
+## 林研究室 林業用ロボット"SOMA"のROSパッケージ
 
-#[外部パッケージ要求(Required packages)]
-	hdl_graph_slam : LiDARに対応した３次元slamパッケージ
-	ethzasl_xsens_driver : xsensのIMUを扱うパッケージ
-	nmea_navsat_driver : USB接続のGPSを扱うパッケージ
-	velodyne : velodyne社製LiDARを扱うパッケージ
-	realsense-ros : R200,D435,D435iを扱うパッケージ
+外部パッケージ要求(Required packages)
+* hdl_graph_slam : LiDARに対応した３次元slamパッケージ
+* ethzasl_xsens_driver : xsensのIMUを扱うパッケージ
+* nmea_navsat_driver : USB接続のGPSを扱うパッケージ
+* velodyne : velodyne社製LiDARを扱うパッケージ
+* realsense-ros : R200,D435,D435iを扱うパッケージ
 
 [ディレクトリ構成]
 soma_ros_pkg : ルートディレクトリ(通称メタパッケージディレクトリ)
