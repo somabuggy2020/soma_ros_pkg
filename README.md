@@ -1,7 +1,7 @@
 # soma_ros_pkg
 林研究室 林業用ロボット"SOMA"のROSパッケージ
 
-![SOMA 3D Model](images/ATV_3D_Model.png "SOMA")
+![SOMA 3D Model](soma_ros/images/ATV_3D_Model.png "SOMA")
 
 ## 外部パッケージ要求(Requirement)
 * velodyne	: velodyne社製LiDARを扱うパッケージ
