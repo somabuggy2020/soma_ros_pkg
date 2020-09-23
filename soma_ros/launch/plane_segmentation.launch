@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <launch>
   <arg name="frame_id" default="soma_link"/>
   <arg name="nodelet_manager_name" default="soma_vision_manager"/>
@@ -14,5 +15,4 @@
         <remap from="input_points" to="$(arg input_points)"/>
         <param name="base_link" value="$(arg frame_id)"/>
   </node>
-
 </launch>

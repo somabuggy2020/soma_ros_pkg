@@ -20,10 +20,13 @@ https://github.com/koide3/hdl_graph_slam
 catkin_wsにソースコードをダウンロードしてcatkin_makeする
 
 HDL Graph SLAMに必要なパッケージもインストールする必要がある
+
+for kinetic
 ```
-# for kinetic
 sudo apt-get install ros-kinetic-geodesy ros-kinetic-pcl-ros ros-kinetic-nmea-msgs ros-kinetic-libg2o
-# for melodic
+```
+for melodic
+```
 sudo apt-get install ros-melodic-geodesy ros-melodic-pcl-ros ros-melodic-nmea-msgs ros-melodic-libg2o
 
 cd catkin_ws/src
@@ -33,21 +36,21 @@ cd ~/catkin_ws
 catkin_make
 ```
 
-[ディレクトリ構成]
+ディレクトリ構成
 soma_ros_pkg : ルートディレクトリ(通称メタパッケージディレクトリ)
 └soma_ros : soma自律移動プログラム本体のディレクトリ
-  ├include
-  |  └soma_ros : hファイル配置ディレクトリ
-  |     ├Behavior
-  |	└Data
+	├include
+	|  └soma_ros : hファイル配置ディレクトリ
+	|     ├Behavior
+	|	    └Data
   |
-  ├launch : 実行用launchファイル配置ディレクトリ
-  ├rviz : 実行時のrvizコンフィグファイル配置ディレクトリ
-  └src : cppファイル配置ディレクトリ
-    ├Behavior
-    └Data
+	├launch : 実行用launchファイル配置ディレクトリ
+	├rviz : 実行時のrvizコンフィグファイル配置ディレクトリ
+	└src : cppファイル配置ディレクトリ
+		├Behavior
+		└Data
 
-[soma_rosディレクトリ内ファイルについて]
+soma_rosディレクトリ内ファイルについて
  CMakeLists.txt : catkin_makeするためのCMakeファイル
  nodelet_description.xml : 自作したnodeletの説明ファイル
  package.xml : soma_rosパッケージの依存関係の説明ファイル

@@ -1,8 +1,8 @@
 <!--
-    launch UDP reciever node for velocity by rotary encoder and steering angle
-    Rotary values from Raspberry Pi
-    Steering values from NUC2
+		launch UDP reciever node for velocity by rotary encoder and steering angle
+		Rotary values from Raspberry Pi
+		Steering values from NUC2
 -->
 <launch>
-    <node pkg="soma_ros" type="rot_steer_recv_node" name="rot_steer_recv_node"/>
+	<node pkg="soma_ros" type="rot_steer_recv_node" name="rot_steer_recv_node"/>
 </launch>
