@@ -9,6 +9,7 @@
     <arg name="serial_no" default=""/>
 
     <!-- transform parameters -->
+    <arg name="use_center_frame" default="true"/>
     <arg name="pan_angle" default="0"/>
     <arg name="tilt_angle" default="0"/>
     <arg name="role_angle" default="0"/>
@@ -47,9 +48,13 @@
         <arg name="tf_param1" default="0 $(arg ty) 0 $(arg pan) $(arg tilt) $(arg role)"/>
         <arg name="tf_param2" default="$(arg tx) 0 $(arg tz) 0 0 0"/>
 
-        <node pkg="tf2_ros" type="static_transform_publisher" name="Camera2Center" args="$(arg tf_param1) camera_center_link $(arg camera_name)_link"/>
-        <node pkg="tf2_ros" type="static_transform_publisher" name="Center2Base" args="$(arg tf_param2) $(arg base_link) camera_center_link"/>
-
+        <group if="$(arg use_center_frame)">
+            <node pkg="tf2_ros" type="static_transform_publisher" name="Camera2Center" args="$(arg tf_param1) camera_center_link $(arg camera_name)_link"/>
+            <node pkg="tf2_ros" type="static_transform_publisher" name="Center2Base" args="$(arg tf_param2) $(arg base_link) camera_center_link"/>
+        </group>
+        <group unless="$(arg use_center_frame)">
+            <node pkg="tf2_ros" type="static_transform_publisher" name="Camera2Base" args="$(arg tx) $(arg ty) $(arg tz) $(arg pan) $(arg tilt) $(arg role) $(arg base_link) $(arg camera_name)_link"/>
+        </group>
 
         <node pkg="nodelet" type="nodelet" name="pt_x_filter" args="load pcl/PassThrough realsense2_manager_$(arg camera_name)">
             <remap from="~input" to="/$(arg camera_name)/depth_registered/points"/>
