@@ -1,26 +1,21 @@
 //ros
 #include <ros/ros.h>
 #include <ros/names.h>
+#include <ros/time.h>
 #include <nodelet/nodelet.h>
-#include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Float32MultiArray.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <pluginlib/class_list_macros.h>
 
-#include <ros/time.h>
 #include <tf/transform_listener.h>
 
-//pcl
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl/segmentation/sac_segmentation.h>
-#include <pcl/filters/extract_indices.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-
-#include <sensor_msgs/PointCloud2.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/filters/extract_indices.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 
-//others
 #include <string>
 #include <math.h>
 
@@ -43,58 +38,77 @@ public:
     nh = getNodeHandle();
     pnh = getPrivateNodeHandle();
 
+    base_link_frame = nh.param<std::string>("base_link", "soma_link"); //default value is "soma_link"
+
     input_points_sub = nh.subscribe("input_points",
                                     3,
-                                    &PlaneSegmentationNodelet::points_callback,
+                                    &PlaneSegmentationNodelet::cloud_callback,
                                     this);
     //advertise topics
     floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
-    others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
+    others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
     //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
     //    tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
   }
 
-  /*!
-         * \brief cloud_callback
-         * \param input
-         *
-         * ポイントクラウドのコールバック関数
-         */
-
 private:
-  void points_callback(const pcl::PointCloud<PointT>::ConstPtr &input)
+  /*!
+   * \brief cloud_callback
+   * \param input
+   */
+  void cloud_callback(pcl::PointCloud<PointT>::ConstPtr input)
   {
     if (input->empty())
     {
       return;
     }
 
+    if(!base_link_frame.empty()) {
+      //Does exist transform tf points frame to base frame?
+      if(!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0))) {
+        return; //nothing
+      }
+
+      //get transform
+      tf::StampedTransform transform;
+      tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(2.0));
+      tf_listener.lookupTransform(base_link_frame, input->header.frame_id, ros::Time(0), transform);
+
+      pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
+      pcl_ros::transformPointCloud(*input, *transformed, transform);
+      transformed->header.frame_id = base_link_frame;
+      transformed->header.stamp = input->header.stamp;
+      input = transformed; //copy?
+    }
+
+
     const int times_of_repeats = 2;
     const float setted_slope_tilt = 5.0;
-
     tilt_ary.data.resize(times_of_repeats);
 
-    pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
-    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
+
+    //    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
 
-
     //perform segnemtation
-    segment(input, inliers, 0);
+    pcl::PointIndices::Ptr inliers;
+    pcl::ModelCoefficients::Ptr coeffs;
+    inliers.reset(new pcl::PointIndices());
+    coeffs.reset(new pcl::ModelCoefficients());
+
+    segmentation(input, inliers, coeffs);
 
 
     pcl::ExtractIndices<PointT> EI;
-    // Create the filtering object
     EI.setInputCloud(input);
     EI.setIndices(inliers);
-    // extraction the plannar inlier pointcloud from indices
-    EI.setNegative(true);
+    EI.setNegative(false);
     EI.filter(*pc_slope);
 
-    EI.setNegative(false);
+    EI.setNegative(true);
     EI.filter(*pc_others);
 
 
@@ -123,54 +137,55 @@ private:
     //      pc_others = extract_others(input, inliers);
     //    }
 
-    // // Convert to ROS msg
-    // pcl::toROSMsg(pc_floor, pc_floor_ros);
-    // pcl::toROSMsg(pc_others, pc_others_ros);
-    // pcl::toROSMsg(pc_slope, pc_slope_ros);
-
-    floor_pub.publish(pc_floor);
+    //    floor_pub.publish(pc_floor);
     slope_pub.publish(pc_slope);
     others_pub.publish(pc_others);
 
     //    publish();
   }
 
-  //  void publish()
-  //  {
-  //            floor_pub.publish(pc_floor_ros);
-  //            others_pub.publish(pc_others_ros);
-  //            slope_pub.publish(pc_slope_ros);
-  //            indices_pub.publish(indices_ros);
-  //            coeffs_pub.publish(coeffs_ros);
-  //            tilt_ary_pub.publish(tilt_ary);
-  //  }
-
-  void segment(const pcl::PointCloud<PointT>::ConstPtr &input,
-               pcl::PointIndices::Ptr inliers,
-               int i)
+  int segmentation(pcl::PointCloud<PointT>::ConstPtr input,
+                   pcl::PointIndices::Ptr inliers,
+                   pcl::ModelCoefficients::Ptr coeffs)
   {
-    //    pcl::PointCloud<PointT>::Ptr segmented(new pcl::PointCloud<PointT>());
+    pcl::SACSegmentation<PointT> sacseg; //instance of RANSAC segmentation processing object
 
-    pcl::ModelCoefficients coeffs;
-    pcl::SACSegmentation<PointT> seg;
+    //set RANSAC parameters
+    sacseg.setOptimizeCoefficients(true);
+    sacseg.setModelType(pcl::SACMODEL_PLANE);
+    sacseg.setMethodType(pcl::SAC_RANSAC);
+    sacseg.setMaxIterations(100);
+    sacseg.setDistanceThreshold(0.03);
+    sacseg.setInputCloud(input);
+    sacseg.segment(*inliers, *coeffs);
 
-    // Create the seg object
-    seg.setOptimizeCoefficients(true);
-    seg.setModelType(pcl::SACMODEL_PLANE);
-    seg.setMethodType(pcl::SAC_RANSAC);
-    seg.setMaxIterations(1000);
-    seg.setDistanceThreshold(0.03);
-    seg.setInputCloud(input);
-    seg.segment(*inliers, coeffs);
-
-    //Calc planar tilt
-    Eigen::Vector3d vertical(0, 1, 0);
-    Eigen::Vector3d slope(coeffs.values[0], coeffs.values[1], coeffs.values[2]);
-    calcTilt(vertical, slope, i);
-
-    //    pcl_conversions::fromPCL(*inliers, indices_ros);
-    //    pcl_conversions::fromPCL(coeffs, coeffs_ros);
+    return 0; //success
   }
+
+  //  void segment(pcl::PointCloud<PointT>::ConstPtr input,
+  //               pcl::PointIndices::Ptr inliers,
+  //               int i)
+  //  {
+  //    pcl::ModelCoefficients coeffs;
+  //    pcl::SACSegmentation<PointT> seg;
+
+  //    // Create the seg object
+  //    seg.setOptimizeCoefficients(true);
+  //    seg.setModelType(pcl::SACMODEL_PLANE);
+  //    seg.setMethodType(pcl::SAC_RANSAC);
+  //    seg.setMaxIterations(1000);
+  //    seg.setDistanceThreshold(0.03);
+  //    seg.setInputCloud(input);
+  //    seg.segment(*inliers, coeffs);
+
+  //    //Calc planar tilt
+  //    Eigen::Vector3d vertical(0, 1, 0);
+  //    Eigen::Vector3d slope(coeffs.values[0], coeffs.values[1], coeffs.values[2]);
+  //    calcTilt(vertical, slope, i);
+
+  //    //    pcl_conversions::fromPCL(*inliers, indices_ros);
+  //    //    pcl_conversions::fromPCL(coeffs, coeffs_ros);
+  //  }
 
   //  pcl::PointCloud<PointT>::ConstPtr extract(const pcl::PointCloud<PointT>::ConstPtr &input,
   //                                            pcl::PointIndices::Ptr inliers)
@@ -188,22 +203,12 @@ private:
   //    return done;
   //  }
 
-  //  pcl::PointCloud<PointT>::ConstPtr extract_others(const pcl::PointCloud<PointT>::ConstPtr &input,
-  //                                                   pcl::PointIndices::Ptr inliers)
-  //  {
-  //    pcl::ExtractIndices<PointT> extract;
-  //    pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
-
-  //    // Create the filtering object
-  //    extract.setInputCloud(input);
-  //    extract.setIndices(inliers);
-  //    // Extract the plannar inlier pointcloud from indices
-  //    extract.setNegative(true);
-  //    extract.filter(*done);
-
-  //    return done;
-  //  }
-
+  /*!
+   * \brief calcTilt
+   * \param v
+   * \param w
+   * \param i
+   */
   void calcTilt(Eigen::Vector3d v, Eigen::Vector3d w, int i)
   {
     float cos_sita = v.dot(w) / v.norm() * w.norm();
@@ -218,19 +223,20 @@ private:
 private:
   ros::NodeHandle nh;
   ros::NodeHandle pnh;
+
+  std::string base_link_frame; //base_link frame id
+  tf::TransformListener tf_listener;
+
+  //subscribers
   ros::Subscriber input_points_sub;
 
-protected:
+  //publishers
   ros::Publisher floor_pub;
   ros::Publisher others_pub;
   ros::Publisher slope_pub;
-  ros::Publisher indices_pub;
+
   ros::Publisher coeffs_pub;
   ros::Publisher tilt_ary_pub;
-
-  //        sensor_msgs::PointCloud2 pc_floor_ros;
-  //        sensor_msgs::PointCloud2 pc_others_ros;
-  //        sensor_msgs::PointCloud2 pc_slope_ros;
 
   //  pcl_msgs::PointIndices indices_ros;
   //  pcl_msgs::ModelCoefficients coeffs_ros;

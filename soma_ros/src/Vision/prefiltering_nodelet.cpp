@@ -38,7 +38,7 @@ namespace soma_vision
 
             input_points_sub = nh.subscribe("input_points",
                                             3,
-                                            &PrefilteringNodelet::points_callback,
+                                            &PrefilteringNodelet::cloud_callback,
                                             this);
 
             output_points_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_points", 3);
@@ -56,7 +56,7 @@ namespace soma_vision
         }
 
     private:
-        void points_callback(pcl::PointCloud<PointT>::ConstPtr input)
+        void cloud_callback(pcl::PointCloud<PointT>::ConstPtr input)
         {
             //if point cloud empty
             if (input->empty())
