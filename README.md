@@ -10,8 +10,26 @@
 
 ## 外部パッケージ導入(Installation)
 * velodyne
+http://wiki.ros.org/velodyne  
+for kinetic  
 ```
 sudo apt install ros-kinetic-velodyne
+```
+for melodic  
+```
+sudo apt install ros-melodic-velodyne
+```
+
+* realsense-ros
+https://github.com/IntelRealSense/realsense-ros#installation-instructions  
+
+* for kinetic
+```
+sudo apt install ros-kinetic-realsense2-camera
+```
+* for melodic  
+```
+sudo apt install ros-melodic-realsense2-camera
 ```
 
 * hdl_graph_slam
