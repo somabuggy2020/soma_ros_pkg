@@ -101,7 +101,6 @@ private:
 
     segmentation(input, inliers, coeffs);
 
-
     pcl::ExtractIndices<PointT> EI;
     EI.setInputCloud(input);
     EI.setIndices(inliers);
@@ -110,6 +109,9 @@ private:
 
     EI.setNegative(true);
     EI.filter(*pc_others);
+
+
+
 
 
     //    if (tilt_ary.data[0] < setted_slope_tilt)
@@ -154,8 +156,8 @@ private:
     sacseg.setOptimizeCoefficients(true);
     sacseg.setModelType(pcl::SACMODEL_PLANE);
     sacseg.setMethodType(pcl::SAC_RANSAC);
-    sacseg.setMaxIterations(100);
-    sacseg.setDistanceThreshold(0.03);
+    sacseg.setMaxIterations(30);
+    sacseg.setDistanceThreshold(0.1);
     sacseg.setInputCloud(input);
     sacseg.segment(*inliers, *coeffs);
 
