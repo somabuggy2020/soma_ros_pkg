@@ -159,11 +159,15 @@ file(GLOB_RECURSE headers include/soma_ros *.h)
 
 add_library(soma_prefiltering_nodelet
     src/Vision/prefiltering_nodelet.cpp
-    )
+)
+
+add_library(soma_plane_segmentation_nodelet
+    src/nodes/plane_segmentation_nodelet.cpp
+)
 
 add_library(soma_vision_nodelet
     src/vision_nodelet.cpp
-    )
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -229,6 +233,9 @@ add_executable(behavior_node_MSE
 #   ${QT_LIBRARIES}
 # )
 target_link_libraries(soma_prefiltering_nodelet
+    ${catkin_LIBRARIES}
+    )
+target_link_libraries(soma_plane_segmentation_nodelet
     ${catkin_LIBRARIES}
     )
 target_link_libraries(soma_vision_nodelet
