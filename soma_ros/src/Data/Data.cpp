@@ -1,6 +1,6 @@
 #include "soma_ros/Data/Data.h"
 
-#define ROS_DIST 0 //0:kinetic 1:melodic
+#define ROS_DIST 1 //0:kinetic 1:melodic
 
 Data::Data()
 {
