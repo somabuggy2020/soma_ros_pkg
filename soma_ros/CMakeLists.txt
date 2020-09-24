@@ -102,7 +102,6 @@ add_executable(steer_send_node
 add_executable(behavior_node
     src/nodes/behavior_node.cpp
     src/Data/Data.cpp
-    src/Communicate/Communicate.cpp
     src/Behavior/StateBase/StateBase.cpp
     src/Behavior/Stop.cpp
     src/Behavior/Wander.cpp

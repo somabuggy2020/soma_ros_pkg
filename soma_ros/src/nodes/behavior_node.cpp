@@ -40,25 +40,22 @@ private:
   ros::NodeHandle pnh;
   ros::Timer timer;
 
-  sstring frame_id, map_frame_id;
-  sstring odom_topic;
-  sstring cmd_topic;
-  sstring cmd_vel_topic;
+  sstring frame_id;
+  sstring map_frame_id;
 
   //Subscriberの宣言
-  ros::Subscriber clicked_point_sub;
-  ros::Subscriber cmd_sub;
-  ros::Subscriber odom_sub;
+  ros::Subscriber cmd_sub;  // soma command subscriber
+  ros::Subscriber odom_sub; // odometry subscriber
 
   //Publisherの宣言
   ros::Publisher txt_pub;
   ros::Publisher state_pub;
-  ros::Publisher Pg_pub;  //
-  ros::Publisher Xt_pub;  //Estimated state vector
+  ros::Publisher Pg_pub; //
+  // ros::Publisher Xt_pub;  //Estimated state vector
   ros::Publisher Uin_pub; //
 
   Data *data;
-  Communicate *comm;
+  // Communicate *comm;
 
   //behavior modules
   Stop *sStop;
@@ -66,30 +63,27 @@ private:
 
 public:
   Behavior() : nh(ros::NodeHandle()),
-    pnh(ros::NodeHandle("~"))
+               pnh(ros::NodeHandle("~"))
   {
-    // topic name
+    // frame name
     frame_id = pnh.param<sstring>("frame_id", "soma_link");
     map_frame_id = pnh.param<sstring>("map_frame_id", "map");
 
-    odom_topic = pnh.param<sstring>("odom_topic", "/soma/odom");
-    cmd_topic= pnh.param<sstring>("cmd_topic", "/soma/cmd");
-    cmd_vel_topic = pnh.param<sstring>("cmd_vel_topic", "/soma/cmd_vel");
-
     // subscribers
-    // clicked_point_sub = nh.subscribe<geo_msgs::PointStamped>("/clicked_point", 3, &Behavior::clicked_point_callback, this);
-    odom_sub = nh.subscribe<nav_msgs::Odometry>(odom_topic, 3, &Behavior::odom_callback, this);
-    cmd_sub = nh.subscribe<std_msgs::String>(cmd_topic, 3, &Behavior::cmd_callback, this);
+    cmd_sub = nh.subscribe<std_msgs::String>("/soma/cmd",
+                                             3, &Behavior::cmd_callback, this);
+    odom_sub = nh.subscribe<nav_msgs::Odometry>("/soma/odom",
+                                                3, &Behavior::odom_callback, this);
 
     //publishers
     state_pub = nh.advertise<std_msgs::String>("/soma/state", 3);
-    Pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma/Pg", 3);
-    Xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma/Xt", 3);
-    Uin_pub = nh.advertise<std_msgs::Float32MultiArray>("/soma/uin", 3);
     txt_pub = nh.advertise<jsk_rviz_plugins::OverlayText>("/soma/txt", 3);
+    Uin_pub = nh.advertise<std_msgs::Float32MultiArray>("/soma/uin", 3);
+    Pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma/Pg", 3);
+    // Xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma/Xt", 3);
 
     data = new Data();
-    comm = new Communicate();
+    // comm = new Communicate();
 
     //make states
     sStop = new Stop();
@@ -106,9 +100,9 @@ private:
   void main(const ros::TimerEvent &e)
   {
 
-    //
+    //--------------------------------------------------
     // main process
-    //
+    //--------------------------------------------------
 
     // Finite State Machine
     int new_state = states[data->state]->Transition(data);
@@ -116,8 +110,8 @@ private:
     if (new_state != data->state)
     {
       states[data->state]->Exit(data);
-      states[new_state]->Enter(data);
       data->state = new_state;
+      states[data->state]->Enter(data);
     }
     else
       states[data->state]->Process(data);
@@ -126,15 +120,20 @@ private:
     // finished main process
     //--------------------------------------------------
 
-
     //--------------------------------------------------
     //data publishing
     //--------------------------------------------------
+    data_publish();
+    return;
+  }
+
+  void data_publish()
+  {
     std_msgs::String smsgs;
     smsgs.data = std::to_string(data->state);
     state_pub.publish(smsgs);
 
-    //Text
+    //Text of data
     jsk_rviz_plugins::OverlayText jsktxt;
     jsktxt.action = jsk_rviz_plugins::OverlayText::ADD;
     jsktxt.text += "STATE:" + State::Str.at(data->state) + "\n";
@@ -147,15 +146,9 @@ private:
     //"/soma/uin"
     std_msgs::Float32MultiArray famsgs;
     famsgs.data.resize(2);
-    famsgs.data[0] = data->Uin.lambda;
+    famsgs.data[0] = RAD2DEG(data->Uin.lambda);
     famsgs.data[1] = data->Uin.v;
     Uin_pub.publish(famsgs);
-
-    geo_msgs::PoseStamped posemsgs;
-    posemsgs.header.frame_id = map_frame_id;
-    posemsgs.header.stamp = ros::Time::now();
-    posemsgs.pose = data->Xt;
-    Xt_pub.publish(posemsgs);
 
     geo_msgs::PointStamped pmsgs;
     pmsgs.header.frame_id = map_frame_id;
@@ -181,10 +174,12 @@ private:
 
   void cmd_callback(const std_msgs::StringConstPtr &msg)
   {
-    if (msg->data == "stop"){
+    if (msg->data == "stop")
+    {
       data->action = Action::Stop;
     }
-    if(msg->data == "start"){
+    if (msg->data == "start")
+    {
       //start autonomous wander behavior
       data->action = Action::Start;
     }
@@ -196,7 +191,6 @@ private:
   {
     data->Xt = msg->pose.pose;
   }
-
 };
 
 //--------------------------------------------------

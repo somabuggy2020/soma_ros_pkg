@@ -16,7 +16,7 @@
     <arg name="tx" default="0"/>
     <arg name="ty" default="0"/>
     <arg name="tz" default="0"/>
-
+    
     <!-- launch realsense camera device nodelet and nodelet manager -->
     <!-- namespace is followed with camera_name -->
     <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">

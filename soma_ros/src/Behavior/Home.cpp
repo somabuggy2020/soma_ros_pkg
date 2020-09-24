@@ -47,7 +47,7 @@ int Home::_Process(Data *data)
   x.theta = yaw;
 
   PurePursuit::U u;
-  u.v = data->vt;
+  u.v = data->Uin.v;
   u.lambda = 0.0;
 
   PurePursuit::U _u;

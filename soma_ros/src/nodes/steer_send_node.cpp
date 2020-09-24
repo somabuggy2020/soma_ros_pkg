@@ -1,7 +1,6 @@
 //--------------------------------------------------
 // UDP socket 通信により
-// NUC2へステアリング出力角[rad]
-// を送信する．
+// NUC2へステアリング出力角[rad]を送信する．
 //--------------------------------------------------
 
 #include <string>
@@ -25,9 +24,6 @@ QUdpSocket sock_steer;
 //UDPソケットの受付IP,ポート
 QString STEER_IP = "192.168.1.12";
 int STEER_PORT = 7001;
-
-int sock_init();
-int sock_send();
 
 std::string uin_topic = "/soma/uin";
 
@@ -55,12 +51,13 @@ void callback(std_msgs::Float32MultiArray::ConstPtr data)
     send.isRotReset = false;
     send.isWeeding = false;
 
-    sock_steer.writeDatagram((char*)&send,
-    sizeof(Send_t),
-    QHostAddress(STEER_IP),
-    STEER_PORT);
+    sock_steer.writeDatagram((char *)&send,
+                             sizeof(Send_t),
+                             QHostAddress(STEER_IP),
+                             STEER_PORT);
 
-    if(!sock_steer.waitForBytesWritten(33)){
+    if (!sock_steer.waitForBytesWritten(33))
+    {
         ROS_WARN("Timeout error");
     }
 
@@ -76,7 +73,6 @@ int main(int argc, char **argv)
     ros::Subscriber uin_sub = nh.subscribe<std_msgs::Float32MultiArray>(uin_topic,
                                                                         3,
                                                                         callback);
-
 
     while (ros::ok())
     {
