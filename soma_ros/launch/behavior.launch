@@ -11,7 +11,7 @@
 	<arg name="cmd_vel_topic" default="/soma/cmd_vel" />
 	-->
 	<!-- transform soma_link to foot_print -->
-	<node pkg="tf2_ros" type="static_transform_publisher" name="tfBase2foot_print" args="0 0 -0.2 0 0 0 $(arg frame_id) $(arg foot_print)" />
+	<node pkg="tf" type="static_transform_publisher" name="tfBase2foot_print" args="0 0 -0.2 0 0 0 $(arg frame_id) $(arg foot_print) 100" />
 	<!-- dead recogning node launch -->
 	<node pkg="soma_ros" type="dead_recogning_node.py" name="soma_dead_recogning" />
 	<!-- run behavior node -->
