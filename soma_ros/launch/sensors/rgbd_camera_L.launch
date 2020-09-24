@@ -1,7 +1,3 @@
-<!--
-
--->
-
 <launch>
 
     <!-- rgbd camera node launch-->

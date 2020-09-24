@@ -1,2 +1,3 @@
 # ignore the Directories
 SOMAMoveDriver/build/
+.vscode

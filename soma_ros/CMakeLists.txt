@@ -212,9 +212,6 @@ add_executable(behavior_node_MSE
     include/soma_ros/Behavior/MotionControl/PurePursuit.h
     )
 
-# add_executable(tomokawa_loader 
-#   src/nodes/tomokawa_loader_node.cpp
-# )
 
 
 ## Rename C++ executable without prefix
@@ -264,16 +261,6 @@ target_link_libraries(behavior_node_MSE
     ${catkin_LIBRARIES}
     ${QT_LIBRARIES}
     )
-
-target_link_libraries(tomokawa_seg
-  ${catkin_LIBRARIES}
-  ${PCL_LIBRARIES}
-)
-
-# target_link_libraries(tomokawa_loader 
-#   ${catkin_LIBRARIES} 
-#   ${PCL_LIBRARIES}
-# )
 
 
 
