@@ -2,7 +2,6 @@
 
     <!-- rgbd camera node launch-->
     <include file="$(find soma_ros)/launch/sensors/rgbd_camera.launch">
-        <arg name="base_link" value="soma_link"/>
         <arg name="camera_name" value="camera_L"/>
         <arg name="serial_no" value="939622073512"/>
         <arg name="pan_angle" value="-20"/>

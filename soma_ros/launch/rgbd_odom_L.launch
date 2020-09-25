@@ -1,0 +1,13 @@
+<launch>
+
+    <include file="$(find soma_ros)/launch/rgbd_odometry.launch">
+        <arg name="frame_id" default="soma_link"/>
+        <arg name="camera_name" value="camera_L"/>
+        <!-- <arg name="odom_topic" default="/camera_L/vodom"/>
+        <arg name="odom_frame_id" default="camer_L_vo"/>
+        <arg name="rgb_image" default="/camera_L/color/image_raw"/>
+        <arg name="depth_image" default="/camera_L/depth/image_rect_raw"/>
+        <arg name="rgb_camera_info" default="/camera_L/color/camera_info"/> -->
+    </include>
+
+</launch>
