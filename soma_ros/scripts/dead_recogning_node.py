@@ -22,10 +22,9 @@ WHEEL_BASE = 1.4
 frame_id = 'odom_dr'
 base_link = 'soma_link'
 
-U_t = [0.0, 0.0]        #lambda v
-X_t = [0.0, 0.0, 0.0]   #x,y,theta estimated
+U_t = [0.0, 0.0]        #control input lambda,v
+X_t = [0.0, 0.0, 0.0]   #odometry x,y,theta estimated
 t = rospy.Time()
-
 cont = True
 
 def handler(signal, frame):
@@ -33,7 +32,6 @@ def handler(signal, frame):
     cont = False
 
 def callback(data):
-#    rospy.loginfo(data.data)
     global t
 
     #time
@@ -55,9 +53,9 @@ def callback(data):
 
     t = now
 
-    rospy.loginfo('ut:{}'.format(U_t))
-    rospy.loginfo('dt:{}'.format(dt))
-    rospy.loginfo('Xt:{}'.format(X_t))
+    rospy.loginfo('ut: {}'.format(U_t))
+    rospy.loginfo('dt: {}'.format(dt))
+    rospy.loginfo('odom: {}'.format(X_t))
 
     #shift
     U_t[0] = data.data[0]
