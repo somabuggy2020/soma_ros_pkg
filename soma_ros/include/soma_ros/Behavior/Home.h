@@ -1,7 +1,6 @@
-#ifndef HOME_H
-#define HOME_H
+#pragma once
 
-#include "soma_ros/Behavior/MotionControl/PurePursuit.h"
+// #include "soma_ros/Behavior/MotionControl/PurePursuit.h"
 #include "soma_ros/Behavior/StateBase/StateBase.h"
 #include "soma_ros/Data/Data.h"
 
@@ -17,7 +16,6 @@ class Home : public StateBase {
 
  private:
   double lim_d;  // finish distance [m]
-  PurePursuit::Config PpCfg;
+  // PurePursuit::Config PpCfg;
 };
 
-#endif

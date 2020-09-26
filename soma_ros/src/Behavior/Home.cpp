@@ -3,11 +3,11 @@
 Home::Home(double _lim_d) : lim_d(_lim_d)
 {
   // Pure pursuit config
-  PpCfg.Pt = QPointF(0.0, 0.0);
-  PpCfg.Ps = QPointF(0.0, 0.0);
-  PpCfg.v_const = 0.8;
-  PpCfg.dt = 0.5;
-  PpCfg.W = (float)WHEEL_BASE;
+  // PpCfg.Pt = QPointF(0.0, 0.0);
+  // PpCfg.Ps = QPointF(0.0, 0.0);
+  // PpCfg.v_const = 0.8;
+  // PpCfg.dt = 0.5;
+  // PpCfg.W = (float)WHEEL_BASE;
 }
 
 int Home::_Transition(Data *data)
@@ -28,34 +28,34 @@ int Home::_Transition(Data *data)
 
 int Home::_Enter(Data *data)
 {
-  PpCfg.Pt = QPointF(0.0, 0.0);
-  PpCfg.Ps = QPointF(data->Xt.position.x, data->Xt.position.y);
+  // PpCfg.Pt = QPointF(0.0, 0.0);
+  // PpCfg.Ps = QPointF(data->Xt.position.x, data->Xt.position.y);
   return 0;
 }
 
 int Home::_Process(Data *data)
 {
   // Pure pursuit algorithm
-  PurePursuit::X x;
-  x.x = data->Xt.position.x;
-  x.y = data->Xt.position.y;
+  // PurePursuit::X x;
+  // x.x = data->Xt.position.x;
+  // x.y = data->Xt.position.y;
 
-  tf::Quaternion q;
-  double roll, pitch, yaw;
-  tf::quaternionMsgToTF(data->Xt.orientation, q);
-  tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-  x.theta = yaw;
+  // tf::Quaternion q;
+  // double roll, pitch, yaw;
+  // tf::quaternionMsgToTF(data->Xt.orientation, q);
+  // tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+  // x.theta = yaw;
 
-  PurePursuit::U u;
-  u.v = data->Uin.v;
-  u.lambda = 0.0;
+  // PurePursuit::U u;
+  // u.v = data->Uin.v;
+  // u.lambda = 0.0;
 
-  PurePursuit::U _u;
+  // PurePursuit::U _u;
 
-  _u = PurePursuit::calc(x, u, PpCfg, true); // backward calculation
+  // _u = PurePursuit::calc(x, u, PpCfg, true); // backward calculation
 
-  data->Uin.lambda = _u.lambda;
-  data->Uin.v = _u.v;
+  // data->Uin.lambda = _u.lambda;
+  // data->Uin.v = _u.v;
 
   // data->Xtarget = data->Xt.motion(data->Uin, PpCfg.dt);
 
