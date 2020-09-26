@@ -2,9 +2,13 @@
 // UDP socket 通信により
 // RaspiからRotaryEncoderによる速度計測値[m/s]と
 // NUC2からステアリング出力角[rad]
-// を受信する．
-// 値はトピック名"/soma/Ut" 型"Float32MultiArray"の1次元2要素配列でパブリッシュする 
+// をUDP受信する．
+// トピック名: "/soma/ut"
+// 型:"Float32MultiArray"の1次元2要素配列 
 //--------------------------------------------------
+
+//クラス作るのはめんどくさいし管理がだるいので、
+//全部グローバルなインスタンスでいいや
 
 #include <math.h>
 
@@ -15,9 +19,6 @@
 
 //UDP通信用Qtライブラリを使用
 #include <QUdpSocket>
-
-//クラス作るのはめんどくさいし管理がだるいので、
-//全部グローバルなインスタンスでいいや
 
 //UDP socket インスタンス
 QUdpSocket sock_rot;
@@ -38,10 +39,7 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
 
-    // ros::Publisher v_pub, steer_pub
     ros::Publisher ut_pub;
-    // v_pub = nh.advertise<std_msgs::Float32>("/soma/v_rot", 3);
-    // steer_pub = nh.advertise<std_msgs::Float32>("/soma/steer", 3);
     ut_pub = nh.advertise<std_msgs::Float32MultiArray>("/soma/ut", 3);
 
     if(sock_init() == -1) return -1;
@@ -60,7 +58,8 @@ int main(int argc, char **argv)
         famsgs.data[1] = v;
         ut_pub.publish(famsgs);
 
-        ROS_INFO("Ut=[%.2f, %.2f]", steer, v);
+        //chech data
+        ROS_DEBUG("Ut=[%.2f, %.2f]", steer, v);
         ros::Duration(0.01).sleep();
     }
 
