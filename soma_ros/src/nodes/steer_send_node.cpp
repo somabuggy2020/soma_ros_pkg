@@ -21,11 +21,9 @@
 //UDP socket インスタンス
 QUdpSocket sock_steer;
 
-//UDPソケットの受付IP,ポート
+//UDPソケット宛先のIP,ポート
 QString STEER_IP = "192.168.1.12";
 int STEER_PORT = 7001;
-
-std::string uin_topic = "/soma/uin";
 
 void callback(std_msgs::Float32MultiArray::ConstPtr data)
 {
@@ -70,7 +68,7 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
 
-    ros::Subscriber uin_sub = nh.subscribe<std_msgs::Float32MultiArray>(uin_topic,
+    ros::Subscriber uin_sub = nh.subscribe<std_msgs::Float32MultiArray>("/soma/uin",
                                                                         3,
                                                                         callback);
 
