@@ -1,19 +1,25 @@
 #!/usr/bin/env python
 
+'''
+Module for providing the Forest Environment
+'''
+
 import numpy as np
 import random as rnd
 from scipy.spatial import KDTree
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-isShow = False
+#plot or not
+isShow = True
 
 class Environment:
     def __init__(self,):
         self.TreeN = 0
         self.Trees = []
 
-        self.fig = plt.figure(figsize=(8,8))
+        self.fig = plt.figure(figsize=(4,4))
+        self.fig.canvas.set_window_title('Tree Map')
         self.ax = plt.subplot(1,1,1)
         self.ax.set_aspect('equal')
 
@@ -34,6 +40,8 @@ class Environment:
                     continue
             
             self.Trees.append([xi,yi,ri])
+
+        self.Trees = [[round(ti[0],2),round(ti[1],2),round(ti[2],2)] for ti in self.Trees]
 
         self.ax.set_xlim(xrange[0],xrange[1])
         self.ax.set_ylim(yrange[0],yrange[1])
