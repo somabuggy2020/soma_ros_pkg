@@ -16,7 +16,7 @@ input: Environment instance
 output: 2-D way point list
 '''
 
-isShow = True
+isShow = False
 
 class GraphBasedPathPlanner:
     def __init__(self,):
@@ -24,6 +24,7 @@ class GraphBasedPathPlanner:
         self.waypoints = []
 
         self.fig = plt.figure(figsize=(8,8))
+        self.fig.canvas.set_window_title('Graphs')
         self.ax_G = plt.subplot(2,2,1)
         self.ax_Ge = plt.subplot(2,2,2)
         self.ax_H = plt.subplot(2,2,3)
@@ -64,11 +65,11 @@ class GraphBasedPathPlanner:
         #recontain to [xi,yi] list
         self.landmarks = [[ti[0],ti[1]] for ti in env.Trees]
 
-        print('I) Make Initial Graph')
+        print('I) Make Initial Graph ==============================')
         G = self.DelaunayNetwork()  #Delaynay Network Graph
         print('|V|={},|E|={}'.format(G.number_of_nodes(),G.number_of_edges()))
         
-        print('II) Modify to Eulerian')
+        print('II) Modify to Eulerian ==============================')
         print('II-i) Extraction odd nodes')
         odds = [v for v in G if G.degree(v)%2==1] #extraction odd nodes
         sg = nx.subgraph(G, odds) #odd nodes subgraph
@@ -93,13 +94,14 @@ class GraphBasedPathPlanner:
             print('Not Eulerian')
             sys.exit(-1)
 
-        print('III) Compute Hamiltonian Circuit')
+        print('III) Compute Hamiltonian Circuit ==============================')
         e_path = list(nx.eulerian_circuit(Ge))
         print('Euler Path:{} -> {}'.format(len(e_path),list(e_path)))
 
         self.waypoints = [self.midpoint(self.landmarks[ei[0]], self.landmarks[ei[1]]) for ei in e_path]
-        print('Waypoint:{}'.format(len(self.waypoints)))
-
+        self.waypoints.append(self.waypoints[0])
+        self.waypoints = [[round(x,2), round(y,2)] for x,y in self.waypoints]
+        print('Waypoint:{} -> {}'.format(len(self.waypoints), self.waypoints))
 
         H = nx.DiGraph()
         for i,pi in enumerate(self.waypoints):
@@ -121,6 +123,8 @@ class GraphBasedPathPlanner:
             # nx.draw_networkx_edges(Ge, pos=self.landmarks, ax=self.ax_H, edgelist=e_path, arrows=True)
             nx.draw_networkx(H, pos=self.waypoints, ax=self.ax_H, node_color='red', node_size=10, arrows=False)
 
+        return self.waypoints
+
 # module test
 if __name__=='__main__':
     print('Test Graph Based Path Planner')
@@ -139,7 +143,7 @@ if __name__=='__main__':
     print('Tree N:',env.TreeN)    
     print('Trees:',env.Trees)
 
-    gbpp.planning(env)
+    waypoints = gbpp.planning(env)
 
     if isShow:
         env.show()
