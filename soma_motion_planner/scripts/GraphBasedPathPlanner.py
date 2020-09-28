@@ -21,10 +21,12 @@ isShow = True
 class GraphBasedPathPlanner:
     def __init__(self,):
         self.landmarks = []
+        self.waypoints = []
 
         self.fig = plt.figure(figsize=(8,8))
         self.ax_G = plt.subplot(2,2,1)
         self.ax_Ge = plt.subplot(2,2,2)
+        self.ax_H = plt.subplot(2,2,3)
         # self.ax_G.set_aspect('equal')
 
     def DelaunayNetwork(self,):
@@ -49,6 +51,10 @@ class GraphBasedPathPlanner:
 
         return G
 
+    def midpoint(self,p1,p2):
+        mp = [(p1[0]+p2[0])/2.0, (p1[1]+p2[1])/2.0]
+        return mp
+
     def planning(self, env):
 
         if len(env.Trees)<=2:
@@ -62,7 +68,6 @@ class GraphBasedPathPlanner:
         G = self.DelaunayNetwork()  #Delaynay Network Graph
         print('|V|={},|E|={}'.format(G.number_of_nodes(),G.number_of_edges()))
         
-
         print('II) Modify to Eulerian')
         print('II-i) Extraction odd nodes')
         odds = [v for v in G if G.degree(v)%2==1] #extraction odd nodes
@@ -79,8 +84,30 @@ class GraphBasedPathPlanner:
         print('|M|:{}'.format(len(M)))
 
         Ge = nx.MultiGraph()
+        Ge.add_nodes_from(G.nodes(), pos=self.waypoints)
         Ge.add_edges_from(G.edges())
         Ge.add_edges_from(M)
+
+        print('Is Eulerian?: {}'.format(nx.is_eulerian(Ge)))
+        if not nx.is_eulerian(Ge):
+            print('Not Eulerian')
+            sys.exit(-1)
+
+        print('III) Compute Hamiltonian Circuit')
+        e_path = list(nx.eulerian_circuit(Ge))
+        print('Euler Path:{} -> {}'.format(len(e_path),list(e_path)))
+
+        self.waypoints = [self.midpoint(self.landmarks[ei[0]], self.landmarks[ei[1]]) for ei in e_path]
+        print('Waypoint:{}'.format(len(self.waypoints)))
+
+
+        H = nx.DiGraph()
+        for i,pi in enumerate(self.waypoints):
+            H.add_node(i)
+        for i,pi in enumerate(self.waypoints):
+            if i == len(self.waypoints)-1:
+                break
+            H.add_edge(i, i+1, weight=1.0)
 
         if isShow:
             nx.draw_networkx(G, pos=self.landmarks, ax=self.ax_G, node_color='cyan')
@@ -89,6 +116,10 @@ class GraphBasedPathPlanner:
             nx.draw_networkx(Ge, pos=self.landmarks, ax=self.ax_Ge, node_color='cyan')
             nx.draw_networkx_nodes(sg,pos=self.landmarks,nodeList=odds,ax=self.ax_Ge,node_color='red')
             nx.draw_networkx_edges(Ge,pos=self.landmarks,edgelist=M,width=3.0,edge_color='red',ax=self.ax_Ge)
+
+            nx.draw_networkx_nodes(Ge, pos=self.landmarks, ax=self.ax_H, node_color='cyan', node_size=20)
+            # nx.draw_networkx_edges(Ge, pos=self.landmarks, ax=self.ax_H, edgelist=e_path, arrows=True)
+            nx.draw_networkx(H, pos=self.waypoints, ax=self.ax_H, node_color='red', node_size=10, arrows=False)
 
 # module test
 if __name__=='__main__':
