@@ -1,13 +1,22 @@
 <?xml version="1.0" ?>
-<launch>
-  <arg name="frame_id" default="soma_link"/>
-  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
+<!-- 2020.9.28 tominaga
+  平面・斜面検出ノードのデバッグができるようにテストフラグ"test"を追加
+  test == true でpcdファイルをPointCloud2にしてパブリッシュするノードが動く
+  test == false はリアルタイムでセンサと連携するモード
+  "pcdfile"変数にpcdファイルまでの絶対パスを入れてroslaunchしてください
+-->
 
+<launch>
+  <!-- frag for input test data -->
+  <arg name="test" default="true"/>
+  <arg name="pcdfile" default="/home/hayashi/test.pcd"/>
+
+  <arg name="frame_id" default="soma_link"/>
   <arg name="input_points" default="/camera_R/prefiltered"/>
 	
   <!-- launch the nodelet manager -->
+  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />
-
 
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
@@ -15,4 +24,28 @@
         <remap from="input_points" to="$(arg input_points)"/>
         <param name="base_link" value="$(arg frame_id)"/>
   </node>
+
+  <!-- if test mode
+  publish input PointCloud2 from PCD file
+  and launch static_transform_publisher "camera_link" to "soma_link"
+  -->
+  <group if="$(arg test)">
+    
+    <!-- pcd to pointcloud2 -->
+    <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd2PC2" args="$(arg pcdfile) 0.1">
+      <param name="~frame_id" value="camera_link"/>
+
+      <!-- remap publish topic name -->
+      <remap from="cloud_pcd" to="$(arg input_points)"/>
+    </node>
+
+    <!-- transform parameter and node -->
+    <arg name="rot_x" value="$(eval 180.0/180.0*3.1415)"/>
+    <arg name="rot_y" value="$(eval 90.0/180.0*3.1415)"/>
+    <arg name="rot_z" value="$(eval -90.0/180.0*3.1415)"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="Cam2Base"
+    args="0 0 0.5 $(arg rot_x) 0 $(arg rot_z) $(frame_id) camera_link" />
+  
+  </group>
+
 </launch>
