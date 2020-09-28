@@ -3,7 +3,7 @@
 '''
 Module for providing the Forest Environment
 '''
-
+import logging as log
 import numpy as np
 import random as rnd
 from scipy.spatial import KDTree
@@ -12,6 +12,8 @@ import matplotlib.patches as patches
 
 #plot or not
 isShow = True
+
+log.basicConfig(level=log.DEBUG, format='[%(module)s:%(funcName)s(%(lineno)s)] %(message)s')
 
 class Environment:
     def __init__(self,):
@@ -24,6 +26,7 @@ class Environment:
         self.ax.set_aspect('equal')
 
     def make_random(self,TreeN,xrange,yrange,rrange):
+        log.info('TreeN {}'.format(TreeN))
         self.TreeN = TreeN
 
         while len(self.Trees) < self.TreeN:
@@ -48,6 +51,7 @@ class Environment:
         return None
 
     def make_from(self,):
+        log.info('')
         return None
 
     def show(self,):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import logging as log
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx #graph structure module
@@ -15,6 +15,8 @@ Graph Based Path Planner module
 input: Environment instance
 output: 2-D way point list
 '''
+
+log.basicConfig(level=log.INFO, format='[%(module)s:%(funcName)s(%(lineno)s)] %(message)s')
 
 isShow = False
 
@@ -59,49 +61,50 @@ class GraphBasedPathPlanner:
     def planning(self, env):
 
         if len(env.Trees)<=2:
-            print('Not enough landmarks')
-            print('{} <= 2'.format(len(env.Trees)))
+            log.critical('Not enough landmarks')
+            log.critical('{} <= 2'.format(len(env.Trees)))
+            sys.exit(-1)
 
         #recontain to [xi,yi] list
         self.landmarks = [[ti[0],ti[1]] for ti in env.Trees]
 
-        print('I) Make Initial Graph ==============================')
+        log.info('I) Make Initial Graph ==============================')
         G = self.DelaunayNetwork()  #Delaynay Network Graph
-        print('|V|={},|E|={}'.format(G.number_of_nodes(),G.number_of_edges()))
+        log.info('|V|={},|E|={}'.format(G.number_of_nodes(),G.number_of_edges()))
         
-        print('II) Modify to Eulerian ==============================')
-        print('II-i) Extraction odd nodes')
+        log.info('II) Modify to Eulerian ==============================')
+        log.info('II-i) Extraction odd nodes')
         odds = [v for v in G if G.degree(v)%2==1] #extraction odd nodes
         sg = nx.subgraph(G, odds) #odd nodes subgraph
-        print('|Vo|={}'.format(len(odds)))
+        log.info('|Vo|={}'.format(len(odds)))
 
-        print('II-ii) Compute additional edges')
+        log.info('II-ii) Compute additional edges')
         #make complete graph using odds
         Gc = nx.Graph()
         for v in itertools.combinations(sg.nodes(), 2):
             Gc.add_edge(v[0], v[1])
         #maximal matching
         M = nx.maximal_matching(Gc)
-        print('|M|:{}'.format(len(M)))
+        log.info('|M|:{}'.format(len(M)))
 
         Ge = nx.MultiGraph()
         Ge.add_nodes_from(G.nodes(), pos=self.waypoints)
         Ge.add_edges_from(G.edges())
         Ge.add_edges_from(M)
 
-        print('Is Eulerian?: {}'.format(nx.is_eulerian(Ge)))
+        log.info('Is Eulerian?: {}'.format(nx.is_eulerian(Ge)))
         if not nx.is_eulerian(Ge):
-            print('Not Eulerian')
+            log.critical('Not Eulerian')
             sys.exit(-1)
 
-        print('III) Compute Hamiltonian Circuit ==============================')
+        log.info('III) Compute Hamiltonian Circuit ==============================')
         e_path = list(nx.eulerian_circuit(Ge))
-        print('Euler Path:{} -> {}'.format(len(e_path),list(e_path)))
+        log.debug('Euler Path:{} -> {}'.format(len(e_path),list(e_path)))
 
         self.waypoints = [self.midpoint(self.landmarks[ei[0]], self.landmarks[ei[1]]) for ei in e_path]
         self.waypoints.append(self.waypoints[0])
         self.waypoints = [[round(x,2), round(y,2)] for x,y in self.waypoints]
-        print('Waypoint:{} -> {}'.format(len(self.waypoints), self.waypoints))
+        log.debug('Waypoint:{} -> {}'.format(len(self.waypoints), self.waypoints))
 
         H = nx.DiGraph()
         for i,pi in enumerate(self.waypoints):
@@ -139,9 +142,6 @@ if __name__=='__main__':
         yrange=[0.0,30.0],
         rrange=[0.1,0.8]
     )
-
-    print('Tree N:',env.TreeN)    
-    print('Trees:',env.Trees)
 
     waypoints = gbpp.planning(env)
 
