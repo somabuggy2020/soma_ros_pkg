@@ -21,15 +21,10 @@ WHEEL_BASE = 1.4
 #frame id
 frame_id = 'odom_dr'
 base_link = 'soma_link'
-#subscribe topic
-ut_topic = '/soma/ut'
-#publish topic
-odom_pub_topic = '/soma/odom_dr'
 
-U_t = [0.0, 0.0]        #lambda v
-X_t = [0.0, 0.0, 0.0]   #x,y,theta estimated
+U_t = [0.0, 0.0]        #control input lambda,v
+X_t = [0.0, 0.0, 0.0]   #odometry x,y,theta estimated
 t = rospy.Time()
-
 cont = True
 
 def handler(signal, frame):
@@ -37,7 +32,6 @@ def handler(signal, frame):
     cont = False
 
 def callback(data):
-#    rospy.loginfo(data.data)
     global t
 
     #time
@@ -59,9 +53,9 @@ def callback(data):
 
     t = now
 
-    rospy.loginfo('ut:{}'.format(U_t))
-    rospy.loginfo('dt:{}'.format(dt))
-    rospy.loginfo('Xt:{}'.format(X_t))
+    rospy.loginfo('ut: {}'.format(U_t))
+    rospy.loginfo('dt: {}'.format(dt))
+    rospy.loginfo('odom: {}'.format(X_t))
 
     #shift
     U_t[0] = data.data[0]
@@ -70,38 +64,42 @@ def callback(data):
 
 if __name__=='__main__':
 
+    rospy.loginfo("Run Dead Recogning Node")
+
     try:
-        rospy.init_node('soma_dead_recogning_node',anonymous=True)
+        rospy.init_node('dead_recogning_node', anonymous=True)
     except rospy.exceptions.ROSInitException:
         rospy.logfatal('not existing ros master')
         exit(-1)
 
     t = rospy.get_rostime()
 
-    #subsribers
-    rospy.Subscriber(ut_topic, Float32MultiArray, callback)
+    #set subsribers
+    rospy.Subscriber('/soma/ut', Float32MultiArray, callback)
 
     #publishers
-    odom_pub = rospy.Publisher(odom_pub_topic, Odometry, queue_size=3)
-    trans_pub = rospy.Publisher('/soma/odom_dr2pub', TransformStamped, queue_size=3)
+    odom_pub = rospy.Publisher('/soma/odom_dr', Odometry, queue_size=3)
 
+    #tf broadcaster
+    trans_pub = rospy.Publisher('/soma/odom_dr2pub', TransformStamped, queue_size=3)
     odom_broadcaster = TransformBroadcaster()
 
     while not rospy.is_shutdown() and cont:
 
         q = quaternion_from_euler(0.0, 0.0, X_t[2])
 
+        #publish /soma/odom_dr
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = frame_id
         odom.child_frame_id = base_link
-
         odom.pose.pose.position.x = X_t[0]
         odom.pose.pose.position.y = X_t[1]
         odom.pose.pose.position.z = 0.0
         odom.pose.pose.orientation = Quaternion(q[0], q[1], q[2], q[3])
         odom_pub.publish(odom)
 
+        #publish tf odom_dr -> soma_link
         pos = (X_t[0], X_t[1], 0.0)
         quat = (q[0], q[1], q[2], q[3])
         odom_broadcaster.sendTransform(pos, quat, rospy.Time.now(), base_link, frame_id)

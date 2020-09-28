@@ -114,7 +114,7 @@ add_executable(behavior_node_MSE
     src/Behavior/Stop.cpp
     src/Behavior/MoveTo.cpp
     src/Behavior/Home.cpp
-    include/soma_ros/Behavior/MotionControl/PurePursuit.h
+#    include/soma_ros/Behavior/MotionControl/PurePursuit.h
     )
 
 ## Rename C++ executable without prefix
