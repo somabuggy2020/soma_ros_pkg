@@ -1,6 +1,6 @@
 <launch>
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
-    <rosparam command="load" file="/home/hayashi/soma_ws/src/soma_ros_pkg/soma_ros/config/noboru_ekf_template.yaml" />
+    <rosparam command="load" file="/home/soma1/catkin_ws/src/soma_ros_pkg/soma_ros/config/noboru_ekf_template.yaml" />
 
     <!--  Placeholder for output topic remapping
     <remap from="odometry/filtered" to=""/>
