@@ -57,7 +57,7 @@
     <arg name="rot_y" value="$(eval 90.0/180.0*3.1415)"/>
     <arg name="rot_z" value="$(eval -90.0/180.0*3.1415)"/>
     <node pkg="tf2_ros" type="static_transform_publisher" name="Cam2Base"
-    args="0 0 0.5 $(arg rot_x) 0 $(arg rot_z) $(frame_id) camera_link" />
+    args="0 0 0.5 $(arg rot_x) 0 $(arg rot_z) $(arg frame_id) camera_link" />
   
   </group>
 
