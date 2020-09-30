@@ -18,10 +18,23 @@
   <arg name="nodelet_manager_name" default="soma_vision_manager"/>
   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />
 
+   <!-- passThrough z_axis  -->
+  <node pkg="nodelet" type="nodelet" name="pt_z_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
+      <remap from="~input" to="$(arg input_points)"/>
+      <remap from="~output" to="$(arg input_points)/pt_z_filtered"/>
+      <param name="input_frame" value="$(arg frame_id)"/>
+      <param name="filter_field_name" value="z"/>
+      <param name="filter_limit_min" value="-0.5"/>
+      <param name="filter_limit_max" value="0.5"/>
+      <param name="filter_limit_negative" value="false"/>
+  </node>
+
+
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
         args="load soma_vision/PlaneSegmentationNodelet $(arg nodelet_manager_name)" >
-        <remap from="input_points" to="$(arg input_points)"/>
+        <!-- <remap from="input_points" to="$(arg input_points)"/> -->
+        <remap from="input_points" to="$(arg input_points)/pt_z_filtered"/>
         <param name="base_link" value="$(arg frame_id)"/>
   </node>
 
