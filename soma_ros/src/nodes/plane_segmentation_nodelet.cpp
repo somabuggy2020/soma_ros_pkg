@@ -157,7 +157,7 @@ private:
     sacseg.setModelType(pcl::SACMODEL_PLANE);
     sacseg.setMethodType(pcl::SAC_RANSAC);
     sacseg.setMaxIterations(30);
-    sacseg.setDistanceThreshold(0.1);
+    sacseg.setDistanceThreshold(0.05);
     sacseg.setInputCloud(input);
     sacseg.segment(*inliers, *coeffs);
 
