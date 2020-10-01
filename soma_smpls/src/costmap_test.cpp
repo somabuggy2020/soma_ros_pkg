@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 #elif ROS_DIST == 1
     tf2_ros::Buffer *tfBuffer = new tf2_ros::Buffer();
     tf2_ros::TransformListener *tfListener = new tf2_ros::TransformListener(*tfBuffer);
-    costmap_2d::Costmap2DROS costmap("local_costmap_font", *tfBuffer);
+    costmap_2d::Costmap2DROS costmap("local_costmap", *tfBuffer);
     dwa_local_planner::DWAPlannerROS local_planner;
     local_planner.initialize("dwa_local_planner", tfBuffer, &costmap);
 #endif

@@ -12,11 +12,20 @@ local_costmap:
   publish_frequency: 2.0
   always_send_full_costmap: true
 
+  # obstacle_layer:
+  #   observation_sources: point_cloud_sensor
+  #   point_cloud_sensor: 
+  #     sensor_frame: camera_link
+  #     topic: obstacle_points
+  #     data_type: PointCloud2
+  #     marking: true
+  #     clearing: true
+
   obstacle_layer:
     observation_sources: point_cloud_sensor
     point_cloud_sensor: 
-      sensor_frame: camera_link
-      topic: obstacle_points
+      sensor_frame: camera_R_link
+      topic: camera_R/cloud_others
       data_type: PointCloud2
       marking: true
       clearing: true
