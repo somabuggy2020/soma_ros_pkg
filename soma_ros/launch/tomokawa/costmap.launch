@@ -1,5 +1,8 @@
 <launch>
 
+	<node pkg="tf2_ros" type="static_transform_publisher"
+	name="tfBase2foot_print" args="0 0 -0.2 0 0 0 foot_print soma_link"/>
+
   <rosparam command="load" file="$(find soma_ros)/config/local_costmap_params.yaml"/>
   <node pkg="soma_smpls" type="costmap_example" name="costmap_test">
   </node>

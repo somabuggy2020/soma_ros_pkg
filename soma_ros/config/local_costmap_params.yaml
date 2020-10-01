@@ -25,7 +25,7 @@ local_costmap:
     observation_sources: point_cloud_sensor
     point_cloud_sensor: 
       sensor_frame: camera_R_link
-      topic: camera_R/cloud_others
+      topic: /camera_R/prefiltered
       data_type: PointCloud2
       marking: true
       clearing: true
