@@ -61,9 +61,9 @@ publish_acceleration: false
 #     3b. MAKE SURE something else is generating the odom->base_link transform. Note that this can even be another state
 #         estimation node from robot_localization! However, that instance should *not* fuse the global data.
 # map_frame: map              # Defaults to "map" if unspecified
-odom_frame: odom         # Defaults to "odom" if unspecified
+odom_frame: odom_dr         # Defaults to "odom" if unspecified
 base_link_frame: soma_link  # Defaults to "base_link" if unspecified
-world_frame: odom          # Defaults to the value of odom_frame if unspecified
+world_frame: odom_dr          # Defaults to the value of odom_frame if unspecified
 
 # The filter accepts an arbitrary number of inputs from each input message type (nav_msgs/Odometry,
 # geometry_msgs/PoseWithCovarianceStamped, geometry_msgs/TwistWithCovarianceStamped,
@@ -122,14 +122,14 @@ odom2_nodelay: false
 # for twist measurements has no effect.
 odom0_differential: true
 odom1_differential: true
-odom2_differential: true
+odom2_differential: false
 
 # [ADVANCED] When the node starts, if this parameter is true, then the first measurement is treated as a "zero point"
 # for all future measurements. While you can achieve the same effect with the differential paremeter, the key
 # difference is that the relative parameter doesn't cause the measurement to be converted to a velocity before
 # integrating it. If you simply want your measurements to start at 0 for a given sensor, set this to true.
-odom0_relative: false
-odom1_relative: false
+# odom0_relative: true
+# odom1_relative: true
 odom2_relative: false
 
 # [ADVANCED] If your data is subject to outliers, use these threshold settings, expressed as Mahalanobis distances, to
