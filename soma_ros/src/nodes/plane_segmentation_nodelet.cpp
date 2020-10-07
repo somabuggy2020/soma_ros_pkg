@@ -65,6 +65,8 @@ private:
       return;
     }
 
+    pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
+
     if(!base_link_frame.empty()) {
       //Does exist transform tf points frame to base frame?
       if(!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0))) {
@@ -76,18 +78,16 @@ private:
       tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(2.0));
       tf_listener.lookupTransform(base_link_frame, input->header.frame_id, ros::Time(0), transform);
 
-      pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
       pcl_ros::transformPointCloud(*input, *transformed, transform);
       transformed->header.frame_id = base_link_frame;
       transformed->header.stamp = input->header.stamp;
-      input = transformed; //copy?
+      // input = transformed; //copy?
     }
 
 
     const int times_of_repeats = 2;
     const float setted_slope_tilt = 5.0;
     tilt_ary.data.resize(times_of_repeats);
-
 
     //    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
@@ -99,10 +99,10 @@ private:
     inliers.reset(new pcl::PointIndices());
     coeffs.reset(new pcl::ModelCoefficients());
 
-    segmentation(input, inliers, coeffs);
+    segmentation(transformed, inliers, coeffs);
 
     pcl::ExtractIndices<PointT> EI;
-    EI.setInputCloud(input);
+    EI.setInputCloud(transformed);
     EI.setIndices(inliers);
     EI.setNegative(false);
     EI.filter(*pc_slope);

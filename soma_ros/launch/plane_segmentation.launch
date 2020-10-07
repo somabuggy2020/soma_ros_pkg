@@ -40,14 +40,15 @@
         <param name="base_link" value="$(arg frame_id)"/>
   </node>
 
-  <node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" 
+
+
+  <!-- Octomap  -->
+  <!-- <node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" 
         args="load octomap_server/OctomapServerNodelet $(arg nodelet_manager_name)">
 		<param name="resolution" value="0.1" />
 		<param name="frame_id" type="string" value="$(arg frame_id)" />
-		<!-- <param name="sensor_model/min" value="0.1" /-->
-		<!-- param name="sensor_model/max" value="0.4" /-->
 		<remap from="cloud_in" to="/cloud_slope" />
-	</node>
+	</node> -->
 
   <!-- if test mode
   publish input PointCloud2 from PCD file
