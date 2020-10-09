@@ -4,6 +4,11 @@ project(soma_perception)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
+## Release with Debug Info build
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -35,6 +40,9 @@ ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
+add_library(soma_plane_segmentation_nodelet
+    src/plane_segmentation_nodelet.cpp
+)
 add_library(soma_prefiltering_nodelet
     src/prefiltering_nodelet.cpp
 )
@@ -52,7 +60,7 @@ target_link_libraries(soma_prefiltering_nodelet
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/soma_perception_node.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -65,10 +73,9 @@ target_link_libraries(soma_prefiltering_nodelet
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
+target_link_libraries(soma_plane_segmentation_nodelet
+    ${catkin_LIBRARIES}
+    )
 #############
 ## Install ##
 #############
