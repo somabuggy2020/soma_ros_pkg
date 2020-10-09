@@ -1,0 +1,8 @@
+<library path="lib/libsoma_prefiltering_nodelet">
+  <class name="soma_vision/PrefilteringNodelet"
+     type="soma_vision::PrefilteringNodelet"
+     base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+</library>
