@@ -21,7 +21,7 @@
 
 #define PI 3.14159265359
 
-namespace soma_vision
+namespace soma_perception
 {
 class PlaneSegmentationNodelet : public nodelet::Nodelet
 {
@@ -248,4 +248,4 @@ private:
 };
 } // namespace plane_seg_pkg
 
-PLUGINLIB_EXPORT_CLASS(soma_vision::PlaneSegmentationNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(soma_perception::PlaneSegmentationNodelet, nodelet::Nodelet)

@@ -47,7 +47,9 @@ add_library(soma_prefiltering_nodelet
     src/prefiltering_nodelet.cpp
 )
 
-
+target_link_libraries(soma_plane_segmentation_nodelet
+    ${catkin_LIBRARIES}
+)
 target_link_libraries(soma_prefiltering_nodelet
     ${catkin_LIBRARIES}
 )
@@ -73,9 +75,7 @@ target_link_libraries(soma_prefiltering_nodelet
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(soma_plane_segmentation_nodelet
-    ${catkin_LIBRARIES}
-    )
+
 #############
 ## Install ##
 #############
