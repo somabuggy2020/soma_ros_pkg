@@ -1,0 +1,3 @@
+<launch>
+	<node name="harvest_behavior_node" pkg="soma_mse" type="harvest_behavior_node" output="screen"/>
+</launch>
