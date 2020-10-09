@@ -1,12 +1,3 @@
-<library path="lib/libsoma_plane_segmentation_nodelet">
-  <class name="soma_vision/PlaneSegmentationNodelet"
-     type="soma_vision::PlaneSegmentationNodelet"
-     base_class_type="nodelet::Nodelet">
-    <description>
-    </description>
-  </class>
-</library> -->
-
 <library path="lib/libsoma_behavior_nodelet">
   <class name="soma_ros/vision_nodelet"
      type="soma_ros::vision_nodelet"
@@ -18,15 +9,6 @@
   <class name="soma_ros/points_marge_nodelet"
      type="soma_ros::points_marge_nodelet"
      base_class_type="nodelet::Nodelet">
-    <description>
-    </description>
-  </class>
-</library>
-
-<library path="lib/libtomokawa_seg">
-  <class name="soma_ros/CloudPlaneSegmentator" 
-      type="soma_ros::CloudPlaneSegmentator" 
-      base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
