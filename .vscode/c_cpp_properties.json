@@ -7,6 +7,7 @@
             },
             "includePath": [
                 "/home/hayashi/catkin_ws/devel/include/**",
+                "/opt/ros/melodic/include/*",
                 "/opt/ros/melodic/include/**",
                 "/home/hayashi/catkin_ws/src/MultiCol-SLAM/ThirdParty/OpenGV/include/**",
                 "/home/hayashi/catkin_ws/src/hdl_graph_slam/include/**",
