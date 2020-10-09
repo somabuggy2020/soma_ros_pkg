@@ -22,14 +22,14 @@ int main(int argc, char **argv)
 #elif ROS_DIST == 1
     tf2_ros::Buffer *tfBuffer = new tf2_ros::Buffer();
     tf2_ros::TransformListener *tfListener = new tf2_ros::TransformListener(*tfBuffer);
-    costmap_2d::Costmap2DROS costmap("local_costmap_font", *tfBuffer);
-    dwa_local_planner::DWAPlannerROS local_planner;
-    local_planner.initialize("dwa_local_planner", tfBuffer, &costmap);
+    costmap_2d::Costmap2DROS costmap("local_costmap", *tfBuffer);
+    // dwa_local_planner::DWAPlannerROS local_planner;
+    // local_planner.initialize("dwa_local_planner", tfBuffer, &costmap);
 #endif
 
     ros::NodeHandle nh;
     costmap.start();
-    ros::Rate rate(2); //Hz
+    ros::Rate rate(2.0); //Hz
 
     while (ros::ok())
     {
@@ -48,13 +48,13 @@ int main(int argc, char **argv)
         out.pose.position.z = 0.0;
         out.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
-        std::vector<geometry_msgs::PoseStamped> local_path;
-        local_path.push_back(fixed_start); // start pose
-        local_path.push_back(out);         // goal pose
-        local_planner.setPlan(local_path); // planning start to gall
+        // std::vector<geometry_msgs::PoseStamped> local_path;
+        // local_path.push_back(fixed_start); // start pose
+        // local_path.push_back(out);         // goal pose
+        // local_planner.setPlan(local_path); // planning start to gall
 
-        geometry_msgs::Twist _cmd_vel;
-        local_planner.computeVelocityCommands(_cmd_vel);
+        // geometry_msgs::Twist _cmd_vel;
+        // local_planner.computeVelocityCommands(_cmd_vel);
 
         rate.sleep();
         ros::spinOnce();

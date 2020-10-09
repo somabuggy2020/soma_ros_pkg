@@ -1,0 +1,68 @@
+local_costmap:
+  plugins: 
+    - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
+  global_frame: foot_print
+  robot_base_frame: soma_link
+  # footprint: [[-0.2, -0.12], [-0.2, 0.12], [0.05, 0.12], [0.05, -0.12]]
+  rolling_window: true
+  width: 12.0
+  height: 12.0
+  resolution: 0.1
+  update_frequency: 2.0
+  publish_frequency: 2.0
+  always_send_full_costmap: true
+  max_obstacle_height: 5.0
+  obstacle_range: 20.0
+  conbination_method: 0
+
+  # obstacle_layer:
+  #   observation_sources: point_cloud_sensor
+  #   point_cloud_sensor: 
+  #     sensor_frame: camera_link
+  #     topic: obstacle_points
+  #     data_type: PointCloud2
+  #     marking: true
+  #     clearing: true
+
+  obstacle_layer:
+<<<<<<< HEAD:soma_ros/config/local_costmap_params.yaml
+    observation_sources: pc_R
+    pc_R: 
+      sensor_frame: camera_R_link
+      topic: /camera_R/prefiltered
+      data_type: PointCloud2
+      marking: true
+      clearing: true
+      min_obstacle_height: 0.0
+      max_obstacle_height: 2.0
+      obstacle_range: 5.0
+=======
+    observation_sources: point_cloud_sensor
+    point_cloud_sensor: 
+      sensor_frame: soma_link
+      topic: cloud_slope
+      data_type: PointCloud2
+      marking: true
+      clearing: true
+      min_obstacle_height: -5.0
+      
+>>>>>>> tomokawa:soma_ros/config/tomokawa.yaml
+
+    # observation_sources: rgbd_l rgbd_r
+    # rgbd_l:
+    #   sensor_frame: soma_link
+    #   topic: camera_L/filtered_points
+    #   # topic: camera_L/depth_registered/points
+    #   data_type: PointCloud2
+    #   marking: true
+    #   clearing: true
+    #   min_obstacle_height: 0.0
+    # rgbd_r:
+    #   sensor_frame: soma_link
+    #   topic: camera_R/filtered_points
+    #   # topic: camera_R/depth_registered/points
+    #   data_type: PointCloud2
+    #   marking: true
+    #   clearing: true
+    #   min_obstacle_height: 0.0
+    #   obstacle_range: 4.0

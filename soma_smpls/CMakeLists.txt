@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   dwa_local_planner
 )
 
+find_package(PCL 1.7 REQUIRED)
+
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Network)
 #find_package(Qt5 REQUIRED COMPONENTS Core Widgets Networks)
 set(QT_LIBRARIES Qt5::Core Qt5::Widgets Qt5::Network)
@@ -128,6 +130,7 @@ catkin_package(
 include_directories(
 # include
  ${catkin_INCLUDE_DIRS}
+ ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -153,6 +156,10 @@ add_executable(show_imu_data_msgs
 )
 add_executable(costmap_example
   src/costmap_test.cpp
+)
+
+add_executable(cloud_tf4ros
+  src/cloud_tf4ros.cpp
 )
 #add_executable(sample_qudp_recv
 #  src/sample_qnetwork_udp_recv.cpp
@@ -180,6 +187,9 @@ target_link_libraries(show_imu_data_msgs
 )
 target_link_libraries(costmap_example
   ${catkin_LIBRARIES}
+)
+target_link_libraries(cloud_tf4ros
+  ${PCL_LIBRARIES}
 )
 #target_link_libraries(sample_qudp_recv
 #   ${catkin_LIBRARIES}

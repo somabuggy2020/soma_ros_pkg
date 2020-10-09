@@ -1,18 +1,82 @@
 <?xml version="1.0" ?>
-<launch>
-  <arg name="frame_id" default="soma_link"/>
-  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
+<!-- 2020.9.28 tominaga
+  平面・斜面検出ノードのデバッグができるようにテストフラグ"test"を追加
+  test == true でpcdファイルをPointCloud2にしてパブリッシュするノードが動く
+  test == false はリアルタイムでセンサと連携するモード
+  "pcdfile"変数にpcdファイルまでの絶対パスを入れてroslaunchしてください
+  rviz_switchで描画のオンオフ切り替え
+-->
 
+<launch>
+  <!-- frag for input test data -->
+  <arg name="test" default="false"/>
+  <arg name="rviz_switch" default="false"/>
+  <arg name="pcdfile" default="/home/soma1/catkin_ws/src/soma_ros_pkg/soma_ros/data/outside_tf.pcd"/>
+
+  <arg name="frame_id" default="soma_link"/>
   <arg name="input_points" default="/camera_R/prefiltered"/>
 	
   <!-- launch the nodelet manager -->
+  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />
+
+   <!-- passThrough z_axis  -->
+  <!-- <node pkg="nodelet" type="nodelet" name="pt_z_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
+      <remap from="~input" to="$(arg input_points)"/>
+      <remap from="~output" to="$(arg input_points)/pt_z_filtered"/>
+      <param name="input_frame" value="$(arg frame_id)"/>
+      <param name="filter_field_name" value="z"/>
+      <param name="filter_limit_min" value="-0.5"/>
+      <param name="filter_limit_max" value="0.5"/>
+      <param name="filter_limit_negative" value="false"/>
+  </node> -->
 
 
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
         args="load soma_vision/PlaneSegmentationNodelet $(arg nodelet_manager_name)" >
+        <!-- <remap from="input_points" to="$(arg input_points)"/> -->
         <remap from="input_points" to="$(arg input_points)"/>
         <param name="base_link" value="$(arg frame_id)"/>
   </node>
+
+
+
+  <!-- Octomap  -->
+  <!-- <node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" 
+        args="load octomap_server/OctomapServerNodelet $(arg nodelet_manager_name)">
+		<param name="resolution" value="0.1" />
+		<param name="frame_id" type="string" value="$(arg frame_id)" />
+		<remap from="cloud_in" to="/cloud_slope" />
+	</node> -->
+
+  <!-- if test mode
+  publish input PointCloud2 from PCD file
+  and launch static_transform_publisher "camera_link" to "soma_link"
+  -->
+  <group if="$(arg test)">
+    
+    <!-- pcd to pointcloud2 -->
+    <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd2PC2" args="$(arg pcdfile) 0.1">
+      <param name="~frame_id" value="camera_link"/>
+
+      <!-- remap publish topic name -->
+      <remap from="cloud_pcd" to="$(arg input_points)"/>
+    </node>
+
+    <!-- transform parameter and node -->
+    <arg name="rot_x" value="$(eval 180.0/180.0*3.1415)"/>
+    <arg name="rot_y" value="$(eval 90.0/180.0*3.1415)"/>
+    <arg name="rot_z" value="$(eval -90.0/180.0*3.1415)"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="Cam2Base"
+    args="0 0 0.5 $(arg rot_x) 0 $(arg rot_z) $(arg frame_id) camera_link" />
+  
+  </group>
+
+  <!-- rviz -->
+  <group if="$(arg rviz_switch)"> 
+    <node name="rviz" pkg="rviz" type="rviz" 
+          args="-d $(find soma_ros)/rviz/plane_segmentation.rviz" required="true" />
+  </group>
+  
 </launch>
