@@ -34,7 +34,7 @@
 
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
-        args="load soma_vision/PlaneSegmentationNodelet $(arg nodelet_manager_name)" >
+        args="load soma_perception/PlaneSegmentationNodelet $(arg nodelet_manager_name)" >
         <!-- <remap from="input_points" to="$(arg input_points)"/> -->
         <remap from="input_points" to="$(arg input_points)"/>
         <param name="base_link" value="$(arg frame_id)"/>
