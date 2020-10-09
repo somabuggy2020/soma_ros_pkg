@@ -10,7 +10,7 @@
 <launch>
 
   <arg name="base_link" default="soma_link"/>
-  <!-- tfの値設定 -->
+  <!-- soma_linkに対するtfの値設定 -->
   <arg name="tfargs" default="0.5 0 1.65 0 0 0"/>
 
   <!-- declare arguments with default values -->
