@@ -15,8 +15,12 @@
                 "/home/hayashi/catkin_ws/src/ndt_omp/include/**",
                 "/home/hayashi/soma_ws/src/soma_ros_pkg/soma_ros/include/**",
                 "/home/hayashi/catkin_ws/src/tf_listener/include/**",
+<<<<<<< HEAD
                 "/usr/include/**",
                 "\\wsl$/\\Ubuntu-18.04/opt/ros/melodic/include/**"
+=======
+                "/usr/include/**"
+>>>>>>> Noboru
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

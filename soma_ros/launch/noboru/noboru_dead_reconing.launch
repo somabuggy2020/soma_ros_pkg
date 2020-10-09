@@ -1,0 +1,10 @@
+<launch>
+    <!-- launch udp reciever node launch -->
+    <!-- 制御入力ベクトル [lambda, v] ステアリング切れ角[rad],速度[m/s]-->
+    <!-- このノードはFloat32配列型のトピックしか出さない -->
+    <node pkg="soma_ros" type="rot_steer_recv_node" name="rot_steer_recv_node" />
+
+	<!-- dead recogning node launch -->
+	<node pkg="soma_ros" type="dead_recogning_node.py" name="soma_dead_recogning"/>
+
+</launch>
