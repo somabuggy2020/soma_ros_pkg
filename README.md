@@ -115,7 +115,13 @@ catkin_make
 ```
 
 
-
+## パッケージ構成(Structure)
+soma_ros_pkg:
+* soma_motion_planner:
+* soma_sensor:
+* soma_perception:
+* soma_ros:
+* soma_smpls:
 
 
 ディレクトリ構成  
