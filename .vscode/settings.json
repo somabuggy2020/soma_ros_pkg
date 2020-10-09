@@ -5,5 +5,10 @@
     ],
     "files.associations": {
         "unordered_map": "cpp"
+<<<<<<< HEAD
     }
+=======
+    },
+    "python.pythonPath": "/usr/bin/python3"
+>>>>>>> motion_palanner
 }
