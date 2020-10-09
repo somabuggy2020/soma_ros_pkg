@@ -42,6 +42,7 @@ set(CMAKE_AUTOMOC ON)
 #    Widgets
 #    Network
 #    )
+
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Network)
 set(QT_LIBRARIES Qt5::Widgets Qt5::Network)
 add_definitions(-DQT_NO_KEYWORDS)
