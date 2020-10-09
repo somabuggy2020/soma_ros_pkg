@@ -4,13 +4,52 @@ project(soma_perception)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
+## Release with Debug Info build
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+    geometry_msgs
+    roscpp
+    sensor_msgs
+    std_msgs
+    pcl_ros
+    pluginlib
+    nodelet
+    tf
+    costmap_2d
+    base_local_planner
+    dwa_local_planner
+    navfn
+    )
+
+#
+# Find PCL package
+#
+find_package(PCL 1.7 REQUIRED)
+#find_package(PCL 1.7.2 REQUIRED EXACT)
+
+#
+# Find Qt package
+#
+set(CMAKE_AUTOMOC ON)
+#find_package(Qt5 ${rviz_QT_VERSION} EXACT REQUIRED
+#    Core
+#    Widgets
+#    Network
+#    )
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Network)
+set(QT_LIBRARIES Qt5::Widgets Qt5::Network)
+add_definitions(-DQT_NO_KEYWORDS)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -112,14 +151,15 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-)
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
+    )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/soma_perception.cpp
-# )
+add_library(soma_plane_segmentation_nodelet
+    src/plane_segmentation_nodelet.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -129,7 +169,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/soma_perception_node.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -142,10 +182,9 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
+target_link_libraries(soma_plane_segmentation_nodelet
+    ${catkin_LIBRARIES}
+    )
 #############
 ## Install ##
 #############
