@@ -7,14 +7,14 @@
   </class>
 </library>
 
-<library path="lib/libsoma_plane_segmentation_nodelet">
+<!-- <library path="lib/libsoma_plane_segmentation_nodelet">
   <class name="soma_vision/PlaneSegmentationNodelet"
      type="soma_vision::PlaneSegmentationNodelet"
      base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
-</library>
+</library> -->
 
 <library path="lib/libsoma_behavior_nodelet">
   <class name="soma_ros/vision_nodelet"
