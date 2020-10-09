@@ -2,6 +2,7 @@
 import logging as log
 from scipy.spatial import KDTree
 import math
+import matplotlib.pyplot as plt
 import networkx as nx
 from Environment import Environment
 from GraphBasedPathPlanner import GraphBasedPathPlanner
@@ -13,6 +14,11 @@ LOCAL_PATH_PLANNER = 'DubinsPath'
 
 class MotionPlanner:
     def __init__(self,):
+        self.total_length = 0
+
+        self.fig = plt.figure(figsize=(8,8))
+        self.fig.canvas.set_window_title('Optimized Trajectory')
+        self.ax = plt.subplot(1,1,1)
         pass
 
     def PoseSampling(self, way_points, nh):
@@ -63,14 +69,44 @@ class MotionPlanner:
         log.debug('|V(Gq)|={}, |E(Gq)|={}'.format(Gq.number_of_nodes(), Gq.number_of_edges())) 
 
 
-        trajectory = nx.shortest_path(Gq,
+        shortest_path = nx.shortest_path(Gq,
                                     source=0,
                                     target=Gq.number_of_nodes()-1,
                                     weight='weight')
 
-        log.info('Trajectory:{}'.format(len(trajectory)))
-        log.debug('->{}'.format(trajectory))
+        log.info('Trajectory:{}'.format(len(shortest_path)))
+        log.debug('->{}'.format(shortest_path))
 
+        traj = []
+        yaws = []
+
+        for i in range(len(shortest_path)):
+            if i == len(shortest_path)-1:
+                break
+            qi = Q[shortest_path[i]]
+            qj = Q[shortest_path[i+1]]
+
+            #Dubins Path Algorithm
+            if LOCAL_PATH_PLANNER=='DubinsPath':
+                px,py,pyaw,mode,length = DubinsPath.dubins_path_planning(
+                                            qi[0],qi[1],qi[2],
+                                            qj[0],qj[1],qj[2],
+                                            c=curvature)
+        
+            traj = traj + [(xi,yi) for xi,yi in zip(px,py)]
+            yaws = yaws + pyaw
+            self.total_length += length
+
+
+        self.total_length = round(self.total_length, 2)
+        print('Total length:{}'.format(self.total_length))
+
+        self.ax.plot([xi for xi,yi in traj],
+                    [yi for xi,yi in traj],
+                    '--r')
+        plt.show()
+
+        return traj
 
 if __name__=='__main__':
     print('Test Travelling Motion Planner')
@@ -88,6 +124,6 @@ if __name__=='__main__':
     )
 
     waypoints = gbpp.planning(env)
-    motionPlanner.planning(waypoints,3,1.0)
+    trajectory = motionPlanner.planning(waypoints,3,1.0)
 
 
