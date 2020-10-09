@@ -5,7 +5,7 @@
     <description>
     </description>
   </class>
-</library>
+</library> -->
 
 <library path="lib/libsoma_behavior_nodelet">
   <class name="soma_ros/vision_nodelet"
