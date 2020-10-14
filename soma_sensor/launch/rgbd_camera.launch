@@ -31,8 +31,8 @@
         <arg name="enable_gyro" value="false"/>
         <arg name="enable_accel" value="false"/>
 
-        <arg name="color_fps" value="6"/>
-        <arg name="depth_fps" value="6"/>
+        <arg name="color_fps" value="15"/>
+        <arg name="depth_fps" value="15"/>
 
         <arg name="publish_tf" value="true"/>
         <arg name="tf_publish_rate" value="0"/>
