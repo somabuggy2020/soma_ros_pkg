@@ -124,4 +124,16 @@ soma_ros_pkg:
 * soma_smpls:
 
 
-# 
+# 実行方法等(How to run)
+## センサノード起動
+* RGB-Dカメラ  
+	* 単体起動 シリアル番号の指定なし
+```
+roslaunch soma_sensor rgbd_camera.launch
+```
+	* 前方，後方カメラ起動
+```
+roslaunch soma_sensor rgbd_camera_F.launch
+roslaunch soma_sensor rgbd_camera_B.launch
+```
+
