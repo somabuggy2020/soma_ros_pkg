@@ -124,22 +124,4 @@ soma_ros_pkg:
 * soma_smpls:
 
 
-ディレクトリ構成  
-soma_ros_pkg : ルートディレクトリ(通称メタパッケージディレクトリ)  
-└soma_ros : soma自律移動プログラム本体のディレクトリ  
-	├include  
-	|  └soma_ros : hファイル配置ディレクトリ  
-	|     ├Behavior  
-	|	    └Data  
-    |  
-	├launch : 実行用launchファイル配置ディレクトリ  
-	├rviz : 実行時のrvizコンフィグファイル配置ディレクトリ  
-	└src : cppファイル配置ディレクトリ  
-		├Behavior  
-		└Data  
-
-soma_rosディレクトリ内ファイルについて  
- CMakeLists.txt : catkin_makeするためのCMakeファイル  
- nodelet_description.xml : 自作したnodeletの説明ファイル  
- package.xml : soma_rosパッケージの依存関係の説明ファイル  
-
+# 
