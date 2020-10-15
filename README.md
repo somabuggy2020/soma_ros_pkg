@@ -78,16 +78,26 @@ sudo apt install ros-melodic-dwa-local-planner
 ```
 
 * __navfn__  
+for kinetic
 ```
 sudo apt install ros-kinetic-navfn
 ```
+for melodic
 ```
 sudo apt install ros-melodic-navfn
 ```
 
 * __jsk_rviz_plugins__  
+rviz用の便利なGUIプラグイン集
+for melodic
 ```
 sudo apt install ros-melodic-jsk-rviz-plugins
+```
+
+* __rtabmap_ros__
+for melodic
+```
+sudo apt install ros-melodic-rtabmap-ros
 ```
 
 
@@ -117,21 +127,26 @@ catkin_make
 
 ## パッケージ構成(Structure)
 soma_ros_pkg:
-* soma_motion_planner:
-* soma_sensor:
-* soma_perception:
+* soma_motion_planner  
+大域的な動作計画のためのパッケージ
+* soma_sensor  
+センサ関係のlaunch,nodeを持つパッケージ
+* soma_perception  
+点群処理，画像処理系を持つパッケージ
 * soma_ros:
-* soma_smpls:
-
+* soma_smpls:  
+動作チェック用，お試し用の置き場所
 
 # 実行方法等(How to run)
 ## センサノード起動
-* RGB-Dカメラ  
-	* 単体起動 シリアル番号の指定なし
+### RGB-Dカメラ  
+* 単体起動  
+シリアル番号の指定なし
 ```
-roslaunch soma_sensor rgbd_camera.launch
-```  
-	* 前方，後方カメラ起動  
+roslaunch soma_sensor rgbd_camera.launch 
+```
+* 前方・後方カメラ起動  
+launchファイル内でシリアル番号指定
 ```
 roslaunch soma_sensor rgbd_camera_F.launch
 roslaunch soma_sensor rgbd_camera_B.launch
