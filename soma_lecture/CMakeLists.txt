@@ -9,6 +9,7 @@ project(soma_lecture)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
     roscpp
+    std_msgs
     sensor_msgs
     pcl_ros)
 
@@ -134,6 +135,9 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/soma_lecture_node.cpp)
 
+#
+#
+#
 add_executable(Sample_PointCloud2_publisher
     src/Sample_PointCloud2_publisher.cpp
     )
@@ -141,6 +145,28 @@ add_executable(Sample_PointCloud2_publisher
 target_link_libraries(Sample_PointCloud2_publisher
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
+    )
+
+#
+#
+#
+add_executable(Sample_IMU_Example_publisher
+    src/Sample_IMU_Example_publisher.cpp
+    )
+
+target_link_libraries(Sample_IMU_Example_publisher
+    ${catkin_LIBRARIES}
+    )
+
+#
+#
+#
+add_executable(Sample_RobotPose_publisher
+    src/Sample_RobotPose_publisher.cpp
+    )
+
+target_link_libraries(Sample_RobotPose_publisher
+    ${catkin_LIBRARIES}
     )
 
 ## Rename C++ executable without prefix

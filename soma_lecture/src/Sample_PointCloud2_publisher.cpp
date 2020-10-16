@@ -10,17 +10,16 @@
 #include <pcl_ros/point_cloud.h>
 #include <boost/shared_ptr.hpp>
 
-
 void make_cube_pointcloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "Sample_PointCloud2_publisher");
+  ros::init(argc, argv, "Sample_IMU_publisher");
   ros::NodeHandle nh;
 
   ros::Publisher pub = nh.advertise<sensor_msgs::PointCloud2>("cloud", 1);
 
-  ros::Rate loop_rate(100);
+  ros::Rate loop_rate(2);
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   cloud.reset(new pcl::PointCloud<pcl::PointXYZ>);

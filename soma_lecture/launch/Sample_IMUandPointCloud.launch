@@ -1,0 +1,12 @@
+<launch>
+
+  <node name="pointcloud_publisher" pkg="soma_lecture" type="Sample_PointCloud2_publisher"/>
+  <node name="imu_publisher" pkg="soma_lecture" type="Sample_IMU_Example_publisher"/>
+
+  <node name="Sensor2Base" pkg="tf2_ros" type="static_transform_publisher" args="0.85 0 1.5 0 0 0 robot_link sensor_link " />
+  <node name="Imu2Base" pkg="tf2_ros" type="static_transform_publisher" args="0 0 1.5 0 0 0 robot_link imu" />
+
+
+  <node name="Base2world" pkg="soma_lecture" type="Sample_RobotPose_publisher"/>
+
+</launch>
