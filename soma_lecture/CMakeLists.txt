@@ -7,11 +7,13 @@ project(soma_lecture)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED
+    roscpp
+    sensor_msgs
+    pcl_ros)
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
+# Find PCL package
+find_package(PCL 1.7 REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -99,11 +101,11 @@ find_package(catkin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES soma_lecture
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-)
+    #  INCLUDE_DIRS include
+    #  LIBRARIES soma_lecture
+    #  CATKIN_DEPENDS other_catkin_pkg
+    #  DEPENDS system_lib
+    )
 
 ###########
 ## Build ##
@@ -112,9 +114,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-)
+    # include
+    ${catkin_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
+    )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -130,6 +133,15 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/soma_lecture_node.cpp)
+
+add_executable(Sample_PointCloud2_publisher
+    src/Sample_PointCloud2_publisher.cpp
+    )
+
+target_link_libraries(Sample_PointCloud2_publisher
+    ${catkin_LIBRARIES}
+    ${PCL_LIBRARIES}
+    )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

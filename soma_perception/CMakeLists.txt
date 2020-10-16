@@ -6,21 +6,21 @@ project(soma_perception)
 
 ## Release with Debug Info build
 IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE RelWithDebInfo)
+SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
-roscpp
-sensor_msgs
-geometry_msgs
-pcl_ros
-pluginlib
-nodelet
-tf
-)
+    roscpp
+    sensor_msgs
+    geometry_msgs
+    pcl_ros
+    pluginlib
+    nodelet
+    tf
+    )
 
 find_package(PCL 1.7 REQUIRED)
 
@@ -34,25 +34,25 @@ find_package(PCL 1.7 REQUIRED)
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-include
-${catkin_INCLUDE_DIRS}
-${PCL_INCLUDE_DIRS}
-)
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
+    )
 
 ## Declare a C++ library
 add_library(soma_plane_segmentation_nodelet
     src/plane_segmentation_nodelet.cpp
-)
+    )
 add_library(soma_prefiltering_nodelet
     src/prefiltering_nodelet.cpp
-)
+    )
 
 target_link_libraries(soma_plane_segmentation_nodelet
     ${catkin_LIBRARIES}
-)
+    )
 target_link_libraries(soma_prefiltering_nodelet
     ${catkin_LIBRARIES}
-)
+    )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
