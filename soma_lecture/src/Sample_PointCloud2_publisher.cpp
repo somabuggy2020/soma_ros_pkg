@@ -17,9 +17,9 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "Sample_IMU_publisher");
   ros::NodeHandle nh;
 
-  ros::Publisher pub = nh.advertise<sensor_msgs::PointCloud2>("cloud", 1);
+  ros::Publisher pub = nh.advertise<sensor_msgs::PointCloud2>("cloud", 3);
 
-  ros::Rate loop_rate(2);
+  ros::Rate loop_rate(15);
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   cloud.reset(new pcl::PointCloud<pcl::PointXYZ>);

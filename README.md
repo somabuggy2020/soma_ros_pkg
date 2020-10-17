@@ -137,9 +137,15 @@ soma_ros_pkg:
 * soma_smpls:  
 動作チェック用，お試し用の置き場所
 
-# 実行方法等(How to run)
-## センサノード起動
-### RGB-Dカメラ  
+## 実行方法等(How to run)
+__センサノード起動__
+
+__LiDAR (VLP-16)__
+```
+roslaunch soma_sensor lidar.launch
+```
+
+__RGB-Dカメラ__
 * 単体起動  
 シリアル番号の指定なし
 ```
@@ -152,3 +158,12 @@ roslaunch soma_sensor rgbd_camera_F.launch
 roslaunch soma_sensor rgbd_camera_B.launch
 ```
 
+__IMU (姿勢検出)__
+```
+roslaunch soma_sensor imu.launch
+```
+
+__GPS (USB serial communication)__
+```
+roslaunch soma_sensor gps.launch
+```

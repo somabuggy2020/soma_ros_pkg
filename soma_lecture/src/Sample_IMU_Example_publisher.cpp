@@ -15,11 +15,10 @@ int main(int argc, char **argv)
 
   ros::Publisher pub = nh.advertise<sensor_msgs::Imu>("/imu/data", 3);
 
-  ros::Rate loop_rate(0.5);
+  ros::Rate loop_rate(10);
 
   while (ros::ok())
   {
-
     sensor_msgs::Imu msg;
     msg.header.stamp = ros::Time::now();
     msg.header.frame_id = "imu";
