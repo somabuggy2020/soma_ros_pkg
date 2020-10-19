@@ -1,0 +1,56 @@
+<launch>
+	<arg name="usb_port_front" default="/dev/ttyUSB0" />
+	<arg name="usb_port_rear" default="/dev/ttyUSB1" />
+	<arg name="dxl_baud_rate" default="57600" />
+	<arg name="use_moveit" default="false" />
+	<arg name="use_joint_state" default="false" />
+	<arg name="use_cmd_vel" default="true" />
+	<!--  -->
+	<!-- front wheels -->
+	<node name="front_wheels" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers" required="true" output="screen" args="$(arg usb_port_front) $(arg dxl_baud_rate)">
+		<param name="use_moveit" value="$(arg use_moveit)" />
+		<param name="use_joint_states_topic" value="$(arg use_joint_state)" />
+		<param name="use_cmd_vel_topic" value="$(arg use_cmd_vel)" />
+		<param name="dynamixel_info" value="$(find minisoma)/config/frontwheels.yaml" />
+		<param name="publish_period" value="0.010" />
+		<param name="dxl_read_period" value="0.010" />
+		<param name="dxl_write_period" value="0.010" />
+		<param name="seperation_between_wheels" value="0.486" />
+		<param name="radius_of_wheel" value="0.1" />
+		<!--
+		<rosparam>
+		publish_period: 0.010
+		dxl_read_period: 0.010
+		dxl_write_period: 0.010
+		mobile_robot_config:
+		seperation_between_wheels: 0.486
+		radius_of_wheel: 0.1
+		</rosparam>
+		-->
+		<!-- <remap from="/cmd_vel" to="/cmd_vel" /> -->
+	</node>
+  <!--  -->
+	<!-- rear wheels -->
+	<node name="rear_wheels" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers" required="true" output="screen" args="$(arg usb_port_rear) $(arg dxl_baud_rate)">
+		<param name="use_moveit" value="$(arg use_moveit)" />
+		<param name="use_joint_states_topic" value="$(arg use_joint_state)" />
+		<param name="use_cmd_vel_topic" value="$(arg use_cmd_vel)" />
+		<param name="dynamixel_info" value="$(find minisoma)/config/rearwheels.yaml" />
+		<param name="publish_period" value="0.010" />
+		<param name="dxl_read_period" value="0.010" />
+		<param name="dxl_write_period" value="0.010" />
+		<param name="seperation_between_wheels" value="0.486" />
+		<param name="radius_of_wheel" value="0.1" />
+		<!--
+		<rosparam>
+		publish_period: 0.010
+		dxl_read_period: 0.010
+		dxl_write_period: 0.010
+		mobile_robot_config:
+		seperation_between_wheels: 0.486
+		radius_of_wheel: 0.1
+		</rosparam>
+		-->
+		<!-- <remap from="/cmd_vel" to="/cmd_vel" /> -->
+	</node>
+</launch>
