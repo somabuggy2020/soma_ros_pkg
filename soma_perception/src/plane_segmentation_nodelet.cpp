@@ -50,7 +50,7 @@ public:
     others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
     //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
-    //    tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
+    tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
   }
 
 private:
@@ -87,7 +87,10 @@ private:
 
     const int times_of_repeats = 2;
     const float setted_slope_tilt = 5.0;
-    tilt_ary.data.resize(times_of_repeats);
+    // tilt_ary.data.resize(times_of_repeats);
+
+    //input roll, pitch, yaw
+    tilt_ary.data.resize(3);
 
     //    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
@@ -101,6 +104,8 @@ private:
 
     segmentation(transformed, inliers, coeffs);
 
+    extract_RPY(coeffs);
+
     pcl::ExtractIndices<PointT> EI;
     EI.setInputCloud(transformed);
     EI.setIndices(inliers);
@@ -109,10 +114,6 @@ private:
 
     EI.setNegative(true);
     EI.filter(*pc_others);
-
-
-
-
 
     //    if (tilt_ary.data[0] < setted_slope_tilt)
     //    {
@@ -142,6 +143,7 @@ private:
     //    floor_pub.publish(pc_floor);
     slope_pub.publish(pc_slope);
     others_pub.publish(pc_others);
+    tilt_ary_pub.publish(tilt_ary);
 
     //    publish();
   }
@@ -220,6 +222,31 @@ private:
 
     //Store tilt data
     tilt_ary.data[i] = tilt;
+  }
+
+  void extract_RPY(pcl::ModelCoefficients::Ptr coeffs)
+  {
+    Eigen::Vector3d x_axis(1, 0, 0);
+    Eigen::Vector3d y_axis(0, 1, 0);
+    Eigen::Vector3d z_axis(0, 0, 1);
+
+    Eigen::Vector3d normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
+
+    float roll_rad = x_axis.dot(normal) / ( x_axis.norm() * normal.norm());
+    float pitch_rad = y_axis.dot(normal) / ( y_axis.norm() * normal.norm());
+    float yaw_rad = z_axis.dot(normal) / ( z_axis.norm() * normal.norm());
+
+    roll_rad = acos(roll_rad);
+    pitch_rad = acos(pitch_rad);
+    yaw_rad = acos(yaw_rad);
+
+    float roll = 180 - (roll_rad * 180.0 / PI);
+    float pitch = 180 - (pitch_rad * 180.0 / PI);
+    float yaw = 180 - (yaw_rad * 180.0 / PI);
+
+    tilt_ary.data[0] = roll;
+    tilt_ary.data[1] = pitch;
+    tilt_ary.data[2] = yaw;
   }
 
 private:

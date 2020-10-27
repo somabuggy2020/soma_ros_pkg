@@ -1,0 +1,4 @@
+<launch>
+ <node name="imu_subscriber" pkg="soma_lecture" type="imu_subscriber" />
+
+</launch>
