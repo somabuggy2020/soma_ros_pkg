@@ -14,7 +14,7 @@
                 "/home/hayashi/catkin_ws/src/imu_tools/imu_complementary_filter/include/**",
                 "/home/hayashi/catkin_ws/src/imu_tools/imu_filter_madgwick/include/**",
                 "/home/hayashi/catkin_ws/src/ndt_omp/include/**",
-                "/home/hayashi/hayashi_ws/src/hayashi_ros_pkg/hayashi_ros/include/**",
+                "/home/hayashi/soma_ws/src/soma_ros_pkg/soma_ros/include/**",
                 "/home/hayashi/catkin_ws/src/tf_listener/include/**",
                 "/usr/include/**"
             ],
