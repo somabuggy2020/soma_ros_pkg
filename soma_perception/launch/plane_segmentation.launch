@@ -14,6 +14,7 @@
 
   <arg name="frame_id" default="soma_link"/>
   <arg name="input_points" default="/camera_F/prefiltered"/>
+  <arg name="input_imu" default="/imu/data"/>
 	
   <!-- launch the nodelet manager -->
   <arg name="nodelet_manager_name" default="soma_vision_manager"/>

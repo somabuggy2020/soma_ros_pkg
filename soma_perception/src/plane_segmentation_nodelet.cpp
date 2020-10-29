@@ -5,7 +5,10 @@
 #include <nodelet/nodelet.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/Imu.h>
 #include <pluginlib/class_list_macros.h>
+#include <message_filters/subscriber.h>
+#include <message_filters/sync_policies/approximate_time.h>
 
 #include <tf/transform_listener.h>
 
@@ -27,6 +30,8 @@ class PlaneSegmentationNodelet : public nodelet::Nodelet
 {
 public:
   typedef pcl::PointXYZRGB PointT;
+  typedef message_filters::sync_policies::ApproximateTime
+            <sensor_msgs::PointCloud2, sensor_msgs::Imu> MySyncPolicy;
 
   PlaneSegmentationNodelet() {}
   virtual ~PlaneSegmentationNodelet() {}
@@ -38,12 +43,14 @@ public:
     nh = getNodeHandle();
     pnh = getPrivateNodeHandle();
 
-    base_link_frame = nh.param<std::string>("base_link", "soma_link"); //default value is "soma_link"
+    base_link_frame = nh.param<std::string>("base_link", "soma_link"); 
+    //default value is "soma_link"
 
-    input_points_sub = nh.subscribe("input_points",
-                                    3,
-                                    &PlaneSegmentationNodelet::cloud_callback,
-                                    this);
+    message_filters::Subscriber<sensor_msgs::PointCloud2> points_sub(nh, "input_points", 3);
+    message_filters::Subscriber<sensor_msgs::Imu> imu_sub(nh, "input_imu", 3);
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(3), points_sub, imu_sub);
+    sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);   
+
     //advertise topics
     floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
     slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
@@ -58,8 +65,15 @@ private:
    * \brief cloud_callback
    * \param input
    */
-  void cloud_callback(pcl::PointCloud<PointT>::ConstPtr input)
+  void cloud_callback(const sensor_msgs::PointCloud2ConstPtr _input, 
+  const sensor_msgs::ImuConstPtr imu_data)
   {
+    
+    pcl::PointCloud<PointT>::Ptr input;
+    input.reset(new pcl::PointCloud<PointT>());
+    input->clear();
+    pcl::fromROSMsg(*_input, *input);
+
     if (input->empty())
     {
       return;
