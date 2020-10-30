@@ -55,8 +55,9 @@ public:
     sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));   
 
     //advertise topics
+    ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
     floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
-    slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
+    slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud1_slope", 1);
     others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
     //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
@@ -111,7 +112,8 @@ private:
     //input roll, pitch, yaw
     tilt_ary.data.resize(3);
 
-    //    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
+    pcl::PointCloud<PointT>::Ptr pc_gorund(new pcl::PointCloud<PointT>());
+    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
 
@@ -123,51 +125,45 @@ private:
 
     segmentation(transformed, inliers, coeffs);
 
-    extract_tilt_RPY(coeffs);
-    convert_imu_RPY(*imu_data);
+    while(pc_others->points.size() < input->points.size()*0.3) {
+      int i = 0;
+      if(i != 0){
+        segmentation(pc_others, inliers, coeffs);
+      }
 
-    pcl::ExtractIndices<PointT> EI;
-    EI.setInputCloud(transformed);
-    EI.setIndices(inliers);
-    EI.setNegative(false);
-    EI.filter(*pc_slope);
+      extract_tilt_RPY(coeffs);
+      convert_imu_RPY(*imu_data);
+      
+      pcl::ExtractIndices<PointT> EI;
+      EI.setInputCloud(transformed);
+      EI.setIndices(inliers);
+      if(tilt_ary.data[2] < 3.0 && pc_gorund->empty()) {
+        EI.setNegative(false); 
+        EI.filter(*pc_gorund);
+      } else {
+        if (rpy_ary.data[2] < 25 && pc_floor->empty()) {
+          EI.setNegative(false);
+          EI.filter(*pc_floor);
+        } else {
+          EI.setNegative(false);
+          EI.filter(*pc_slope);
+        }
+      }
 
-    EI.setNegative(true);
-    EI.filter(*pc_others);
+      EI.setNegative(true);
+      EI.filter(*pc_others);
 
-    //    if (tilt_ary.data[0] < setted_slope_tilt)
-    //    {
-    //      pc_floor = extract(input, inliers);
-    //    }
-    //    else
-    //    {
-    //      pc_slope = (input, inliers);
-    //    }
+      i++;
+    }
 
-    //    pc_others = extract_others(input, inliers);
-
-    //    for (int i = 1; i < times_of_repeats; i++)
-    //    {
-    //      segment(input, inliers, i);
-    //      if (tilt_ary.data[i] < setted_slope_tilt)
-    //      {
-    //        pc_floor = extract(input, inliers);
-    //      }
-    //      else
-    //      {
-    //        pc_slope = (input, inliers);
-    //      }
-    //      pc_others = extract_others(input, inliers);
-    //    }
-
-    //    floor_pub.publish(pc_floor);
+    ground_pub.publish(pc_gorund);
+    floor_pub.publish(pc_floor);
     slope_pub.publish(pc_slope);
     others_pub.publish(pc_others);
     tilt_ary_pub.publish(tilt_ary);
     rpy_ary_pub.publish(rpy_ary);
-
-    //    publish();
   }
+
 
   int segmentation(pcl::PointCloud<PointT>::ConstPtr input,
                    pcl::PointIndices::Ptr inliers,
@@ -293,11 +289,12 @@ private:
   ros::Subscriber input_points_sub;
 
   //publishers
+  ros::Publisher ground_pub;
   ros::Publisher floor_pub;
   ros::Publisher others_pub;
   ros::Publisher slope_pub;
 
-  ros::Publisher coeffs_pub;
+  // ros::Publisher coeffs_pub;
   ros::Publisher tilt_ary_pub;
   ros::Publisher rpy_ary_pub;
 
