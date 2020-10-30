@@ -11,6 +11,8 @@
 #include <message_filters/sync_policies/approximate_time.h>
 
 #include <tf/transform_listener.h>
+#include <geometry_msgs/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
@@ -48,8 +50,9 @@ public:
 
     message_filters::Subscriber<sensor_msgs::PointCloud2> points_sub(nh, "input_points", 3);
     message_filters::Subscriber<sensor_msgs::Imu> imu_sub(nh, "input_imu", 3);
-    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(3), points_sub, imu_sub);
-    sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);   
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), points_sub, imu_sub);
+    // sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);
+    sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));   
 
     //advertise topics
     floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
@@ -58,6 +61,7 @@ public:
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
     //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
     tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
+    rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
   }
 
 private:
@@ -66,9 +70,10 @@ private:
    * \param input
    */
   void cloud_callback(const sensor_msgs::PointCloud2ConstPtr _input, 
-  const sensor_msgs::ImuConstPtr imu_data)
+                        const sensor_msgs::ImuConstPtr &imu_data)
   {
-    
+
+    ROS_INFO("flow");
     pcl::PointCloud<PointT>::Ptr input;
     input.reset(new pcl::PointCloud<PointT>());
     input->clear();
@@ -118,7 +123,8 @@ private:
 
     segmentation(transformed, inliers, coeffs);
 
-    extract_RPY(coeffs);
+    extract_tilt_RPY(coeffs);
+    convert_imu_RPY(*imu_data);
 
     pcl::ExtractIndices<PointT> EI;
     EI.setInputCloud(transformed);
@@ -158,6 +164,7 @@ private:
     slope_pub.publish(pc_slope);
     others_pub.publish(pc_others);
     tilt_ary_pub.publish(tilt_ary);
+    rpy_ary_pub.publish(rpy_ary);
 
     //    publish();
   }
@@ -178,6 +185,18 @@ private:
     sacseg.segment(*inliers, *coeffs);
 
     return 0; //success
+  }
+
+  void convert_imu_RPY(const sensor_msgs::Imu &imu_data)
+  {
+      tf2::Quaternion quat_imu;
+      tf2::fromMsg(imu_data.orientation, quat_imu);
+      double roll, pitch, yaw;
+      tf2::Matrix3x3(quat_imu).getRPY(roll, pitch, yaw);
+
+      rpy_ary.data[0] = (float)roll;
+      rpy_ary.data[1] = (float)pitch;
+      rpy_ary.data[2] = (float)yaw;
   }
 
   //  void segment(pcl::PointCloud<PointT>::ConstPtr input,
@@ -238,7 +257,7 @@ private:
     tilt_ary.data[i] = tilt;
   }
 
-  void extract_RPY(pcl::ModelCoefficients::Ptr coeffs)
+  void extract_tilt_RPY(pcl::ModelCoefficients::Ptr coeffs)
   {
     Eigen::Vector3d x_axis(1, 0, 0);
     Eigen::Vector3d y_axis(0, 1, 0);
@@ -280,10 +299,12 @@ private:
 
   ros::Publisher coeffs_pub;
   ros::Publisher tilt_ary_pub;
+  ros::Publisher rpy_ary_pub;
 
   //  pcl_msgs::PointIndices indices_ros;
   //  pcl_msgs::ModelCoefficients coeffs_ros;
   std_msgs::Float32MultiArray tilt_ary;
+  std_msgs::Float32MultiArray rpy_ary;
 
   //  pcl::PointCloud<PointT> cloud_input_pcl_;
 };
