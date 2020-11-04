@@ -21,6 +21,7 @@ struct Data_t
   int command;
   geo_msgs::PointStamped _pg;
   geo_msgs::PoseStamped _xt;
+  double _yaw_t;
 
   Data_t() : state(State::Stop),
              command(State::Stop){};

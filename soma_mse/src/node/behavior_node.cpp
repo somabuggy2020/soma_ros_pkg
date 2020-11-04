@@ -1,9 +1,15 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PointStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Float32MultiArray.h>
+#include <tf/tf.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
 #include <string>
 #include <math.h>
 
@@ -35,13 +41,10 @@ private:
     ros::Publisher state_pub;
     ros::Publisher pg_pub;
     ros::Publisher xt_pub;
+    ros::Publisher ut_pub;  //lambda and v at t
 
     //local members
     Data_t data;
-    // int state;
-    // geo_msgs::PointStamped _pg;
-    // int command;
-    // geo_msgs::PoseStamped _xt;
 
 public:
     Behavior() : nh(ros::NodeHandle()),
@@ -63,6 +66,7 @@ public:
         state_pub = nh.advertise<s_msgs::String>("/soma_state", 3);
         pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3);
         xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);
+        ut_pub = nh.advertise<std_msgs::Float32MultiArray>("/som_ut", 3);
 
         // state = State::Stop;
         // command = State::Stop;
@@ -71,6 +75,7 @@ public:
         timer = nh.createTimer(ros::Duration((double)TIMER_T),
                                &Behavior::main,
                                this);
+
     }
 
     ~Behavior()
@@ -81,6 +86,11 @@ private:
     void main(const ros::TimerEvent &e)
     {
         ROS_INFO("State:%s", State::Str.at(data.state).c_str());
+        ROS_INFO("Pg:(%.2f, %.2f)", data._pg.point.x, data._pg.point.y);
+        ROS_INFO("Xt:(%.2f, %.2f, %.2f)",
+                 data._xt.pose.position.x,
+                 data._xt.pose.position.y,
+                 data._yaw_t);
 
         //Publish
         std_msgs::String smsgs;
@@ -138,6 +148,16 @@ private:
         data._xt.header.frame_id = msg->header.frame_id;
         data._xt.header.stamp = ros::Time::now();
         data._xt.pose = msg->pose.pose;
+
+        tf::Quaternion q(
+            msg->pose.pose.orientation.x,
+            msg->pose.pose.orientation.y,
+            msg->pose.pose.orientation.z,
+            msg->pose.pose.orientation.w);
+        tf::Matrix3x3 m(q);
+        double roll, pitch, yaw;
+        m.getRPY(roll, pitch, yaw);
+        data._yaw_t = yaw;
     }
 };
 
