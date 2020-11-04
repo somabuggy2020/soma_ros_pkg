@@ -88,7 +88,7 @@ private:
   void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &_input, 
                         const sensor_msgs::ImuConstPtr &imu_data)
   {
-    ("call cloud_callback function");
+    NODELET_INFO("call cloud_callback function");
 
     pcl::PointCloud<PointT>::Ptr input;
     input.reset(new pcl::PointCloud<PointT>());
