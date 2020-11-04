@@ -1,12 +1,12 @@
 local_costmap:
   plugins: 
     - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
-  global_frame: foot_print
+  global_frame: odom_dr
   robot_base_frame: soma_link
   # footprint: [[-0.2, -0.12], [-0.2, 0.12], [0.05, 0.12], [0.05, -0.12]]
   rolling_window: true
-  width: 12.0
-  height: 12.0
+  width: 100.0
+  height: 100.0
   resolution: 0.1
   update_frequency: 2.0
   publish_frequency: 2.0
