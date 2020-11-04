@@ -9,6 +9,7 @@
 #include <pluginlib/class_list_macros.h>
 #include <message_filters/subscriber.h>
 #include <message_filters/sync_policies/approximate_time.h>
+#include <message_filters/time_synchronizer.h>
 
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Quaternion.h>
@@ -32,8 +33,7 @@ class PlaneSegmentationNodelet : public nodelet::Nodelet
 {
 public:
   typedef pcl::PointXYZRGB PointT;
-  typedef message_filters::sync_policies::ApproximateTime
-            <sensor_msgs::PointCloud2, sensor_msgs::Imu> MySyncPolicy;
+  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::PointCloud2, sensor_msgs::Imu> MySyncPolicy;
 
   PlaneSegmentationNodelet() {}
   virtual ~PlaneSegmentationNodelet() {}
@@ -45,35 +45,56 @@ public:
     nh = getNodeHandle();
     pnh = getPrivateNodeHandle();
 
-    base_link_frame = nh.param<std::string>("base_link", "soma_link"); 
-    //default value is "soma_link"
-
-    message_filters::Subscriber<sensor_msgs::PointCloud2> points_sub(nh, "input_points", 3);
-    message_filters::Subscriber<sensor_msgs::Imu> imu_sub(nh, "input_imu", 3);
-    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), points_sub, imu_sub);
-    // sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);
-    sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));   
+    //set parameters
+    base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+    input_imu = pnh.param<std::string>("input_imu", "/imu/data"); 
+    input_points = pnh.param<std::string>("input_points", "/camera_F/prefiltered");  //default value is "soma_link"
+    // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
+    setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
+    setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
 
     //advertise topics
     ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
     floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
-    slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud1_slope", 1);
+    slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
     others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
     //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
     tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
     rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
+
+    message_filters::Subscriber<sensor_msgs::PointCloud2> points_sub(nh, "/camera_F/prefiltered", 3);
+    message_filters::Subscriber<sensor_msgs::Imu> imu_sub(nh, "/imu/data", 3);
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), points_sub, imu_sub);
+    sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);
+    sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2)); 
+
+    // message_filters::TimeSynchronizer<sensor_msgs::PointCloud2, sensor_msgs::Imu> sync(points_sub, imu_sub, 10);
+    // sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));  
   }
 
 private:
-  /*!
+  /**
+   * @brief initialize parameters
+   */
+  // void initialize_params() {
+  //   base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+  //   input_imu = pnh.param<std::string>("input_imu", "/imu/data"); 
+  //   input_points = pnh.param<std::string>("input_points", "/camera_F/prefiltered");  //default value is "soma_link"
+  //   // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
+  //   setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
+  //   setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
+  // }
+
+
+  /**
    * \brief cloud_callback
    * \param input
+   * \param imu_data
    */
   void cloud_callback(const sensor_msgs::PointCloud2ConstPtr _input, 
                         const sensor_msgs::ImuConstPtr &imu_data)
   {
-
     ROS_INFO("flow");
     pcl::PointCloud<PointT>::Ptr input;
     input.reset(new pcl::PointCloud<PointT>());
@@ -105,10 +126,6 @@ private:
     }
 
 
-    const int times_of_repeats = 2;
-    const float setted_slope_tilt = 5.0;
-    // tilt_ary.data.resize(times_of_repeats);
-
     //input roll, pitch, yaw
     tilt_ary.data.resize(3);
 
@@ -137,11 +154,11 @@ private:
       pcl::ExtractIndices<PointT> EI;
       EI.setInputCloud(transformed);
       EI.setIndices(inliers);
-      if(tilt_ary.data[2] < 3.0 && pc_gorund->empty()) {
+      if(tilt_ary.data[2] < setted_ground_tilt && pc_gorund->empty()) {
         EI.setNegative(false); 
         EI.filter(*pc_gorund);
       } else {
-        if (rpy_ary.data[2] < 25 && pc_floor->empty()) {
+        if (rpy_ary.data[2] < setted_slope_tilt && pc_floor->empty()) {
           EI.setNegative(false);
           EI.filter(*pc_floor);
         } else {
@@ -164,7 +181,12 @@ private:
     rpy_ary_pub.publish(rpy_ary);
   }
 
-
+  /**
+   * \brief segmentation
+   * \param input
+   * \param inliers
+   * \param coeffs
+   */
   int segmentation(pcl::PointCloud<PointT>::ConstPtr input,
                    pcl::PointIndices::Ptr inliers,
                    pcl::ModelCoefficients::Ptr coeffs)
@@ -183,6 +205,10 @@ private:
     return 0; //success
   }
 
+  /**
+   * \brief convert_imu_RPY
+   * \param imu_data
+   */
   void convert_imu_RPY(const sensor_msgs::Imu &imu_data)
   {
       tf2::Quaternion quat_imu;
@@ -195,64 +221,10 @@ private:
       rpy_ary.data[2] = (float)yaw;
   }
 
-  //  void segment(pcl::PointCloud<PointT>::ConstPtr input,
-  //               pcl::PointIndices::Ptr inliers,
-  //               int i)
-  //  {
-  //    pcl::ModelCoefficients coeffs;
-  //    pcl::SACSegmentation<PointT> seg;
-
-  //    // Create the seg object
-  //    seg.setOptimizeCoefficients(true);
-  //    seg.setModelType(pcl::SACMODEL_PLANE);
-  //    seg.setMethodType(pcl::SAC_RANSAC);
-  //    seg.setMaxIterations(1000);
-  //    seg.setDistanceThreshold(0.03);
-  //    seg.setInputCloud(input);
-  //    seg.segment(*inliers, coeffs);
-
-  //    //Calc planar tilt
-  //    Eigen::Vector3d vertical(0, 1, 0);
-  //    Eigen::Vector3d slope(coeffs.values[0], coeffs.values[1], coeffs.values[2]);
-  //    calcTilt(vertical, slope, i);
-
-  //    //    pcl_conversions::fromPCL(*inliers, indices_ros);
-  //    //    pcl_conversions::fromPCL(coeffs, coeffs_ros);
-  //  }
-
-  //  pcl::PointCloud<PointT>::ConstPtr extract(const pcl::PointCloud<PointT>::ConstPtr &input,
-  //                                            pcl::PointIndices::Ptr inliers)
-  //  {
-  //    pcl::ExtractIndices<PointT> extract;
-  //    pcl::PointCloud<PointT>::Ptr done(new pcl::PointCloud<PointT>());
-
-  //    // Create the filtering object
-  //    extract.setInputCloud(input);
-  //    extract.setIndices(inliers);
-  //    // Extract the plannar inlier pointcloud from indices
-  //    extract.setNegative(false);
-  //    extract.filter(*done);
-
-  //    return done;
-  //  }
-
-  /*!
-   * \brief calcTilt
-   * \param v
-   * \param w
-   * \param i
+  /**
+   * \brief extract_tilt_RPY
+   * \param coeffs
    */
-  void calcTilt(Eigen::Vector3d v, Eigen::Vector3d w, int i)
-  {
-    float cos_sita = v.dot(w) / v.norm() * w.norm();
-    float sita = acos(cos_sita);
-    float tilt = sita * 180.0 / PI;
-    tilt = 180.0 - tilt;
-
-    //Store tilt data
-    tilt_ary.data[i] = tilt;
-  }
-
   void extract_tilt_RPY(pcl::ModelCoefficients::Ptr coeffs)
   {
     Eigen::Vector3d x_axis(1, 0, 0);
@@ -282,8 +254,14 @@ private:
   ros::NodeHandle nh;
   ros::NodeHandle pnh;
 
+  //params
   std::string base_link_frame; //base_link frame id
+  std::string input_imu;
+  std::string input_points;
   tf::TransformListener tf_listener;
+  // int times_of_rpeats;
+  float setted_slope_tilt;
+  float setted_ground_tilt;
 
   //subscribers
   ros::Subscriber input_points_sub;
@@ -303,7 +281,6 @@ private:
   std_msgs::Float32MultiArray tilt_ary;
   std_msgs::Float32MultiArray rpy_ary;
 
-  //  pcl::PointCloud<PointT> cloud_input_pcl_;
 };
 } // namespace plane_seg_pkg
 
