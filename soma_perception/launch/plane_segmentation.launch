@@ -18,17 +18,18 @@
 	
   <!-- launch the nodelet manager -->
   <arg name="nodelet_manager_name" default="soma_vision_manager"/>
-  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />
-
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" output="screen" />
 
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
-        args="load soma_perception/PlaneSegmentationNodelet $(arg nodelet_manager_name)" >
-        <!-- <remap from="input_points" to="$(arg input_points)"/> -->
-        <remap from="input_points" to="$(arg input_points)"/>
+        args="load soma_perception/PlaneSegmentationNodelet $(arg nodelet_manager_name)">
+
+        <param name="input_points" value="$(arg input_points)"/>
+        <param name="input_imu" value="$(arg input_imu)"/>
         <param name="base_link" value="$(arg frame_id)"/>
         <param name="setted_slope_tilt" value="25.0"/>
         <param name="setted_ground_tilt" value="3.0"/>
+
   </node>
 
   <group if="$(arg test)">

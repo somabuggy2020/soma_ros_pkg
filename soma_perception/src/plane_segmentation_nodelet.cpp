@@ -63,14 +63,10 @@ public:
     tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
     rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
 
-    message_filters::Subscriber<sensor_msgs::PointCloud2> points_sub(nh, "/camera_F/prefiltered", 3);
-    message_filters::Subscriber<sensor_msgs::Imu> imu_sub(nh, "/imu/data", 3);
-    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), points_sub, imu_sub);
-    sync.registerCallback(&PlaneSegmentationNodelet::cloud_callback, this);
-    sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2)); 
-
-    // message_filters::TimeSynchronizer<sensor_msgs::PointCloud2, sensor_msgs::Imu> sync(points_sub, imu_sub, 10);
-    // sync.registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));  
+    points_sub =  new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, input_points, 3);
+    imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, input_imu, 3);
+    sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(100), *points_sub, *imu_sub);
+    sync->registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2)); 
   }
 
 private:
@@ -88,14 +84,12 @@ private:
 
 
   /**
-   * \brief cloud_callback
-   * \param input
-   * \param imu_data
-   */
-  void cloud_callback(const sensor_msgs::PointCloud2ConstPtr _input, 
+   **/
+  void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &_input, 
                         const sensor_msgs::ImuConstPtr &imu_data)
   {
-    ROS_INFO("flow");
+    ("call cloud_callback function");
+
     pcl::PointCloud<PointT>::Ptr input;
     input.reset(new pcl::PointCloud<PointT>());
     input->clear();
@@ -266,6 +260,10 @@ private:
   //subscribers
   ros::Subscriber input_points_sub;
 
+  message_filters::Subscriber<sensor_msgs::PointCloud2> *points_sub;
+  message_filters::Subscriber<sensor_msgs::Imu> *imu_sub;
+  message_filters::Synchronizer<MySyncPolicy> *sync;
+
   //publishers
   ros::Publisher ground_pub;
   ros::Publisher floor_pub;
@@ -282,6 +280,6 @@ private:
   std_msgs::Float32MultiArray rpy_ary;
 
 };
-} // namespace plane_seg_pkg
+} // namespace soma_perception
 
 PLUGINLIB_EXPORT_CLASS(soma_perception::PlaneSegmentationNodelet, nodelet::Nodelet)
