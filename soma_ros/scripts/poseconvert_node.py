@@ -2,6 +2,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from nav_msgs.msg import Odometry
 
 def callback_L(data_L):
  cov_L = PoseWithCovarianceStamped()
@@ -55,11 +56,28 @@ def callback_R(data_R):
  publisher = rospy.Publisher('pose_R',PoseWithCovarianceStamped,queue_size=10)
  publisher.publish(cov_R)
 
+def callback_dr(odom_dr):
+    #odom_dr_cov = odom_dr
+    #odom_dr.pose.covariance[0] = 0.2
+    #odom_dr.pose.covariance[7] = 0.3
+    #odom_dr.pose.covariance[35] = 0.25
 
+    odom_dr.pose.covariance =  [0.2,0,0,0,0,0,
+                                0,0.3,0,0,0,0,
+                                0,0,0,0,0,0,
+                                0,0,0,0,0,0,
+                                0,0,0,0,0,0,
+                                0,0,0,0,0,0.25]
+   
+
+    publisher = rospy.Publisher('/soma/odom_dr_cov',Odometry,queue_size=10)
+    publisher.publish(odom_dr)
+    
 if __name__=='__main__':
     rospy.init_node('poseconverter',anonymous=True)
 
     rospy.Subscriber('/orbslam_l/orbslam/pose',PoseStamped,callback_L)
     rospy.Subscriber('/orbslam_r/orbslam/pose',PoseStamped,callback_R)
+    rospy.Subscriber('/soma/odom_dr', Odometry, callback_dr)
 
     rospy.spin()
