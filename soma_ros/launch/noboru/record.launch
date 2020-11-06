@@ -1,16 +1,18 @@
 <launch>
  <node pkg="rosbag" type="record" name="record" 
  args="-o $(find Documents)/noboru/ 
- /camera_F/color/camera_info
- /camera_F/color/image_raw
- /camera_F/depth/image_rect_raw
- /camera_B/color/camera_info
- /camera_B/color/image_raw
- /camera_B/depth/image_rect_raw
- /imu/data
- /soma/odom_dr
- /soma/ut
- /tf
- /tf_static
+ /camera_F/color/camera_info 
+ /camera_F/color/image_raw 
+ /camera_F/depth/image_rect_raw 
+ /camera_F/prefiltered 
+ /camera_B/color/camera_info 
+ /camera_B/color/image_raw 
+ /camera_B/depth/image_rect_raw 
+ /camera_B/prefiltered 
+ /imu/data 
+ /soma/odom_dr 
+ /soma/ut 
+ /tf 
+ /tf_static 
  /fix">
 </launch>
