@@ -1,0 +1,16 @@
+<launch>
+ <node pkg="rosbag" type="record" name="record" 
+ args="-o $(find Documents)/noboru/ 
+ /camera_L/color/camera_info
+ /camera_L/color/image_raw
+ /camera_L/depth/image_rect_raw
+ /camera_R/color/camera_info
+ /camera_R/color/image_raw
+ /camera_R/depth/image_rect_raw
+ /imu/data
+ /soma/odom_dr
+ /soma/ut
+ /tf
+ /tf_static
+ /fix">
+</launch>
