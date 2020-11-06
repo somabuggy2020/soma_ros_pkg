@@ -62,12 +62,12 @@ def callback_dr(odom_dr):
     #odom_dr.pose.covariance[7] = 0.3
     #odom_dr.pose.covariance[35] = 0.25
 
-    odom_dr.pose.covariance =  [0.2,0,0,0,0,0,
-                                0,0.3,0,0,0,0,
+    odom_dr.pose.covariance =  [0.1,0,0,0,0,0,
+                                0,0.2,0,0,0,0,
                                 0,0,0,0,0,0,
                                 0,0,0,0,0,0,
                                 0,0,0,0,0,0,
-                                0,0,0,0,0,0.25]
+                                0,0,0,0,0,0.1]
    
 
     publisher = rospy.Publisher('/soma/odom_dr_cov',Odometry,queue_size=10)

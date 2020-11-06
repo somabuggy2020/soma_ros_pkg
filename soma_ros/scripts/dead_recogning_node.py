@@ -97,9 +97,9 @@ if __name__=='__main__':
         odom.pose.pose.position.y = X_t[1]
         odom.pose.pose.position.z = 0.0
         odom.pose.pose.orientation = Quaternion(q[0], q[1], q[2], q[3])
-        odom.pose.covariance[0] = 0.02 #x
-        odom.pose.covariance[7] = 0.03 #y
-        odom.pose.covariance[35] = 0.5 #theta
+        #odom.pose.covariance[0] = 0.02 #x
+        #odom.pose.covariance[7] = 0.03 #y
+        #odom.pose.covariance[35] = 0.5 #theta
         odom_pub.publish(odom)
 
         #publish tf odom_dr -> soma_link
