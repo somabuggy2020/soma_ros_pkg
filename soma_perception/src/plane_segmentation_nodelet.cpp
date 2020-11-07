@@ -29,10 +29,17 @@
 
 namespace soma_perception
 {
+typedef pcl::PointXYZRGB PointT;
+
+struct my_pointCloud{
+    pcl::PointCloud<PointT>::Ptr pc;
+    bool judge;
+};
+
+
 class PlaneSegmentationNodelet : public nodelet::Nodelet
 {
 public:
-  typedef pcl::PointXYZRGB PointT;
   typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::PointCloud2, sensor_msgs::Imu> MySyncPolicy;
 
   PlaneSegmentationNodelet() {}
@@ -114,7 +121,7 @@ private:
       // input = transformed; //copy?
     }
 
-
+    //single segmentation
     pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
@@ -138,7 +145,6 @@ private:
 
     EI.setNegative(true);
     EI.filter(*pc_others);
-
 
     // for (int i=1; i<3; i++) {
     //   NODELET_INFO("segmentation %d times", i);
@@ -166,6 +172,25 @@ private:
     // }
 
 
+  //  //loop segmentation
+  //   my_pointCloud pc_ary[3];
+  //   for (int i=0; i < 3; i++) {
+  //     pc_ary[i].pc.reset(new pcl::PointCloud<PointT>());
+  //   }
+  //   NODELET_INFO("sample");
+
+  //   //perform segnemtation
+  //   pcl::PointIndices::Ptr inliers;
+  //   pcl::ModelCoefficients::Ptr coeffs;
+  //   inliers.reset(new pcl::PointIndices());
+  //   coeffs.reset(new pcl::ModelCoefficients());
+
+  //   convert_imu_RPY(imu_data);
+
+  //   segmentation(transformed, inliers, coeffs);
+  //   pcl::ExtractIndices<PointT> EI;
+  //   EI.setInputCloud(transformed);
+  //   EI.setIndices(inliers);
 
     // while(pc_others->points.size() < input->points.size()*0.005) {
     //   int i = 0;
@@ -257,16 +282,20 @@ private:
     Eigen::Vector3d normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
 
     float roll_rad = x_axis.dot(normal) / ( x_axis.norm() * normal.norm());
-    float pitch_rad = y_axis.dot(normal) / ( y_axis.norm() * normal.norm());
-    float yaw_rad = z_axis.dot(normal) / ( z_axis.norm() * normal.norm());
+    float pitch_rad = z_axis.dot(normal) / ( y_axis.norm() * normal.norm());
+    float yaw_rad = y_axis.dot(normal) / ( z_axis.norm() * normal.norm());
 
     roll_rad = acos(roll_rad);
     pitch_rad = acos(pitch_rad);
     yaw_rad = acos(yaw_rad);
 
-    float roll = 180 - (roll_rad * 180.0 / PI);
-    float pitch = 180 - (pitch_rad * 180.0 / PI);
-    float yaw = 180 - (yaw_rad * 180.0 / PI);
+    // float roll = 180 - (roll_rad * 180.0 / PI);
+    // float pitch = 180 - (pitch_rad * 180.0 / PI);
+    // float yaw = 180 - (yaw_rad * 180.0 / PI);
+
+    float roll = roll_rad * 180.0 / PI;
+    float pitch = pitch_rad * 180.0 / PI;
+    float yaw = yaw_rad * 180.0 / PI;
 
     tilt_ary.data[0] = roll;
     tilt_ary.data[1] = pitch;
