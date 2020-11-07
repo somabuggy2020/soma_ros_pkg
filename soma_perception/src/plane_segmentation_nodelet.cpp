@@ -45,17 +45,10 @@ public:
     nh = getNodeHandle();
     pnh = getPrivateNodeHandle();
 
-    //set parameters
-    base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-    input_imu = pnh.param<std::string>("input_imu", "/imu/data"); 
-    input_points = pnh.param<std::string>("input_points", "/camera_F/prefiltered");  //default value is "soma_link"
-    // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
-    setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
-    setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
+    initialize_params();
 
     //advertise topics
     ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
-    floor_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_floor", 1);
     slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
     others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
     //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
@@ -63,9 +56,9 @@ public:
     tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
     rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
 
-    points_sub =  new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, input_points, 3);
-    imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, input_imu, 3);
-    sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(100), *points_sub, *imu_sub);
+    points_sub =  new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
+    imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
+    sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(10), *points_sub, *imu_sub);
     sync->registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2)); 
   }
 
@@ -73,14 +66,12 @@ private:
   /**
    * @brief initialize parameters
    */
-  // void initialize_params() {
-  //   base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-  //   input_imu = pnh.param<std::string>("input_imu", "/imu/data"); 
-  //   input_points = pnh.param<std::string>("input_points", "/camera_F/prefiltered");  //default value is "soma_link"
-  //   // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
-  //   setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
-  //   setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
-  // }
+  void initialize_params() {
+    base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+    // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
+    setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
+    setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
+  }
 
 
   /**
@@ -89,6 +80,10 @@ private:
                         const sensor_msgs::ImuConstPtr &imu_data)
   {
     NODELET_INFO("call cloud_callback function");
+
+    //input roll, pitch, yaw
+    tilt_ary.data.resize(3);
+    rpy_ary.data.resize(3);
 
     pcl::PointCloud<PointT>::Ptr input;
     input.reset(new pcl::PointCloud<PointT>());
@@ -120,11 +115,7 @@ private:
     }
 
 
-    //input roll, pitch, yaw
-    tilt_ary.data.resize(3);
-
-    pcl::PointCloud<PointT>::Ptr pc_gorund(new pcl::PointCloud<PointT>());
-    pcl::PointCloud<PointT>::Ptr pc_floor(new pcl::PointCloud<PointT>());
+    pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
     pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
 
@@ -134,41 +125,79 @@ private:
     inliers.reset(new pcl::PointIndices());
     coeffs.reset(new pcl::ModelCoefficients());
 
+    convert_imu_RPY(imu_data);
+
     segmentation(transformed, inliers, coeffs);
+    pcl::ExtractIndices<PointT> EI;
+    EI.setInputCloud(transformed);
+    EI.setIndices(inliers);
 
-    while(pc_others->points.size() < input->points.size()*0.3) {
-      int i = 0;
-      if(i != 0){
-        segmentation(pc_others, inliers, coeffs);
-      }
+    extract_tilt_RPY(coeffs);
+    EI.setNegative(false);
+    EI.filter(*pc_slope);
 
-      extract_tilt_RPY(coeffs);
-      convert_imu_RPY(*imu_data);
-      
-      pcl::ExtractIndices<PointT> EI;
-      EI.setInputCloud(transformed);
-      EI.setIndices(inliers);
-      if(tilt_ary.data[2] < setted_ground_tilt && pc_gorund->empty()) {
-        EI.setNegative(false); 
-        EI.filter(*pc_gorund);
-      } else {
-        if (rpy_ary.data[2] < setted_slope_tilt && pc_floor->empty()) {
-          EI.setNegative(false);
-          EI.filter(*pc_floor);
-        } else {
-          EI.setNegative(false);
-          EI.filter(*pc_slope);
-        }
-      }
+    EI.setNegative(true);
+    EI.filter(*pc_others);
 
-      EI.setNegative(true);
-      EI.filter(*pc_others);
 
-      i++;
-    }
+    // for (int i=1; i<3; i++) {
+    //   NODELET_INFO("segmentation %d times", i);
 
-    ground_pub.publish(pc_gorund);
-    floor_pub.publish(pc_floor);
+    //   if(i != 1) {
+    //     segmentation(pc_others, inliers, coeffs);
+    //     EI.setInputCloud(pc_others);
+    //     EI.setIndices(inliers);
+    //   }
+
+    //   extract_tilt_RPY(coeffs);
+
+    //   if(setted_slope_tilt < tilt_ary.data[1] && pc_slope->empty()) {
+    //     NODELET_INFO("absolute_slopeTilt, %f", tilt_ary.data[1]);
+    //     EI.setNegative(false);
+    //     EI.filter(*pc_slope);
+    //   } else if(i = 2) {
+    //   // if(i = 2) {
+    //     NODELET_INFO("groundTilt, %f", tilt_ary.data[1]);
+    //     EI.setNegative(false);
+    //     EI.filter(*pc_ground);
+    //   }
+    //   EI.setNegative(true);
+    //   EI.filter(*pc_others);
+    // }
+
+
+
+    // while(pc_others->points.size() < input->points.size()*0.005) {
+    //   int i = 0;
+    //   if(i != 0){
+    //     segmentation(pc_others, inliers, coeffs);
+    //   }
+
+    //   extract_tilt_RPY(coeffs);
+    //   pcl::ExtractIndices<PointT> EI;
+    //   EI.setInputCloud(transformed);
+    //   EI.setIndices(inliers);
+    //   if(tilt_ary.data[1] < setted_ground_tilt && pc_ground->empty()) {
+    //     EI.setNegative(false); 
+    //     EI.filter(*pc_ground);
+    //   } else {
+    //     if (tilt_ary.data[1] < setted_slope_tilt && pc_floor->empty()) {
+    //       EI.setNegative(false);
+    //       EI.filter(*pc_floor);
+    //     } else {
+    //       EI.setNegative(false);
+    //       EI.filter(*pc_slope);
+    //     }
+    //   }
+
+    //   EI.setNegative(true);
+    //   EI.filter(*pc_others);
+
+    //   i++;
+    //   NODELET_INFO("segmentation %d times", i);
+    // }
+
+    ground_pub.publish(pc_ground);
     slope_pub.publish(pc_slope);
     others_pub.publish(pc_others);
     tilt_ary_pub.publish(tilt_ary);
@@ -203,16 +232,16 @@ private:
    * \brief convert_imu_RPY
    * \param imu_data
    */
-  void convert_imu_RPY(const sensor_msgs::Imu &imu_data)
+  void convert_imu_RPY(const sensor_msgs::ImuConstPtr &imu_data)
   {
-      tf2::Quaternion quat_imu;
-      tf2::fromMsg(imu_data.orientation, quat_imu);
-      double roll, pitch, yaw;
-      tf2::Matrix3x3(quat_imu).getRPY(roll, pitch, yaw);
+    tf2::Quaternion quat_imu;
+    tf2::fromMsg(imu_data->orientation, quat_imu);
+    double roll, pitch, yaw;
+    tf2::Matrix3x3(quat_imu).getRPY(roll, pitch, yaw);
 
-      rpy_ary.data[0] = (float)roll;
-      rpy_ary.data[1] = (float)pitch;
-      rpy_ary.data[2] = (float)yaw;
+    rpy_ary.data[0] = (float)roll;
+    rpy_ary.data[1] = (float)pitch;
+    rpy_ary.data[2] = (float)yaw;
   }
 
   /**
@@ -250,8 +279,8 @@ private:
 
   //params
   std::string base_link_frame; //base_link frame id
-  std::string input_imu;
-  std::string input_points;
+  // std::string input_imu;
+  // std::string input_points;
   tf::TransformListener tf_listener;
   // int times_of_rpeats;
   float setted_slope_tilt;
@@ -266,7 +295,6 @@ private:
 
   //publishers
   ros::Publisher ground_pub;
-  ros::Publisher floor_pub;
   ros::Publisher others_pub;
   ros::Publisher slope_pub;
 

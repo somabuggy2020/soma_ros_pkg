@@ -23,12 +23,12 @@
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
         args="load soma_perception/PlaneSegmentationNodelet $(arg nodelet_manager_name)">
-
-        <param name="input_points" value="$(arg input_points)"/>
-        <param name="input_imu" value="$(arg input_imu)"/>
         <param name="base_link" value="$(arg frame_id)"/>
         <param name="setted_slope_tilt" value="25.0"/>
         <param name="setted_ground_tilt" value="3.0"/>
+
+        <remap from="input_points" to="$(arg input_points)"/>
+        <remap from="input_imu" to="$(arg input_imu)"/>
 
   </node>
 
