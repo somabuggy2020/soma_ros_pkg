@@ -149,10 +149,11 @@ namespace soma_perception
         geometry_msgs::TransformStamped tf2base_link;
         tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
         pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
+        NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id);
       }
       catch (tf2::TransformException &e)
       {
-        ROS_WARN("%s", e.what());
+        NODELET_WARN("%s", e.what());
         return;
       }
 
