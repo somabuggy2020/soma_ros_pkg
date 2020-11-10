@@ -118,8 +118,10 @@ namespace soma_perception
 
       if (cloud_raw->empty())
       {
+        NODELET_WARN("empty point cloud");
         return;
       }
+      NODELET_INFO("input point cloud size : %d", (int)cloud_raw->size());
 
       //transform point cloud to base_link_frame
       // pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
@@ -146,7 +148,6 @@ namespace soma_perception
       {
         geometry_msgs::TransformStamped tf2base_link;
         tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
-        // Eigen::MatrixX4f tmat = tf2::transformToEigen(tf2base_link.transform).matrix().cast<float>();
         pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
       }
       catch (tf2::TransformException &e)
