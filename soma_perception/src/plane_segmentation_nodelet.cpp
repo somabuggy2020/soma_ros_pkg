@@ -124,38 +124,45 @@ namespace soma_perception
       NODELET_INFO("input point cloud size : %d", (int)cloud_raw->size());
 
       //transform point cloud to base_link_frame
+
+      //
+      //tf version
+      //
       // pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
-      // if (!base_link_frame.empty())
+      if (!base_link_frame.empty())
+      {
+        if (!tf_listener.canTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0)))
+        {
+          NODELET_WARN("cannot transform");
+          return;
+        }
+
+        //get transform
+        tf::StampedTransform transform;
+        tf_listener.waitForTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), ros::Duration(2.0));
+        tf_listener.lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), transform);
+        //apply transform
+        pcl_ros::transformPointCloud(*cloud_raw, *cloud_raw, transform);
+        // transformed->header.frame_id = base_link_frame;
+        // transformed->header.stamp = cloud_raw->header.stamp;
+        NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id.c_str());
+      }
+
+      //
+      //tf2 version
+      //
+      // try
       // {
-      //   //Does exist transform tf points frame to base frame?
-      //   if (!tf_listener.canTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0)))
-      //   {
-      //     return; //nothing
-      //   }
-
-      //   //get transform
-      //   tf::StampedTransform transform;
-      //   tf_listener.waitForTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), ros::Duration(2.0));
-      //   tf_listener.lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), transform);
-
-      //   pcl_ros::transformPointCloud(*cloud_raw, *transformed, transform);
-      //   transformed->header.frame_id = base_link_frame;
-      //   transformed->header.stamp = cloud_raw->header.stamp;
-      //   // input = transformed; //copy?
+      //   geometry_msgs::TransformStamped tf2base_link;
+      //   tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
+      //   pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
+      //   NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id);
       // }
-
-      try
-      {
-        geometry_msgs::TransformStamped tf2base_link;
-        tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
-        pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
-        NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id);
-      }
-      catch (tf2::TransformException &e)
-      {
-        NODELET_WARN("%s", e.what());
-        return;
-      }
+      // catch (tf2::TransformException &e)
+      // {
+      //   NODELET_WARN("%s", e.what());
+      //   return;
+      // }
 
       //input roll, pitch, yaw
       tilt_ary.data.resize(3);
