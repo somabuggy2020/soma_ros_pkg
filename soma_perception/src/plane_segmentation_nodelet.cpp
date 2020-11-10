@@ -130,6 +130,22 @@ namespace soma_perception
       transform_pointCloud(cloud_raw, *cloud_transformed);
       if(cloud_transformed->empty()) return;
 
+      //convert imu message to Roll Pitch Yaw
+      std_msgs::Float32MultiArray rpy_ary;
+      tilt_ary.data.resize(3);
+      rpy_ary.data.resize(3);
+      convert_imu_RPY(imu_data, rpy_ary);
+      NODELET_INFO("rpy_ary, roll: %f, pitch: %f, yaw: %f", rpy_ary.data[0], rpy_ary.data[1], rpy_ary.data[2]);
+
+
+
+
+      
+
+
+
+
+
       my_pointCloud pc_ary[10];
       for (int i = 0; i < 10; i++)
       {
