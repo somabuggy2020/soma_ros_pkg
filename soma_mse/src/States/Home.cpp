@@ -2,28 +2,22 @@
 
 Home::Home(double _lim_d) : lim_d(_lim_d)
 {
-  // Pure pursuit config
-  // PpCfg.Pt = QPointF(0.0, 0.0);
-  // PpCfg.Ps = QPointF(0.0, 0.0);
-  // PpCfg.v_const = 0.8;
-  // PpCfg.dt = 0.5;
-  // PpCfg.W = (float)WHEEL_BASE;
 }
 
 int Home::_Transition(Data_t *data)
 {
   // force quit
-//  if (data->action == Action::Stop)
-//    return State::Stop;
+  if (data->command == Command::Stop)
+    return State::Stop;
 
-//  if (Dist(data->Pg.x, data->Xt.position.x,
-//           data->Pg.y, data->Xt.position.y) <= lim_d)
-//  {
-//    data->action = Action::Stop;
-//    return State::Stop;
-//  }
+  // stop?
+  if (Dist(data->pg.point.x, data->x_t.position.x,
+           data->pg.point.y, data->x_t.position.y) <= lim_d)
+  {
+    data->command = Command::Stop;
+  }
 
-  return State::Home;
+  return State::GoHome;
 }
 
 int Home::_Enter(Data_t *data)

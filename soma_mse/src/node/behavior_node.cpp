@@ -69,16 +69,16 @@ public:
                                                              &Behavior::clicked_point_callback, this);
 
     command_sub = nh.subscribe<std_msgs::String>("/soma_command", 1,
-                                               &Behavior::command_callback, this);
+                                                 &Behavior::command_callback, this);
 
     odom_sub = nh.subscribe<nav_msgs::Odometry>("/odom", 3,
                                                 &Behavior::odom_callback, this);
 
     //Publisher
-    ros::Publisher state_pub;
-    ros::Publisher pg_pub;
-    ros::Publisher xt_pub;
-    ros::Publisher ut_pub;  //lambda and v at t
+    state_pub = nh.advertise<std_msgs::String>("/soma_state", 3);
+    pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3);
+    xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);
+    ut_pub = nh.advertise<geo_msgs::TwistStamped>("/som_ut", 3);
 
     //local members
     Data_t data;
@@ -88,7 +88,7 @@ public:
     home = new Home(3.0);
     states[State::Stop] = stop;
     states[State::MoveTo] = moveto;
-    states[State::Home] = home;
+    states[State::GoHome] = home;
 
     ROS_INFO("Start timer callback");
     timer = nh.createTimer(ros::Duration((double)TIMER_T),
@@ -96,42 +96,26 @@ public:
                            this);
   }
 
-        //Publisher
-        state_pub = nh.advertise<s_msgs::String>("/soma_state", 3);
-        pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3);
-        xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);
-        ut_pub = nh.advertise<std_msgs::Float32MultiArray>("/som_ut", 3);
-
 private:
   void main(const ros::TimerEvent &e)
   {
-    //FMS
-    int new_state = states[data.state]->Transition(&data);
-
-        ROS_INFO("Start timer callback");
-        timer = nh.createTimer(ros::Duration((double)TIMER_T),
-                               &Behavior::main,
-                               this);
-
-    }
-    else{
-      states[data.state]->Process(&data);
-    }
-
-private:
-    void main(const ros::TimerEvent &e)
-    {
-        ROS_INFO("State:%s", State::Str.at(data.state).c_str());
-        ROS_INFO("Pg:(%.2f, %.2f)", data._pg.point.x, data._pg.point.y);
-        ROS_INFO("Xt:(%.2f, %.2f, %.2f)",
-                 data._xt.pose.position.x,
-                 data._xt.pose.position.y,
-                 data._yaw_t);
-
     //log info
     ROS_INFO("State:%s / Command:%s",
              State::Str.at(data.state).c_str(),
              Command::Str.at(data.command).c_str());
+
+
+
+    //fms
+    int new_state = states[data.state]->Transition(&data);
+    if(new_state != data.state){
+      states[data.state]->Exit(&data);
+      states[new_state]->Enter(&data);
+      data.state = new_state;
+    }
+    else{
+      states[data.state]->Process(&data);
+    }
 
 
     //Publish
@@ -139,11 +123,11 @@ private:
     smsgs.data = State::Str.at(data.state);
     state_pub.publish(smsgs);
 
-    geo_msgs::PointStamped pg_msgs;
-    pg_msgs.header.frame_id = map_frame_id;
-    pg_msgs.header.stamp = ros::Time::now();
-    pg_msgs.point = data.pg;
-    pg_pub.publish(pg_msgs);
+    // geo_msgs::PointStamped pg_msgs;
+    // pg_msgs.header = data.pg.header;
+    // pg_msgs.header.stamp = ros::Time::now();
+    // pg_msgs.point = data.pg.point;
+    pg_pub.publish(data.pg);
 
     geo_msgs::PoseStamped xt_msgs;
     xt_msgs.header.frame_id = map_frame_id;
@@ -171,35 +155,25 @@ private:
     ROS_INFO("Subscribe target point:%.1f,%.1f,%.1f",
              msg->point.x, msg->point.y, msg->point.z);
 
-    data.pg = msg->point;
+    // data.pg = msg->point;
+    data.pg = *msg;
+    data.pg.header.stamp = ros::Time::now();
     return;
   }
 
   void command_callback(const std_msgs::StringConstPtr &msg)
   {
-    ROS_INFO("Command:%s", msg->data.c_str());
+    //    ROS_INFO("Command:%s", msg->data.c_str());
 
     if (msg->data == "stop")
     {
-        data._xt.header.frame_id = msg->header.frame_id;
-        data._xt.header.stamp = ros::Time::now();
-        data._xt.pose = msg->pose.pose;
-
-        tf::Quaternion q(
-            msg->pose.pose.orientation.x,
-            msg->pose.pose.orientation.y,
-            msg->pose.pose.orientation.z,
-            msg->pose.pose.orientation.w);
-        tf::Matrix3x3 m(q);
-        double roll, pitch, yaw;
-        m.getRPY(roll, pitch, yaw);
-        data._yaw_t = yaw;
+      data.command = Command::Stop;
     }
     else if (msg->data == "moveto")
     {
       data.command = Command::MoveTo;
     }
-    else if (msg->data == "home")
+    else if (msg->data == "gohome")
     {
       data.command = Command::GoHome;
     }

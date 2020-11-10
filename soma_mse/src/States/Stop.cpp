@@ -8,7 +8,7 @@ int Stop::_Transition(Data_t *data)
     return State::MoveTo;
 
   if (data->command == Command::GoHome)
-    return State::Home;
+    return State::GoHome;
 
   return State::Stop;
 }

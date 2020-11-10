@@ -1,0 +1,18 @@
+local_costmap:
+  plugins: 
+    - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
+  global_frame: map
+  robot_base_frame: soma_link
+  rolling_window: true
+  resolution: 0.1
+  update_frequency: 2.0
+  publish_frequency: 2.0
+
+  obstacle_layer:
+    observation_sources: pointcloud
+    pointcloud: 
+      sensor_frame: camera_R_link
+      topic: /camera_R/prefiltered
+      data_type: PointCloud2
+      marking: true
+      clearing: true
