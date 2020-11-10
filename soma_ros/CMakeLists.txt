@@ -94,23 +94,23 @@ add_executable(rot_steer_recv_node
 add_executable(steer_send_node
     src/nodes/steer_send_node.cpp
 )
-add_executable(behavior_node
-    src/nodes/behavior_node.cpp
-    src/Data/Data.cpp
-    src/Behavior/StateBase/StateBase.cpp
-    src/Behavior/Stop.cpp
-    src/Behavior/Wander.cpp
-    )
-add_executable(behavior_node_MSE
-    src/behavior_node_MSE.cpp
-    src/Data/Data.cpp
-    src/Communicate/Communicate.cpp
-    src/Behavior/StateBase/StateBase.cpp
-    src/Behavior/Stop.cpp
-    src/Behavior/MoveTo.cpp
-    src/Behavior/Home.cpp
-#    include/soma_ros/Behavior/MotionControl/PurePursuit.h
-    )
+#add_executable(behavior_node
+#    src/nodes/behavior_node.cpp
+#    src/Data/Data.cpp
+#    src/Behavior/StateBase/StateBase.cpp
+#    src/Behavior/Stop.cpp
+#    src/Behavior/Wander.cpp
+#    )
+#add_executable(behavior_node_MSE
+#    src/behavior_node_MSE.cpp
+#    src/Data/Data.cpp
+#    src/Communicate/Communicate.cpp
+#    src/Behavior/StateBase/StateBase.cpp
+#    src/Behavior/Stop.cpp
+#    src/Behavior/MoveTo.cpp
+#    src/Behavior/Home.cpp
+##    include/soma_ros/Behavior/MotionControl/PurePursuit.h
+#    )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -135,14 +135,14 @@ target_link_libraries(steer_send_node
     ${catkin_LIBRARIES}
     ${QT_LIBRARIES}
     )
-target_link_libraries(behavior_node
-    ${catkin_LIBRARIES}
-    ${QT_LIBRARIES}
-    )
-target_link_libraries(behavior_node_MSE
-    ${catkin_LIBRARIES}
-    ${QT_LIBRARIES}
-    )
+#target_link_libraries(behavior_node
+#    ${catkin_LIBRARIES}
+#    ${QT_LIBRARIES}
+#    )
+#target_link_libraries(behavior_node_MSE
+#    ${catkin_LIBRARIES}
+#    ${QT_LIBRARIES}
+#    )
 
 
 
