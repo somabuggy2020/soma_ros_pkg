@@ -156,21 +156,16 @@ namespace soma_perception
       cloud_raw->clear();
       pcl::copyPointCloud(*cloud_transformed, *cloud_raw);
 
-      segmentation(cloud_raw, inliers, coeffs);
-      pcl::ExtractIndices<PointT> EI;
-      EI.setInputCloud(cloud_raw);
-      EI.setIndices(inliers);
-
-      // extract_tilt_RPY(coeffs);
-      // EI.setNegative(false);
-      // if(setted_slope_tilt < tilt_ary.data[1]) {
-      //   pc_ary[0].judge = 2;
-      // }
-      // EI.filter(*pc_ary[0].pc);
-
       int i = 0;
       while (cloud_raw->points.size() * 0.3 < pc_others->points.size() || i < 5)
       {
+        pcl::ExtractIndices<PointT> EI;
+        if (i = 0)
+        {
+          segmentation(cloud_raw, inliers, coeffs);
+          EI.setInputCloud(cloud_raw);
+          EI.setIndices(inliers);
+        }
         if (i != 0)
         {
           segmentation(pc_others, inliers, coeffs);
