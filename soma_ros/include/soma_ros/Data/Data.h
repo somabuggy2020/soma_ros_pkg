@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DATA_H
+#define DATA_H
 
 #include <costmap_2d/costmap_2d_ros.h>
 #include <dwa_local_planner/dwa_planner_ros.h>
@@ -84,17 +85,18 @@ public:
   ~Data();
 
 public:
-  // std::string ros_distro;
   int state, last_state;
   int action;
 
   geometry_msgs::Pose Xt;    //state vector (slam /odom)
+  geometry_msgs::Pose Xt_DR; //state vector (calculated dead recogning)
 
-  int clutch; //clutch direction state (1:foward, 2:reverse)
+  int clutch;   //clutch direction state (1:foward, 2:reverse)
 
-  // float vt; // Current robot linear velocity (x-axis)
-  // float wt; // Current robot angular velocity (round z-axis)
-  // int np; // number of neighborfood points
+  float vt; // Current robot linear velocity (x-axis)
+  float wt; // Current robot angular velocity (round z-axis)
+
+  int np; // number of neighborfood points
 
   geometry_msgs::Point Pg; // target point in global coordinate system
   ControlInput_t Uin;      // Control input vector
@@ -111,28 +113,29 @@ public:
 
 namespace State
 {
-  const int Stop = 0;
-  const int MoveTo = 1; // for Matsumoto
-  const int Home = 2;   // for Matsumoto
+const int Stop = 0;
+const int MoveTo = 1; // for Matsumoto
+const int Home = 2;   // for Matsumoto
 
-  // for wander behavior
-  const int Wander = 3;
+// for wander behavior
+const int Wander = 3;
 
-  namespace WanderSubState
-  {
-  }
+namespace WanderSubState {
+}
 
-  const std::map<int, std::string> Str = {
-      {Stop, "Stop"}, {MoveTo, "MoveTo"}, {Home, "Home"}, {Wander, "Wander"}};
+const std::map<int, std::string> Str = {
+  {Stop, "Stop"}, {MoveTo, "MoveTo"}, {Home, "Home"}, {Wander, "Wander"}};
 } // namespace State
 
 namespace Action
 {
-  const int Stop = 0;
-  const int Start = 1; //Autonomous
-  const int MoveTo = 2;
-  const int Home = 3;
+const int Stop = 0;
+const int Start = 1; //Autonomous
+const int MoveTo = 2;
+const int Home = 3;
 
-  const std::map<int, std::string> Str = {
-      {Stop, "Stop"}, {Start, "Start"}, {MoveTo, "MoveTo"}, {Home, "Home"}};
+const std::map<int, std::string> Str = {
+  {Stop, "Stop"}, {Start, "Start"},{MoveTo, "MoveTo"}, {Home, "Home"}};
 } // namespace Action
+
+#endif
