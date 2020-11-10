@@ -13,6 +13,9 @@
 
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Quaternion.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2_eigen/tf2_eigen.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <pcl/point_types.h>
@@ -52,6 +55,9 @@ namespace soma_perception
 
       nh = getNodeHandle();
       pnh = getPrivateNodeHandle();
+
+      tfBuf = new tf2_ros::Buffer();
+      tfListener = new tf2_ros::TransformListener(*tfBuf);
 
       initialize_params();
 
@@ -115,34 +121,43 @@ namespace soma_perception
         return;
       }
 
+      //transform point cloud to base_link_frame
+      // pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
+      // if (!base_link_frame.empty())
+      // {
+      //   //Does exist transform tf points frame to base frame?
+      //   if (!tf_listener.canTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0)))
+      //   {
+      //     return; //nothing
+      //   }
 
+      //   //get transform
+      //   tf::StampedTransform transform;
+      //   tf_listener.waitForTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), ros::Duration(2.0));
+      //   tf_listener.lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), transform);
 
+      //   pcl_ros::transformPointCloud(*cloud_raw, *transformed, transform);
+      //   transformed->header.frame_id = base_link_frame;
+      //   transformed->header.stamp = cloud_raw->header.stamp;
+      //   // input = transformed; //copy?
+      // }
 
+      try
+      {
+        geometry_msgs::TransformStamped tf2base_link;
+        tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
+        // Eigen::MatrixX4f tmat = tf2::transformToEigen(tf2base_link.transform).matrix().cast<float>();
+        pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
+      }
+      catch (tf2::TransformException &e)
+      {
+        ROS_WARN("%s", e.what());
+        return;
+      }
 
       //input roll, pitch, yaw
       tilt_ary.data.resize(3);
       rpy_ary.data.resize(3);
-
-      pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
-
-      if (!base_link_frame.empty())
-      {
-        //Does exist transform tf points frame to base frame?
-        if (!tf_listener.canTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0)))
-        {
-          return; //nothing
-        }
-
-        //get transform
-        tf::StampedTransform transform;
-        tf_listener.waitForTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), ros::Duration(2.0));
-        tf_listener.lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), transform);
-
-        pcl_ros::transformPointCloud(*cloud_raw, *transformed, transform);
-        transformed->header.frame_id = base_link_frame;
-        transformed->header.stamp = cloud_raw->header.stamp;
-        // input = transformed; //copy?
-      }
 
       my_pointCloud pc_ary[10];
       for (int i = 0; i < 10; i++)
@@ -158,9 +173,9 @@ namespace soma_perception
 
       convert_imu_RPY(imu_data);
 
-      segmentation(transformed, inliers, coeffs);
+      segmentation(cloud_raw, inliers, coeffs);
       pcl::ExtractIndices<PointT> EI;
-      EI.setInputCloud(transformed);
+      EI.setInputCloud(cloud_raw);
       EI.setIndices(inliers);
 
       // extract_tilt_RPY(coeffs);
@@ -332,6 +347,8 @@ namespace soma_perception
     // std::string input_imu;
     // std::string input_points;
     tf::TransformListener tf_listener;
+    tf2_ros::Buffer *tfBuf;
+    tf2_ros::TransformListener *tfListener;
     // int times_of_rpeats;
     float setted_slope_tilt;
     float setted_ground_tilt;
