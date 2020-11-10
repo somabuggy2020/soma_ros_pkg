@@ -33,7 +33,8 @@ typedef pcl::PointXYZRGB PointT;
 
 struct my_pointCloud{
     pcl::PointCloud<PointT>::Ptr pc;
-    bool judge = false;
+    int judge = 3;
+    //0...ground, 1...floor, 2...slope, 3...others
 };
 
 
@@ -82,16 +83,16 @@ private:
   }
 
   void adevertise(ros::NodeHandle nh) {
-    slope_1_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_1", 1);
-    slope_2_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_2", 1);
-    slope_3_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_3", 1);
-    slope_4_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_4", 1);
-    slope_5_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_5", 1);
-    slope_6_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_6", 1);
-    slope_7_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_7", 1);
-    slope_8_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_8", 1);
-    slope_9_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_9", 1);
-    slope_10_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_10", 1);
+    cloud_1_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_1", 1);
+    cloud_2_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_2", 1);
+    cloud_3_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_3", 1);
+    cloud_4_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_4", 1);
+    cloud_5_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_5", 1);
+    cloud_6_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_6", 1);
+    cloud_7_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_7", 1);
+    cloud_8_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_8", 1);
+    cloud_9_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_9", 1);
+    cloud_10_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_10", 1);
   }
 
 
@@ -135,15 +136,12 @@ private:
       // input = transformed; //copy?
     }
 
-    ///loop segmentation
     my_pointCloud pc_ary[10];
     for (int i=0; i < 10; i++) {
       pc_ary[i].pc.reset(new pcl::PointCloud<PointT>());
     }
-    NODELET_INFO("initialize struct");
     pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
 
-    //perform segnemtation
     pcl::PointIndices::Ptr inliers;
     pcl::ModelCoefficients::Ptr coeffs;
     inliers.reset(new pcl::PointIndices());
@@ -159,7 +157,7 @@ private:
     // extract_tilt_RPY(coeffs);
     // EI.setNegative(false);
     // if(setted_slope_tilt < tilt_ary.data[1]) {
-    //   pc_ary[0].judge = true;
+    //   pc_ary[0].judge = 2;
     // }
     // EI.filter(*pc_ary[0].pc);
 
@@ -170,25 +168,19 @@ private:
         EI.setInputCloud(pc_others);
         EI.setIndices(inliers);
       }
-
       extract_tilt_RPY(coeffs);
-      // if(tilt_ary.data[1] < setted_ground_tilt && pc_ground->empty()) {
-      //   EI.setNegative(false); 
-      //   EI.filter(*pc_ground);
-      // } else {
-      //   if (tilt_ary.data[1] < setted_slope_tilt && pc_floor->empty()) {
-      //     EI.setNegative(false);
-      //     EI.filter(*pc_floor);
-      //   } else {
-      //     EI.setNegative(false);
-      //     EI.filter(*pc_slope);
-      //   }
-      // }
-
-      if(setted_slope_tilt < tilt_ary.data[1]) {
+      if(tilt_ary.data[1] < setted_ground_tilt) {
         EI.setNegative(false);
         EI.filter(*pc_ary[i].pc);
-        pc_ary[i].judge = true;
+        pc_ary[i].judge = 0;
+      } else if( (tilt_ary.data[1]+rpy_ary.data[1]) < setted_slope_tilt) {
+        EI.setNegative(false);
+        EI.filter(*pc_ary[i].pc);
+        pc_ary[i].judge = 1;
+      } else if(setted_slope_tilt < (tilt_ary.data[1]+rpy_ary.data[1]) ) {
+        EI.setNegative(false);
+        EI.filter(*pc_ary[i].pc);
+        pc_ary[i].judge = 2;
       }
 
       EI.setNegative(true);
@@ -198,39 +190,40 @@ private:
       NODELET_INFO("segmentation %d times", i);
     }
 
-    for(int i=0; i<5; i++) {
-      if(pc_ary[i].judge) {
-        switch (i)
+    //publish topics only when pc_ary[i] is slope
+    for(int k=0; k<5; k++) {
+      if(pc_ary[k].judge == 2) {
+        switch (k)
         {
           case 0:
-          slope_1_pub.publish(pc_ary[0].pc);
+            cloud_1_pub.publish(pc_ary[0].pc);
           break;
           case 1:
-          slope_2_pub.publish(pc_ary[1].pc);
+            cloud_2_pub.publish(pc_ary[1].pc);
           break;
           case 2:
-          slope_3_pub.publish(pc_ary[2].pc);
+            cloud_3_pub.publish(pc_ary[2].pc);
           break;
           case 3:
-          slope_4_pub.publish(pc_ary[3].pc);
+            cloud_4_pub.publish(pc_ary[3].pc);
           break;
           case 4:
-          slope_5_pub.publish(pc_ary[4].pc);
+            cloud_5_pub.publish(pc_ary[4].pc);
           break;
           case 5:
-          slope_6_pub.publish(pc_ary[5].pc);
+            cloud_6_pub.publish(pc_ary[5].pc);
           break;
           case 6:
-          slope_7_pub.publish(pc_ary[6].pc);
+            cloud_7_pub.publish(pc_ary[6].pc);
           break;
           case 7:
-          slope_8_pub.publish(pc_ary[7].pc);
+            cloud_8_pub.publish(pc_ary[7].pc);
           break;
           case 8:
-          slope_9_pub.publish(pc_ary[8].pc);
+            cloud_9_pub.publish(pc_ary[8].pc);
           break;
           case 9:
-          slope_10_pub.publish(pc_ary[9].pc);
+            cloud_10_pub.publish(pc_ary[9].pc);
           break;
           default:
             break;
@@ -335,16 +328,16 @@ private:
   //publishers
   ros::Publisher others_pub;
 
-  ros::Publisher slope_1_pub;
-  ros::Publisher slope_2_pub;
-  ros::Publisher slope_3_pub;
-  ros::Publisher slope_4_pub;
-  ros::Publisher slope_5_pub;
-  ros::Publisher slope_6_pub;
-  ros::Publisher slope_7_pub;
-  ros::Publisher slope_8_pub;
-  ros::Publisher slope_9_pub;
-  ros::Publisher slope_10_pub;
+  ros::Publisher cloud_1_pub;
+  ros::Publisher cloud_2_pub;
+  ros::Publisher cloud_3_pub;
+  ros::Publisher cloud_4_pub;
+  ros::Publisher cloud_5_pub;
+  ros::Publisher cloud_6_pub;
+  ros::Publisher cloud_7_pub;
+  ros::Publisher cloud_8_pub;
+  ros::Publisher cloud_9_pub;
+  ros::Publisher cloud_10_pub;
 
   // ros::Publisher coeffs_pub;
   ros::Publisher tilt_ary_pub;
