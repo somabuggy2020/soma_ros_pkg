@@ -63,7 +63,7 @@ namespace soma_perception
 
       //advertise topics
       // ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
-      // slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
+      slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
       others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
       //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
       //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
@@ -73,7 +73,7 @@ namespace soma_perception
 
       points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
       imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
-      sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(10), *points_sub, *imu_sub);
+      sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(300), *points_sub, *imu_sub);
       sync->registerCallback(boost::bind(&PlaneSegmentationNodelet::cloud_callback, this, _1, _2));
     }
 
@@ -130,6 +130,28 @@ namespace soma_perception
       transform_pointCloud(cloud_raw, *cloud_transformed);
       if(cloud_transformed->empty()) return;
 
+      my_pointCloud pc_ary[10];
+      for (int i = 0; i < 10; i++)
+      {
+        pc_ary[i].pc.reset(new pcl::PointCloud<PointT>());
+      }
+      pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
+      pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
+
+      cloud_raw->clear();
+      pcl::copyPointCloud(*cloud_transformed, *cloud_raw);
+
+      detection_slope(cloud_raw, imu_data, pc_slope, pc_others);
+
+
+      slope_pub.publish(pc_slope);
+      others_pub.publish(pc_others);
+      tilt_ary_pub.publish(tilt_ary);
+      // rpy_ary_pub.publish(rpy_ary);
+    }
+
+    void detection_slope(pcl::PointCloud<PointT>::Ptr raw, sensor_msgs::ImuConstPtr imu_data, pcl::PointCloud<PointT>::Ptr &slope, pcl::PointCloud<PointT>::Ptr &others)
+    {
       //convert imu message to Roll Pitch Yaw
       std_msgs::Float32MultiArray rpy_ary;
       tilt_ary.data.resize(3);
@@ -137,114 +159,49 @@ namespace soma_perception
       convert_imu_RPY(imu_data, rpy_ary);
       NODELET_INFO("rpy_ary, roll: %f, pitch: %f, yaw: %f", rpy_ary.data[0], rpy_ary.data[1], rpy_ary.data[2]);
 
-
-
-
-
-      my_pointCloud pc_ary[10];
-      for (int i = 0; i < 10; i++)
-      {
-        pc_ary[i].pc.reset(new pcl::PointCloud<PointT>());
-      }
-      pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
-
       pcl::PointIndices::Ptr inliers;
       pcl::ModelCoefficients::Ptr coeffs;
       inliers.reset(new pcl::PointIndices());
       coeffs.reset(new pcl::ModelCoefficients());
+      pcl::ExtractIndices<PointT> EI;
 
-      cloud_raw->clear();
-      pcl::copyPointCloud(*cloud_transformed, *cloud_raw);
+      pcl::PointCloud<PointT>::Ptr _slope(new pcl::PointCloud<PointT>());
 
       int i = 0;
-      while (cloud_raw->points.size() * 0.3 < pc_others->points.size() || i < 5)
-      {
-        pcl::ExtractIndices<PointT> EI;
-        if (i = 0)
-        {
-          segmentation(cloud_raw, inliers, coeffs);
-          EI.setInputCloud(cloud_raw);
+      while (i < 5) {
+        if (i == 0) {
+          segmentation(raw, inliers, coeffs);
+          EI.setInputCloud(raw);
           EI.setIndices(inliers);
         }
-        if (i != 0)
-        {
-          segmentation(pc_others, inliers, coeffs);
-          EI.setInputCloud(pc_others);
+        if(i != 0) {
+          segmentation(others, inliers, coeffs);
+          EI.setInputCloud(others);
           EI.setIndices(inliers);
         }
+
         extract_tilt_RPY(coeffs);
-        if (tilt_ary.data[1] < setted_ground_tilt)
-        {
+        if(setted_slope_tilt < tilt_ary.data[1]) {
           EI.setNegative(false);
-          EI.filter(*pc_ary[i].pc);
-          pc_ary[i].judge = 0;
-        }
-        else if ((tilt_ary.data[1] + rpy_ary.data[1]) < setted_slope_tilt)
-        {
-          EI.setNegative(false);
-          EI.filter(*pc_ary[i].pc);
-          pc_ary[i].judge = 1;
-        }
-        else if (setted_slope_tilt < (tilt_ary.data[1] + rpy_ary.data[1]))
-        {
-          EI.setNegative(false);
-          EI.filter(*pc_ary[i].pc);
-          pc_ary[i].judge = 2;
+          if(i == 0) {
+            EI.filter(*slope);  
+          } else {
+            EI.filter(*_slope);
+          }
         }
 
         EI.setNegative(true);
-        EI.filter(*pc_others);
+        EI.filter(*others); 
+        if(i != 0) {
+          *slope += *_slope;
+          // slope->resize(slope->size() + _slope->size());
+          // pcl::concatenateFields(*slope, *_slope, *slope);
+        }
 
         i++;
-        NODELET_INFO("segmentation %d times", i);
+        NODELET_INFO("%d times", i);
+        NODELET_INFO("others.size: %d", (int)others->size());       
       }
-
-      //publish topics only when pc_ary[i] is slope
-      for (int k = 0; k < 5; k++)
-      {
-        if (pc_ary[k].judge == 2)
-        {
-          switch (k)
-          {
-          case 0:
-            cloud_1_pub.publish(pc_ary[0].pc);
-            break;
-          case 1:
-            cloud_2_pub.publish(pc_ary[1].pc);
-            break;
-          case 2:
-            cloud_3_pub.publish(pc_ary[2].pc);
-            break;
-          case 3:
-            cloud_4_pub.publish(pc_ary[3].pc);
-            break;
-          case 4:
-            cloud_5_pub.publish(pc_ary[4].pc);
-            break;
-          case 5:
-            cloud_6_pub.publish(pc_ary[5].pc);
-            break;
-          case 6:
-            cloud_7_pub.publish(pc_ary[6].pc);
-            break;
-          case 7:
-            cloud_8_pub.publish(pc_ary[7].pc);
-            break;
-          case 8:
-            cloud_9_pub.publish(pc_ary[8].pc);
-            break;
-          case 9:
-            cloud_10_pub.publish(pc_ary[9].pc);
-            break;
-          default:
-            break;
-          }
-        }
-      }
-
-      others_pub.publish(pc_others);
-      tilt_ary_pub.publish(tilt_ary);
-      rpy_ary_pub.publish(rpy_ary);
     }
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input, pcl::PointCloud<PointT> &output) {
@@ -361,6 +318,7 @@ namespace soma_perception
     message_filters::Synchronizer<MySyncPolicy> *sync;
 
     //publishers
+    ros::Publisher slope_pub;
     ros::Publisher others_pub;
 
     ros::Publisher cloud_1_pub;
