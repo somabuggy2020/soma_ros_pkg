@@ -124,49 +124,22 @@ namespace soma_perception
       NODELET_INFO("input point cloud size : %d", (int)cloud_raw->size());
 
       //transform point cloud to base_link_frame
+      pcl::PointCloud<PointT>::Ptr cloud_transformed;
+      cloud_transformed.reset(new pcl::PointCloud<PointT>);
+      cloud_transformed->clear();
+      transform_pointCloud(cloud_raw, *cloud_transformed);
+      if(cloud_transformed->empty()) return;
 
-      //
-      //tf version
-      //
-      // pcl::PointCloud<PointT>::Ptr transformed(new pcl::PointCloud<PointT>());
-      if (!base_link_frame.empty())
-      {
-        if (!tf_listener.canTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0)))
-        {
-          NODELET_WARN("cannot transform");
-          return;
-        }
-
-        //get transform
-        tf::StampedTransform transform;
-        tf_listener.waitForTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), ros::Duration(2.0));
-        tf_listener.lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0), transform);
-        //apply transform
-        pcl_ros::transformPointCloud(*cloud_raw, *cloud_raw, transform);
-        // transformed->header.frame_id = base_link_frame;
-        // transformed->header.stamp = cloud_raw->header.stamp;
-        NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id.c_str());
-      }
-
-      //
-      //tf2 version
-      //
-      // try
-      // {
-      //   geometry_msgs::TransformStamped tf2base_link;
-      //   tf2base_link = tfBuf->lookupTransform(base_link_frame, cloud_raw->header.frame_id, ros::Time(0));
-      //   pcl_ros::transformPointCloud<PointT>(*cloud_raw, *cloud_raw, tf2base_link.transform);
-      //   NODELET_INFO("transformed point cloud (frame_id=%s)", cloud_raw->header.frame_id);
-      // }
-      // catch (tf2::TransformException &e)
-      // {
-      //   NODELET_WARN("%s", e.what());
-      //   return;
-      // }
-
-      //input roll, pitch, yaw
+      //convert imu message to Roll Pitch Yaw
+      std_msgs::Float32MultiArray rpy_ary;
       tilt_ary.data.resize(3);
       rpy_ary.data.resize(3);
+      convert_imu_RPY(imu_data, rpy_ary);
+      NODELET_INFO("rpy_ary, roll: %f, pitch: %f, yaw: %f", rpy_ary.data[0], rpy_ary.data[1], rpy_ary.data[2]);
+
+
+
+
 
       my_pointCloud pc_ary[10];
       for (int i = 0; i < 10; i++)
@@ -180,7 +153,8 @@ namespace soma_perception
       inliers.reset(new pcl::PointIndices());
       coeffs.reset(new pcl::ModelCoefficients());
 
-      convert_imu_RPY(imu_data);
+      cloud_raw->clear();
+      pcl::copyPointCloud(*cloud_transformed, *cloud_raw);
 
       segmentation(cloud_raw, inliers, coeffs);
       pcl::ExtractIndices<PointT> EI;
@@ -278,6 +252,28 @@ namespace soma_perception
       rpy_ary_pub.publish(rpy_ary);
     }
 
+    void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input, pcl::PointCloud<PointT> &output) {
+       if (!base_link_frame.empty())
+      {
+        if (!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0)))
+        {
+          NODELET_WARN("cannot transform %s->%s", input->header.frame_id.c_str(), base_link_frame.c_str());
+          return;
+        }
+
+        //get transform
+        tf::StampedTransform transform;
+        tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(2.0));
+        tf_listener.lookupTransform(base_link_frame, input->header.frame_id, ros::Time(0), transform);
+        //apply transform
+        pcl_ros::transformPointCloud(*input, output, transform);
+        output.header.frame_id = base_link_frame;
+        output.header.stamp = input->header.stamp;
+        NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
+      }
+
+    }
+
     /**
    * \brief segmentation
    * \param input
@@ -306,7 +302,7 @@ namespace soma_perception
    * \brief convert_imu_RPY
    * \param imu_data
    */
-    void convert_imu_RPY(const sensor_msgs::ImuConstPtr &imu_data)
+    void convert_imu_RPY(const sensor_msgs::ImuConstPtr &imu_data, std_msgs::Float32MultiArray &rpy_ary)
     {
       tf2::Quaternion quat_imu;
       tf2::fromMsg(imu_data->orientation, quat_imu);
@@ -390,7 +386,6 @@ namespace soma_perception
     //  pcl_msgs::PointIndices indices_ros;
     //  pcl_msgs::ModelCoefficients coeffs_ros;
     std_msgs::Float32MultiArray tilt_ary;
-    std_msgs::Float32MultiArray rpy_ary;
   };
 } // namespace soma_perception
 
