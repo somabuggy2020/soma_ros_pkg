@@ -32,13 +32,6 @@ namespace soma_perception
   typedef pcl::PointXYZRGB PointT;
   typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::PointCloud2, sensor_msgs::Imu> MySyncPolicy;
 
-  // struct my_pointCloud
-  // {
-  //   pcl::PointCloud<PointT>::Ptr pc;
-  //   int judge = 3;
-  //   //0...ground, 1...floor, 2...slope, 3...others
-  // };
-
   class PlaneSegmentationNodelet : public nodelet::Nodelet
   {
   public:
@@ -61,7 +54,6 @@ namespace soma_perception
       //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
       tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
       rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
-      // adevertise(nh);
 
       points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
       imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
@@ -80,20 +72,6 @@ namespace soma_perception
       setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
       setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
     }
-
-    // void adevertise(ros::NodeHandle nh)
-    // {
-    // cloud_1_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_1", 1);
-    // cloud_2_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_2", 1);
-    // cloud_3_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_3", 1);
-    // cloud_4_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_4", 1);
-    // cloud_5_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_5", 1);
-    // cloud_6_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_6", 1);
-    // cloud_7_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_7", 1);
-    // cloud_8_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_8", 1);
-    // cloud_9_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_9", 1);
-    // cloud_10_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_10", 1);
-    // }
 
     void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &cloud_input,
                         const sensor_msgs::ImuConstPtr &imu_data)
@@ -126,20 +104,12 @@ namespace soma_perception
       // (0) imu data preprocessing
       // compute roll, pitch, yaw value [degree]
       //--------------------------------------------------
-      //convert imu message to Roll Pitch Yaw
       tf2::Quaternion quat;
       double roll, pitch, yaw;
       tf2::fromMsg(imu_data->orientation, quat); //to tf2::Quaternion
       tf2::Matrix3x3 qmat(quat);                 //
       qmat.getRPY(roll, pitch, yaw);             //get roll,pitch,yaw [deg]
       NODELET_INFO("imu: roll=%3.2f, pitch=%3.2f, yaw=%3.2f", roll, pitch, yaw);
-
-      //いらない？
-      // my_pointCloud pc_ary[10];
-      // for (int i = 0; i < 10; i++)
-      // {
-      //   pc_ary[i].pc.reset(new pcl::PointCloud<PointT>());
-      // }
 
       //--------------------------------------------------
       // (1) slope detection process
@@ -196,11 +166,6 @@ namespace soma_perception
                          pcl::PointCloud<PointT>::Ptr &slope,
                          pcl::PointCloud<PointT>::Ptr &others)
     {
-      //convert imu message to Roll Pitch Yaw
-      // std_msgs::Float32MultiArray rpy_ary;
-      // rpy_ary.data.resize(3);
-      // convert_imu_RPY(imu_data, rpy_ary);
-
       pcl::PointIndices::Ptr inliers;
       pcl::ModelCoefficients::Ptr coeffs;
       inliers.reset(new pcl::PointIndices());
@@ -386,17 +351,6 @@ namespace soma_perception
     //publishers
     ros::Publisher slope_pub;
     ros::Publisher others_pub;
-
-    // ros::Publisher cloud_1_pub;
-    // ros::Publisher cloud_2_pub;
-    // ros::Publisher cloud_3_pub;
-    // ros::Publisher cloud_4_pub;
-    // ros::Publisher cloud_5_pub;
-    // ros::Publisher cloud_6_pub;
-    // ros::Publisher cloud_7_pub;
-    // ros::Publisher cloud_8_pub;
-    // ros::Publisher cloud_9_pub;
-    // ros::Publisher cloud_10_pub;
 
     // ros::Publisher coeffs_pub;
     ros::Publisher tilt_ary_pub;
