@@ -47,7 +47,7 @@ namespace soma_perception
 
       initialize_params();
 
-      // ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
+      ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
       slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
       others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
       //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
@@ -114,15 +114,20 @@ namespace soma_perception
       //--------------------------------------------------
       // (1) slope detection process
       //--------------------------------------------------
+      pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
       pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
       pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
-      detection_slope(cloud_transformed, imu_data, pc_slope, pc_others);
+      detection_slope(cloud_transformed, imu_data, pc_ground, pc_slope, pc_others);
       NODELET_INFO("total slope points:%5d", (int)pc_slope->size());
       NODELET_INFO("total others points:%5d", (int)pc_others->size());
 
       //publish of results
       //パブリッシュする前に必ずframe_idとstampを設定すること
       //忘れるとrvizで描画できない
+      pc_ground->header.frame_id = base_link_frame;
+      pcl_conversions::toPCL(ros::Time::now(), pc_ground->header.stamp);
+      ground_pub.publish(pc_ground);
+
       pc_slope->header.frame_id = base_link_frame;
       pcl_conversions::toPCL(ros::Time::now(), pc_slope->header.stamp);
       slope_pub.publish(pc_slope);
@@ -131,11 +136,14 @@ namespace soma_perception
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
 
-      // std_msgs::Float32MultiArray rpy_ary;
-      // tilt_ary.data.resize(3);
-      // rpy_ary.data.resize(3);
-      // tilt_ary_pub.publish(tilt_ary);
-      // rpy_ary_pub.publish(rpy_ary);
+      tilt_ary_pub.publish(tilt_ary);
+
+      std_msgs::Float32MultiArray rpy_ary;
+      rpy_ary.data.resize(3);
+      rpy_ary.data[0] = roll;
+      rpy_ary.data[1] = pitch;
+      rpy_ary.data[2] = yaw;
+      rpy_ary_pub.publish(rpy_ary);
     }
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
@@ -163,6 +171,7 @@ namespace soma_perception
 
     void detection_slope(pcl::PointCloud<PointT>::Ptr raw,
                          sensor_msgs::ImuConstPtr imu_data,
+                         pcl::PointCloud<PointT>::Ptr &ground,
                          pcl::PointCloud<PointT>::Ptr &slope,
                          pcl::PointCloud<PointT>::Ptr &others)
     {
@@ -176,6 +185,7 @@ namespace soma_perception
 
       pcl::copyPointCloud<PointT>(*raw, *tmp); //copyt to tempolary
 
+      int count = 1;
       while (1)
       {
         //plane detection
@@ -194,7 +204,26 @@ namespace soma_perception
           EI.setNegative(false);
           EI.filter(*tmp2);
 
-          *slope += *tmp2; //append (marge) points to result object
+          //--------------------------------------------------
+          // calc tilt for segmented plane
+          //--------------------------------------------------
+          tilt_ary.data.resize(count);
+          Eigen::Vector3d z_axis(0, 0, 1);
+          Eigen::Vector3d plane(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
+          float tilt = (acos((z_axis.dot(plane) / (z_axis.norm()*plane.norm()))) * 180.0) / PI;
+          if (90.0 < tilt) {
+            tilt = 180.0 - tilt;
+          } 
+          tilt_ary.data[count-1] = tilt;
+
+          //--------------------------------------------------
+          // store the segmented plane into *ground or *slope 
+          //--------------------------------------------------
+          if(tilt_ary.data[count-1] < setted_ground_tilt) {
+            *ground += *tmp2;
+          } else if(setted_slope_tilt < tilt_ary.data[count-1]) {
+            *slope += *tmp2; //append (marge) points to result object
+          }
 
           tmp2->clear();
           EI.setNegative(true);
@@ -208,56 +237,13 @@ namespace soma_perception
           //条件を満たしたら平面検出終わり
           break;
         }
+        count++;
 
       } //end while loop
 
 
       pcl::copyPointCloud<PointT>(*tmp, *others);
       return;
-
-      // int i = 0;
-      // while (i < 5)
-      // {
-      //   if (i == 0)
-      //   {
-      //     segmentation(raw, inliers, coeffs);
-      //     EI.setInputCloud(raw);
-      //     EI.setIndices(inliers);
-      //   }
-      //   if (i != 0)
-      //   {
-      //     segmentation(others, inliers, coeffs);
-      //     EI.setInputCloud(others);
-      //     EI.setIndices(inliers);
-      //   }
-
-      //   extract_tilt_RPY(coeffs);
-      //   if (setted_slope_tilt < tilt_ary.data[1])
-      //   {
-      //     EI.setNegative(false);
-      //     if (i == 0)
-      //     {
-      //       EI.filter(*slope);
-      //     }
-      //     else
-      //     {
-      //       EI.filter(*_slope);
-      //     }
-      //   }
-
-      //   EI.setNegative(true);
-      //   EI.filter(*others);
-      //   if (i != 0)
-      //   {
-      //     *slope += *_slope;
-      //     // slope->resize(slope->size() + _slope->size());
-      //     // pcl::concatenateFields(*slope, *_slope, *slope);
-      //   }
-
-      //   i++;
-      //   NODELET_INFO("%d times", i);
-      //   NODELET_INFO("others.size: %d", (int)others->size());
-      // }
     }
 
     int segmentation(pcl::PointCloud<PointT>::Ptr input,
@@ -277,7 +263,7 @@ namespace soma_perception
       sacseg.setModelType(pcl::SACMODEL_PLANE);
       sacseg.setMethodType(pcl::SAC_RANSAC);
       sacseg.setMaxIterations(100);
-      sacseg.setDistanceThreshold(0.05); //[m]
+      sacseg.setDistanceThreshold(0.01); //[m]
       sacseg.setInputCloud(input);
 
       try
@@ -308,27 +294,27 @@ namespace soma_perception
 
     // void extract_tilt_RPY(pcl::ModelCoefficients::Ptr coeffs)
     // {
-    //   Eigen::Vector3d x_axis(1, 0, 0);
-    //   Eigen::Vector3d y_axis(0, 1, 0);
-    //   Eigen::Vector3d z_axis(0, 0, 1);
+      // Eigen::Vector3d x_axis(1, 0, 0);
+      // Eigen::Vector3d y_axis(0, 1, 0);
+      // Eigen::Vector3d z_axis(0, 0, 1);
 
-    //   Eigen::Vector3d normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
+      // Eigen::Vector3d normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
 
-    //   float roll_rad = x_axis.dot(normal) / (x_axis.norm() * normal.norm());
-    //   float pitch_rad = z_axis.dot(normal) / (y_axis.norm() * normal.norm());
-    //   float yaw_rad = y_axis.dot(normal) / (z_axis.norm() * normal.norm());
+      // float roll_rad = x_axis.dot(normal) / (x_axis.norm() * normal.norm());
+      // float pitch_rad = z_axis.dot(normal) / (y_axis.norm() * normal.norm());
+      // float yaw_rad = y_axis.dot(normal) / (z_axis.norm() * normal.norm());
 
-    //   roll_rad = acos(roll_rad);
-    //   pitch_rad = acos(pitch_rad);
-    //   yaw_rad = acos(yaw_rad);
+      // roll_rad = acos(roll_rad);
+      // pitch_rad = acos(pitch_rad);
+      // yaw_rad = acos(yaw_rad);
 
-    //   float roll = roll_rad * 180.0 / PI;
-    //   float pitch = pitch_rad * 180.0 / PI;
-    //   float yaw = yaw_rad * 180.0 / PI;
+      // float roll = roll_rad * 180.0 / PI;
+      // float pitch = pitch_rad * 180.0 / PI;
+      // float yaw = yaw_rad * 180.0 / PI;
 
-    //   tilt_ary.data[0] = roll;
-    //   tilt_ary.data[1] = pitch;
-    //   tilt_ary.data[2] = yaw;
+      // tilt_ary.data[0] = roll;
+      // tilt_ary.data[1] = pitch;
+      // tilt_ary.data[2] = yaw;
     // }
 
   private:
@@ -349,6 +335,7 @@ namespace soma_perception
     message_filters::Synchronizer<MySyncPolicy> *sync;
 
     //publishers
+    ros::Publisher ground_pub;
     ros::Publisher slope_pub;
     ros::Publisher others_pub;
 
