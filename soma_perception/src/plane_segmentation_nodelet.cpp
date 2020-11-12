@@ -46,15 +46,13 @@ namespace soma_perception
       pnh = getPrivateNodeHandle();
 
       initialize_params();
-
+      //advertise
       ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
       slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
       others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
-      //    indices_pub = nh.advertise<pcl_msgs::PointIndices>("indices", 1);
-      //    coeffs_pub = nh.advertise<pcl_msgs::ModelCoefficients>("coeffs", 1);
-      tilt_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("tilt_ary", 1);
-      rpy_ary_pub = nh.advertise<std_msgs::Float32MultiArray>("rpy_ary", 1);
-
+      relative_pub = nh.advertise<std_msgs::Float32MultiArray>("relative_ary", 1);
+      absolute_pub = nh.advertise<std_msgs::Float32MultiArray>("absolute_ary", 1);
+      //sub
       points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
       imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
       sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(300), *points_sub, *imu_sub);
@@ -104,12 +102,12 @@ namespace soma_perception
       // (0) imu data preprocessing
       // compute roll, pitch, yaw value [degree]
       //--------------------------------------------------
-      tf2::Quaternion quat;
-      double roll, pitch, yaw;
-      tf2::fromMsg(imu_data->orientation, quat); //to tf2::Quaternion
-      tf2::Matrix3x3 qmat(quat);                 //
-      qmat.getRPY(roll, pitch, yaw);             //get roll,pitch,yaw [deg]
-      NODELET_INFO("imu: roll=%3.2f, pitch=%3.2f, yaw=%3.2f", roll, pitch, yaw);
+      // tf2::Quaternion quat;
+      // double roll, pitch, yaw;
+      // tf2::fromMsg(imu_data->orientation, quat); //to tf2::Quaternion
+      // tf2::Matrix3x3 qmat(quat);                 //
+      // qmat.getRPY(roll, pitch, yaw);             //get roll,pitch,yaw [deg]
+      // NODELET_INFO("imu: roll=%3.2f, pitch=%3.2f, yaw=%3.2f", roll, pitch, yaw);
 
       //--------------------------------------------------
       // (1) slope detection process
@@ -136,14 +134,15 @@ namespace soma_perception
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
 
-      tilt_ary_pub.publish(tilt_ary);
+      relative_pub.publish(relative_ary);
+      absolute_pub.publish(absolute_ary);
 
-      std_msgs::Float32MultiArray rpy_ary;
-      rpy_ary.data.resize(3);
-      rpy_ary.data[0] = roll;
-      rpy_ary.data[1] = pitch;
-      rpy_ary.data[2] = yaw;
-      rpy_ary_pub.publish(rpy_ary);
+      // std_msgs::Float32MultiArray rpy_ary;
+      // rpy_ary.data.resize(3);
+      // rpy_ary.data[0] = roll;
+      // rpy_ary.data[1] = pitch;
+      // rpy_ary.data[2] = yaw;
+      // rpy_ary_pub.publish(rpy_ary);
     }
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
@@ -205,23 +204,37 @@ namespace soma_perception
           EI.filter(*tmp2);
 
           //--------------------------------------------------
-          // calc tilt for segmented plane
+          // calc relative tilt for segmented plane
           //--------------------------------------------------
-          tilt_ary.data.resize(count);
-          Eigen::Vector3d z_axis(0, 0, 1);
-          Eigen::Vector3d plane(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
-          float tilt = (acos((z_axis.dot(plane) / (z_axis.norm()*plane.norm()))) * 180.0) / PI;
-          if (90.0 < tilt) {
-            tilt = 180.0 - tilt;
+          relative_ary.data.resize(count);
+          tf2::Vector3 z_soma(0, 0, 1);
+          tf2::Vector3 normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
+          float relative_tilt = (acos((normal.dot(z_soma) / (normal.length()*z_soma.length()))) * 180.0) / PI;
+          if (90.0 < relative_tilt) {
+            relative_tilt = 180.0 - relative_tilt;
           } 
-          tilt_ary.data[count-1] = tilt;
+          relative_ary.data[count-1] = relative_tilt;
+
+          //--------------------------------------------------
+          // calc absolute tilt for segmented plane
+          //--------------------------------------------------
+          tf2::Quaternion quat;
+          tf2::fromMsg(imu_data->orientation, quat);
+          absolute_ary.data.resize(count);
+          tf2::Vector3 z_world(0, 0, 1);
+          z_world = tf2::quatRotate(quat, z_world);
+          float absolute_tilt = (acos((normal.dot(z_world)/(normal.length()*z_world.length()))) * 180.0) / PI;
+          if(90 < absolute_tilt){
+            absolute_tilt = 180 - absolute_tilt;
+          }
+          absolute_ary.data[count-1] = absolute_tilt;
 
           //--------------------------------------------------
           // store the segmented plane into *ground or *slope 
           //--------------------------------------------------
-          if(tilt_ary.data[count-1] < setted_ground_tilt) {
+          if(relative_ary.data[count-1] < setted_ground_tilt) {
             *ground += *tmp2;
-          } else if(setted_slope_tilt < tilt_ary.data[count-1]) {
+          } else if(setted_slope_tilt < absolute_ary.data[count-1]) {
             *slope += *tmp2; //append (marge) points to result object
           }
 
@@ -338,14 +351,11 @@ namespace soma_perception
     ros::Publisher ground_pub;
     ros::Publisher slope_pub;
     ros::Publisher others_pub;
+    ros::Publisher relative_pub;
+    ros::Publisher absolute_pub;
 
-    // ros::Publisher coeffs_pub;
-    ros::Publisher tilt_ary_pub;
-    ros::Publisher rpy_ary_pub;
-
-    //  pcl_msgs::PointIndices indices_ros;
-    //  pcl_msgs::ModelCoefficients coeffs_ros;
-    std_msgs::Float32MultiArray tilt_ary;
+    std_msgs::Float32MultiArray relative_ary;
+    std_msgs::Float32MultiArray absolute_ary;
   };
 } // namespace soma_perception
 
