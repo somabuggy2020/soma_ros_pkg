@@ -50,8 +50,6 @@ namespace soma_perception
       ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
       slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
       others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
-      relative_pub = nh.advertise<std_msgs::Float32MultiArray>("relative_ary", 1);
-      absolute_pub = nh.advertise<std_msgs::Float32MultiArray>("absolute_ary", 1);
       //sub
       points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
       imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
@@ -134,9 +132,6 @@ namespace soma_perception
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
 
-      relative_pub.publish(relative_ary);
-      absolute_pub.publish(absolute_ary);
-
       // std_msgs::Float32MultiArray rpy_ary;
       // rpy_ary.data.resize(3);
       // rpy_ary.data[0] = roll;
@@ -185,6 +180,8 @@ namespace soma_perception
       pcl::copyPointCloud<PointT>(*raw, *tmp); //copyt to tempolary
 
       int count = 1;
+      std_msgs::Float32MultiArray absolute_ary;
+      std_msgs::Float32MultiArray relative_ary;
       while (1)
       {
         //plane detection
@@ -194,7 +191,8 @@ namespace soma_perception
 
         NODELET_INFO("plane size:%d", (int)inliers->indices.size());
 
-        if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
+        // if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
+        if(count < 2) //1回だけ検出回す用
         {
           pcl::PointCloud<PointT>::Ptr tmp2(new pcl::PointCloud<PointT>());
 
@@ -214,6 +212,7 @@ namespace soma_perception
             relative_tilt = 180.0 - relative_tilt;
           } 
           relative_ary.data[count-1] = relative_tilt;
+          NODELET_INFO("relative_tilt: %f", relative_tilt);
 
           //--------------------------------------------------
           // calc absolute tilt for segmented plane
@@ -228,6 +227,7 @@ namespace soma_perception
             absolute_tilt = 180 - absolute_tilt;
           }
           absolute_ary.data[count-1] = absolute_tilt;
+          NODELET_INFO("absolute_tilt: %f", absolute_tilt);
 
           //--------------------------------------------------
           // store the segmented plane into *ground or *slope 
@@ -351,11 +351,6 @@ namespace soma_perception
     ros::Publisher ground_pub;
     ros::Publisher slope_pub;
     ros::Publisher others_pub;
-    ros::Publisher relative_pub;
-    ros::Publisher absolute_pub;
-
-    std_msgs::Float32MultiArray relative_ary;
-    std_msgs::Float32MultiArray absolute_ary;
   };
 } // namespace soma_perception
 
