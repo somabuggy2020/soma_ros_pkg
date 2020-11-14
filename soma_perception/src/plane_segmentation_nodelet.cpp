@@ -174,8 +174,8 @@ private:
       NODELET_INFO("coeffs(a,b,c,d): %.2f, %.2f, %.2f, %.2f",
                    coeffs->values[0], coeffs->values[1], coeffs->values[2], coeffs->values[3]);
 
-      // if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
-      if(count < 2) //1回だけ検出回す用
+      if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
+      // if(count < 2) //1回だけ検出回す用
       {
         pcl::PointCloud<PointT>::Ptr tmp2(new pcl::PointCloud<PointT>());
 
@@ -209,10 +209,9 @@ private:
         tf2::fromMsg(imu_data->orientation, quat);
 
         absolute_ary.data.resize(count);
-        tf2::Vector3 ez_world(0, 0, 1);
-        ez_world = tf2::quatRotate(quat, ez);
-        NODELET_INFO("ezw:%f, %f, %f, %f", ez_world.x(), ez_world.y(), ez_world.z(), ez_world.w());
-        float _absolute_tilt = normal.dot(ez_world)/(normal.length()*ez_world.length());
+        tf2::Vector3 normal_world = tf2::quatRotate(quat, normal);
+        NODELET_INFO("ezw:%f, %f, %f, %f", normal_world.x(), normal_world.y(), normal_world.z(), normal_world.w());
+        float _absolute_tilt = normal_world.dot(ez)/(normal_world.length()*ez.length());
         _absolute_tilt = acos(_absolute_tilt);
         float absolute_tilt = atan2(sin(_absolute_tilt), cos(_absolute_tilt));
         absolute_tilt = RAD2DEG(absolute_tilt);
