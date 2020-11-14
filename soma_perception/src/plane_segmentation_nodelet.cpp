@@ -15,8 +15,11 @@
 
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-#include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/filters/extract_indices.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/kdtree/kdtree.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/segmentation/extract_clusters.h>
 #include <pcl/exceptions.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
@@ -105,6 +108,34 @@ private:
     detection_slope(cloud_transformed, imu_data, pc_ground, pc_slope, pc_others);
     NODELET_INFO("total slope points:%5d", (int)pc_slope->size());
     NODELET_INFO("total others points:%5d", (int)pc_others->size());
+
+    //--------------------------------------------------
+    // (2) euclidean cluster extraction process
+    //--------------------------------------------------
+    pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT>);
+    tree->setInputCloud(pc_slope);
+
+    std::vector<pcl::PointIndices> cluster_indices;
+    pcl::EuclideanClusterExtraction<PointT> ec;
+    ec.setClusterTolerance(0.02);
+    ec.setMinClusterSize(100);
+    ec.setMaxClusterSize(25000);
+    ec.setSearchMethod(tree);
+    ec.setInputCloud(pc_slope);
+    ec.extract(cluster_indices);
+
+    int j=0;
+    for(std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
+    {
+      pcl::PointCloud<PointT>::Ptr cloud_cluster (new pcl::PointCloud<PointT>);
+      if(it->indices.size() < 100) {
+        
+
+
+        
+      }
+    }
+
 
     //publish of results
     //パブリッシュする前に必ずframe_idとstampを設定すること
