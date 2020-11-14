@@ -35,9 +35,9 @@
 		<param name="filter_limit_negative" value="false" />
 	</node>
 	<!-- pcd save -->
-	<node name="topcd" pkg="pcl_ros" type="pointcloud_to_pcd" output="screen">
+	<!-- <node name="topcd" pkg="pcl_ros" type="pointcloud_to_pcd" output="screen">
 		<remap from="input" to="/final_output" />
 		<param name="~prefix" value="/home/hayashi/Documents/tominaga/harvesting_demo/pcds/filtered_" />
 		<param name="~fixed_frame" value="velodyne" />
-	</node>
+	</node> -->
 </launch>
