@@ -169,6 +169,17 @@ target_link_libraries(Sample_RobotPose_publisher
     ${catkin_LIBRARIES}
     )
 
+#
+#
+#
+add_executable(imu_subscriber
+    src/imu_subscriber.cpp
+    )
+
+target_link_libraries(imu_subscriber
+    ${catkin_LIBRARIES}
+    )
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

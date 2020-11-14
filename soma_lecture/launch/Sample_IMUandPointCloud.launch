@@ -9,4 +9,6 @@
 
   <node name="Base2world" pkg="soma_lecture" type="Sample_RobotPose_publisher"/>
 
+  <!-- <node name="imu_subscriber" pkg="soma_lecture" type="imu_subscriber"/> -->
+
 </launch>
