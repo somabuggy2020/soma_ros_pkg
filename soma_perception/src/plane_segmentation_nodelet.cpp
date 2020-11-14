@@ -97,17 +97,6 @@ private:
     transform_pointCloud(cloud_raw, *cloud_transformed); //transform
 
     //--------------------------------------------------
-    // (0) imu data preprocessing
-    // compute roll, pitch, yaw value [degree]
-    //--------------------------------------------------
-    // tf2::Quaternion quat;
-    // double roll, pitch, yaw;
-    // tf2::fromMsg(imu_data->orientation, quat); //to tf2::Quaternion
-    // tf2::Matrix3x3 qmat(quat);                 //
-    // qmat.getRPY(roll, pitch, yaw);             //get roll,pitch,yaw [deg]
-    // NODELET_INFO("imu: roll=%3.2f, pitch=%3.2f, yaw=%3.2f", roll, pitch, yaw);
-
-    //--------------------------------------------------
     // (1) slope detection process
     //--------------------------------------------------
     pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
@@ -131,13 +120,6 @@ private:
     pc_others->header.frame_id = base_link_frame;
     pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
     others_pub.publish(pc_others);
-
-    // std_msgs::Float32MultiArray rpy_ary;
-    // rpy_ary.data.resize(3);
-    // rpy_ary.data[0] = roll;
-    // rpy_ary.data[1] = pitch;
-    // rpy_ary.data[2] = yaw;
-    // rpy_ary_pub.publish(rpy_ary);
   }
 
   void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
@@ -216,10 +198,7 @@ private:
         float _relative_tilt = normal.dot(ez)/(normal.length()*ez.length());
         _relative_tilt = acos(_relative_tilt);    //pitch angle [rad]
         float relative_tilt = atan2(sin(_relative_tilt), cos(_relative_tilt));
-        relative_tilt = RAD2DEG(relative_tilt);   //
-        //        if (90.0 < relative_tilt) {
-        //          relative_tilt = 180.0 - relative_tilt;
-        //        }
+        relative_tilt = RAD2DEG(relative_tilt);
         NODELET_INFO("relative_tilt: %5.2f", relative_tilt);
         relative_ary.data[count-1] = relative_tilt;
 
@@ -237,9 +216,6 @@ private:
         _absolute_tilt = acos(_absolute_tilt);
         float absolute_tilt = atan2(sin(_absolute_tilt), cos(_absolute_tilt));
         absolute_tilt = RAD2DEG(absolute_tilt);
-        //        if(90 < absolute_tilt){
-        //          absolute_tilt = 180 - absolute_tilt;
-        //        }
         NODELET_INFO("absolute_tilt: %5.2f", absolute_tilt);
         absolute_ary.data[count-1] = absolute_tilt;
 
@@ -306,43 +282,6 @@ private:
 
     return 0; //success
   }
-
-  // void convert_imu_RPY(const sensor_msgs::ImuConstPtr &imu_data, std_msgs::Float32MultiArray &rpy_ary)
-  // {
-  //   tf2::Quaternion quat_imu;
-  //   tf2::fromMsg(imu_data->orientation, quat_imu);
-  //   double roll, pitch, yaw;
-  //   tf2::Matrix3x3(quat_imu).getRPY(roll, pitch, yaw);
-
-  //   rpy_ary.data[0] = (float)roll;
-  //   rpy_ary.data[1] = (float)pitch;
-  //   rpy_ary.data[2] = (float)yaw;
-  // }
-
-  // void extract_tilt_RPY(pcl::ModelCoefficients::Ptr coeffs)
-  // {
-  // Eigen::Vector3d x_axis(1, 0, 0);
-  // Eigen::Vector3d y_axis(0, 1, 0);
-  // Eigen::Vector3d z_axis(0, 0, 1);
-
-  // Eigen::Vector3d normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
-
-  // float roll_rad = x_axis.dot(normal) / (x_axis.norm() * normal.norm());
-  // float pitch_rad = z_axis.dot(normal) / (y_axis.norm() * normal.norm());
-  // float yaw_rad = y_axis.dot(normal) / (z_axis.norm() * normal.norm());
-
-  // roll_rad = acos(roll_rad);
-  // pitch_rad = acos(pitch_rad);
-  // yaw_rad = acos(yaw_rad);
-
-  // float roll = roll_rad * 180.0 / PI;
-  // float pitch = pitch_rad * 180.0 / PI;
-  // float yaw = yaw_rad * 180.0 / PI;
-
-  // tilt_ary.data[0] = roll;
-  // tilt_ary.data[1] = pitch;
-  // tilt_ary.data[2] = yaw;
-  // }
 
 private:
   ros::NodeHandle nh;
