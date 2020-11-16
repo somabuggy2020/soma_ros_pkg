@@ -9,6 +9,7 @@
 	<!-- point cloud filtering for analyze -->
 	<arg name="input_pointcloud" value="/velodyne_points_f" />
 	<arg name="base_link" value="velodyne" />
+	<!-- pass through -->
 	<node name="ptf_z" pkg="nodelet" type="nodelet" args="standalone pcl/PassThrough">
 		<remap from="~input" to="$(arg input_pointcloud)" />
 		<param name="input_frame" value="$(arg base_link)" />
@@ -21,23 +22,30 @@
 		<remap from="~input" to="/ptf_z/output" />
 		<param name="input_frame" value="$(arg base_link)" />
 		<param name="filter_field_name" value="x" />
-		<param name="filter_limit_min" value="-5" />
-		<param name="filter_limit_max" value="10" />
+		<param name="filter_limit_min" value="0" />
+		<param name="filter_limit_max" value="8" />
 		<param name="filter_limit_negative" value="false" />
 	</node>
 	<node name="ptf_y" pkg="nodelet" type="nodelet" args="standalone pcl/PassThrough">
 		<remap from="~input" to="/ptf_x/output" />
-		<remap from="~output" to="/final_output" />
+		<!-- <remap from="~output" to="/final_output" /> -->
 		<param name="input_frame" value="$(arg base_link)" />
 		<param name="filter_field_name" value="y" />
-		<param name="filter_limit_min" value="-8" />
-		<param name="filter_limit_max" value="8" />
+		<param name="filter_limit_min" value="-5" />
+		<param name="filter_limit_max" value="5" />
 		<param name="filter_limit_negative" value="false" />
 	</node>
+	<!-- sor -->
+	<node name="sorf" pkg="nodelet" type="nodelet" args="standalone pcl/StatisticalOutlierRemoval">
+		<remap from="~input" to="/ptf_y/output" />
+		<remap from="~output" to="/final_output" />
+		<param name="mean_k" value="20" />
+		<param name="stddev" value="0.5" />
+	</node>
 	<!-- pcd save -->
-	<!-- <node name="topcd" pkg="pcl_ros" type="pointcloud_to_pcd" output="screen">
+	<node name="topcd" pkg="pcl_ros" type="pointcloud_to_pcd" output="screen">
 		<remap from="input" to="/final_output" />
-		<param name="~prefix" value="/home/hayashi/Documents/tominaga/harvesting_demo/pcds/filtered_" />
-		<param name="~fixed_frame" value="velodyne" />
-	</node> -->
+		<param name="~prefix" value="/home/hayashi/Documents/tominaga/harvesting_demo/pcds/filtered2/" />
+		<!-- <param name="~fixed_frame" value="velodyne" /> -->
+	</node>
 </launch>
