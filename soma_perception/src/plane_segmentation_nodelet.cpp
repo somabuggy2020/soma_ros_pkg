@@ -71,6 +71,9 @@ namespace soma_perception
       // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
       setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
       setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
+      distance_thres = pnh.param<double>("distance_thres", 0.01);
+      cluster_tolerance = pnh.param<double>("cluster_tolerance", 0.1);
+      min_clustersize = pnh.param<int>("min_clustersize", 50);
     }
 
     void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &cloud_input,
@@ -249,8 +252,8 @@ namespace soma_perception
       tree->setInputCloud(slope);
       std::vector<pcl::PointIndices> cluster_indices; //clusters
       pcl::EuclideanClusterExtraction<PointT> ec;
-      ec.setClusterTolerance(0.1); //[m] if two point distance is less than the tlerance, it will be cluster
-      ec.setMinClusterSize(50);    //number of points in a cluster
+      ec.setClusterTolerance(cluster_tolerance); //[m] if two point distance is less than the tlerance, it will be cluster
+      ec.setMinClusterSize(min_clustersize);    //number of points in a cluster
       ec.setMaxClusterSize(25000); //about
       ec.setSearchMethod(tree);    //set kd-tree
       ec.setInputCloud(slope);  //set input cloud
@@ -285,7 +288,7 @@ namespace soma_perception
       sacseg.setModelType(pcl::SACMODEL_PLANE);
       sacseg.setMethodType(pcl::SAC_RANSAC);
       sacseg.setMaxIterations(100);
-      sacseg.setDistanceThreshold(0.01); //[m]
+      sacseg.setDistanceThreshold(distance_thres); //[m]
       sacseg.setInputCloud(input);
 
       try
@@ -310,9 +313,11 @@ namespace soma_perception
 
     //params
     std::string base_link_frame; //base_link frame id
-
     float setted_slope_tilt;
     float setted_ground_tilt;
+    double distance_thres; //segmentation_plane
+    double cluster_tolerance;//extraction_cluster
+    int min_clustersize;//extracion_cluster
 
     //subscribers
     message_filters::Subscriber<sensor_msgs::PointCloud2> *points_sub;
