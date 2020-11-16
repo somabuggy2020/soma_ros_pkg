@@ -113,34 +113,10 @@ namespace soma_perception
       //--------------------------------------------------
       // (2) euclidean cluster extraction process
       //--------------------------------------------------
-      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
-      tree->setInputCloud(pc_slope);
-      std::vector<pcl::PointIndices> cluster_indices; //clusters
-      pcl::EuclideanClusterExtraction<PointT> ec;
-      ec.setClusterTolerance(0.1); //[m] if two point distance is less than the tlerance, it will be cluster
-      ec.setMinClusterSize(20);    //number of points in a cluster
-      ec.setMaxClusterSize(25000); //about
-      ec.setSearchMethod(tree);    //set kd-tree
-      ec.setInputCloud(pc_slope);  //set input cloud
-      ec.extract(cluster_indices);
-      NODELET_INFO("Cluster num: %2d", (int)cluster_indices.size());
-
-      pcl::PointCloud<PointT>::Ptr tmp_slope(new pcl::PointCloud<PointT>());
-      for (int i = 0; i < cluster_indices.size(); i++)
-      {
-        pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
-        pcl::copyPointCloud(*pc_slope, cluster_indices[i].indices, *tmp);
-        *tmp_slope += *tmp;
-      }
-
-      pc_slope->clear();
-      pcl::copyPointCloud(*tmp_slope, *pc_slope);
-
-
-
+      extraction_slope(pc_slope);
+      NODELET_INFO("total cluster points:%5d", (int)pc_slope->size());
 
       //publish of results
-      
       //パブリッシュする前に必ずframe_idとstampを設定すること
       //忘れるとrvizで描画できない
       pc_ground->header.frame_id = base_link_frame;
@@ -189,12 +165,9 @@ namespace soma_perception
       pcl::ModelCoefficients::Ptr coeffs;
       inliers.reset(new pcl::PointIndices());
       coeffs.reset(new pcl::ModelCoefficients());
-
       pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>());
       pcl::ExtractIndices<PointT> EI;
-
       pcl::copyPointCloud<PointT>(*raw, *tmp); //copyt to tempolary
-
       int count = 1;
       std_msgs::Float32MultiArray absolute_ary;
       std_msgs::Float32MultiArray relative_ary;
@@ -204,55 +177,44 @@ namespace soma_perception
         int ret = segmentation(tmp, *inliers, *coeffs);
         if (ret == -1)
           break;
-
-        NODELET_INFO("plane size:%d", (int)inliers->indices.size());
-        NODELET_INFO("coeffs(a,b,c,d): %.2f, %.2f, %.2f, %.2f",
-                     coeffs->values[0], coeffs->values[1], coeffs->values[2], coeffs->values[3]);
+        // NODELET_INFO("plane size:%d", (int)inliers->indices.size());
+        // NODELET_INFO("coeffs(a,b,c,d): %.2f, %.2f, %.2f, %.2f",
+        //              coeffs->values[0], coeffs->values[1], coeffs->values[2], coeffs->values[3]);
 
         if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
         // if(count < 2) //1回だけ検出回す用
         {
           pcl::PointCloud<PointT>::Ptr tmp2(new pcl::PointCloud<PointT>());
-
           EI.setInputCloud(tmp);
           EI.setIndices(inliers);
           EI.setNegative(false);
           EI.filter(*tmp2);
-
           //--------------------------------------------------
           // calc relative tilt for segmented plane
           //--------------------------------------------------
           relative_ary.data.resize(count);
-
-          tf2::Vector3 ex(1, 0, 0), ey(0, 1, 0), ez(0, 0, 1); //unit vectors of each axis
-
-          //normal vector of found plane
+          tf2::Vector3 ex(1, 0, 0), ey(0, 1, 0), ez(0, 0, 1);
           tf2::Vector3 normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
-
-          //calculate relative tilt angle
           float _relative_tilt = normal.dot(ez) / (normal.length() * ez.length());
           _relative_tilt = acos(_relative_tilt); //pitch angle [rad]
           float relative_tilt = atan2(sin(_relative_tilt), cos(_relative_tilt));
           relative_tilt = RAD2DEG(relative_tilt);
-          NODELET_INFO("relative_tilt: %5.2f", relative_tilt);
+          // NODELET_INFO("relative_tilt: %5.2f", relative_tilt);
           relative_ary.data[count - 1] = relative_tilt;
-
           //--------------------------------------------------
           // calc absolute tilt for segmented plane
           //--------------------------------------------------
           tf2::Quaternion quat;
           tf2::fromMsg(imu_data->orientation, quat);
-
           absolute_ary.data.resize(count);
           tf2::Vector3 normal_world = tf2::quatRotate(quat, normal);
-          NODELET_INFO("ezw:%f, %f, %f, %f", normal_world.x(), normal_world.y(), normal_world.z(), normal_world.w());
+          // NODELET_INFO("ezw:%f, %f, %f, %f", normal_world.x(), normal_world.y(), normal_world.z(), normal_world.w());
           float _absolute_tilt = normal_world.dot(ez) / (normal_world.length() * ez.length());
           _absolute_tilt = acos(_absolute_tilt);
           float absolute_tilt = atan2(sin(_absolute_tilt), cos(_absolute_tilt));
           absolute_tilt = RAD2DEG(absolute_tilt);
-          NODELET_INFO("absolute_tilt: %5.2f", absolute_tilt);
+          // NODELET_INFO("absolute_tilt: %5.2f", absolute_tilt);
           absolute_ary.data[count - 1] = absolute_tilt;
-
           //--------------------------------------------------
           // store the segmented plane into *ground or *slope
           //--------------------------------------------------
@@ -264,11 +226,9 @@ namespace soma_perception
           {
             *slope += *tmp2; //append (marge) points to result object
           }
-
           tmp2->clear();
           EI.setNegative(true);
           EI.filter(*tmp2); //extraction other points
-
           tmp->clear();
           pcl::copyPointCloud<PointT>(*tmp2, *tmp);
         }
@@ -278,11 +238,34 @@ namespace soma_perception
           break;
         }
         count++;
-
       } //end while loop
-
       pcl::copyPointCloud<PointT>(*tmp, *others);
       return;
+    }
+
+    void extraction_slope(pcl::PointCloud<PointT>::Ptr slope)
+    {
+      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+      tree->setInputCloud(slope);
+      std::vector<pcl::PointIndices> cluster_indices; //clusters
+      pcl::EuclideanClusterExtraction<PointT> ec;
+      ec.setClusterTolerance(0.1); //[m] if two point distance is less than the tlerance, it will be cluster
+      ec.setMinClusterSize(50);    //number of points in a cluster
+      ec.setMaxClusterSize(25000); //about
+      ec.setSearchMethod(tree);    //set kd-tree
+      ec.setInputCloud(slope);  //set input cloud
+      ec.extract(cluster_indices);
+      NODELET_INFO("Cluster num: %2d", (int)cluster_indices.size());
+
+      pcl::PointCloud<PointT>::Ptr tmp_slope(new pcl::PointCloud<PointT>());
+      for (int i = 0; i < cluster_indices.size(); i++)
+      {
+        pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
+        pcl::copyPointCloud(*slope, cluster_indices[i].indices, *tmp);
+        *tmp_slope += *tmp;
+      }
+      slope->clear();
+      pcl::copyPointCloud(*tmp_slope, *slope);
     }
 
     int segmentation(pcl::PointCloud<PointT>::Ptr input,
