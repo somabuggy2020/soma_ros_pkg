@@ -1,16 +1,18 @@
 <library path="lib/libsoma_plane_segmentation_nodelet">
-  <class name="soma_perception/PlaneSegmentationNodelet"
-     type="soma_perception::PlaneSegmentationNodelet"
-     base_class_type="nodelet::Nodelet">
-    <description>
-    </description>
-  </class>
+	<class name="soma_perception/PlaneSegmentationNodelet" type="soma_perception::PlaneSegmentationNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
+</library>
+<library path="lib/libsoma_floor_detection_nodelet">
+	<class name="soma_perception/FloorDetectionNodelet" type="soma_perception::FloorDetectionNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
 </library>
 <library path="lib/libsoma_prefiltering_nodelet">
-  <class name="soma_perception/PrefilteringNodelet"
-     type="soma_perception::PrefilteringNodelet"
-     base_class_type="nodelet::Nodelet">
-    <description>
-    </description>
-  </class>
+	<class name="soma_perception/PrefilteringNodelet" type="soma_perception::PrefilteringNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
 </library>

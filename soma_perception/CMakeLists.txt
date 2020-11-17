@@ -43,11 +43,17 @@ include_directories(
 add_library(soma_plane_segmentation_nodelet
     src/plane_segmentation_nodelet.cpp
     )
+add_library(soma_floor_detection_nodelet
+    src/floor_detection_nodelet.cpp
+    )
 add_library(soma_prefiltering_nodelet
     src/prefiltering_nodelet.cpp
     )
 
 target_link_libraries(soma_plane_segmentation_nodelet
+    ${catkin_LIBRARIES}
+    )
+target_link_libraries(soma_floor_detection_nodelet
     ${catkin_LIBRARIES}
     )
 target_link_libraries(soma_prefiltering_nodelet

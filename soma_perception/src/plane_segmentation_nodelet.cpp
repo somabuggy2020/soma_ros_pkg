@@ -103,6 +103,15 @@ namespace soma_perception
       cloud_transformed->clear();
       transform_pointCloud(cloud_raw, *cloud_transformed); //transform
 
+
+      //normal vector filtering process
+      
+
+
+
+
+
+
       //--------------------------------------------------
       // (1) slope detection process
       //--------------------------------------------------
