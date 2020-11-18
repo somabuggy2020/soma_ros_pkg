@@ -142,7 +142,8 @@ namespace soma_perception
       pc_others->header.frame_id = base_link_frame;
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
-    }
+      
+    }// finsh callback
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
                               pcl::PointCloud<PointT> &output)
