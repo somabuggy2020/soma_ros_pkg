@@ -33,4 +33,8 @@
     <param name="leaf_size" value="0.03"/>
     <param name="filter_limit_negative" value="false"/>
   </node>
+
+  <node pkg="nodelet" type="nodelet" name="euclidean_clustering"
+        args="load soma_perception/EuclideanClustering $(arg nodelet_manager_name)" >
+  </node>
 </launch>
