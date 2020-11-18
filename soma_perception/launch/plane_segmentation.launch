@@ -28,8 +28,8 @@
       <remap from="~input" to="/$(arg input_points)"/>
       <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
       <param name="filter_field_name" value="y"/>
-      <param name="filter_limit_min" value="-0.8"/>
-      <param name="filter_limit_max" value="0.5"/>
+      <param name="filter_limit_min" value="-0.1"/>
+      <param name="filter_limit_max" value="0.8"/>
       <param name="filter_limit_negative" value="false"/>
   </node>
 
@@ -39,7 +39,7 @@
         <param name="base_link" value="$(arg frame_id)"/>
         <param name="setted_slope_tilt" value="20.0"/>
         <param name="setted_ground_tilt" value="5.0"/>
-        <param name="distance_thres" value="0.01"/>
+        <param name="distance_thres" value="0.03"/>
         <param name="cluster_tolerance" value="0.05"/>
         <param name="min_clustersize" value="100"/>
 
