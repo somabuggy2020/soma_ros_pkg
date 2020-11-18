@@ -26,7 +26,7 @@
       <remap from="~input" to="/$(arg input_points)"/>
       <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
       <param name="filter_field_name" value="y"/>
-      <param name="filter_limit_min" value="0.1"/>
+      <param name="filter_limit_min" value="0.0"/>
       <param name="filter_limit_max" value="0.8"/>
       <param name="filter_limit_negative" value="false"/>
   </node>
