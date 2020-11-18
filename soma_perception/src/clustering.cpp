@@ -3,11 +3,7 @@
 #include <nodelet/nodelet.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <sensor_msgs/Imu.h>
 #include <pluginlib/class_list_macros.h>
-#include <message_filters/subscriber.h>
-#include <message_filters/sync_policies/approximate_time.h>
-#include <message_filters/time_synchronizer.h>
 
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Quaternion.h>
@@ -16,14 +12,16 @@
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 #include <pcl/filters/extract_indices.h>
-#include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/search/kdtree.h>
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/exceptions.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
+#include <pcl/common/common.h>
 #include <boost/shared_ptr.hpp>
+
+#include <visualization_msgs/MarkerArray.h>
 
 #include <string>
 #include <vector>
@@ -34,7 +32,6 @@
 namespace soma_perception
 {
   typedef pcl::PointXYZRGB PointT;
-  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::PointCloud2> MySyncPolicy;
 
   class EuclideanClustering : public nodelet::Nodelet
   {
@@ -51,16 +48,10 @@ namespace soma_perception
 
       initialize_params();
       //advertise
-      //ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
-      //slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
-      //others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
 			cloud_transformed_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_transformed", 1);
       //sub
-      points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "camera_R/filtered", 3);
-      //imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
-      sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(300), *points_sub);
-      sync->registerCallback(boost::bind(&EuclideanClustering::cloud_callback, this, _1));
-    }
+			points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
+		}
 
   private:
     /**
@@ -69,10 +60,6 @@ namespace soma_perception
     void initialize_params()
     {
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-      // times_of_rpeats = nh.param<int>("times_of_repeats", 2);
-      //setted_slope_tilt = pnh.param<float>("setted_slope_tilt", 25.0);
-      //setted_ground_tilt = pnh.param<float>("setted_ground_tilt", 3.0);
-      distance_thres = pnh.param<double>("distance_thres", 0.01);
       cluster_tolerance = pnh.param<double>("cluster_tolerance", 0.1);
       min_clustersize = pnh.param<int>("min_clustersize", 50);
     }
@@ -90,7 +77,7 @@ namespace soma_perception
       NODELET_INFO("input point cloud size : %d", (int)cloud_input->data.size());
 
       //--------------------------------------------------
-      // (0) point cloud preprocessing
+      // point cloud preprocessing
       // conversion and transform
       //--------------------------------------------------
       pcl::PointCloud<PointT>::Ptr cloud_raw;
@@ -104,20 +91,10 @@ namespace soma_perception
       transform_pointCloud(cloud_raw, *cloud_transformed); //transform
 
       //--------------------------------------------------
-      // (1) slope detection process
+      // euclidean cluster extraction process
       //--------------------------------------------------
-      //pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
-      //pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
-      //pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
-      //detection_slope(cloud_transformed, imu_data, pc_ground, pc_slope, pc_others);
-      //NODELET_INFO("total slope points:%5d", (int)pc_slope->size());
-      //NODELET_INFO("total others points:%5d", (int)pc_others->size());
-
-      //--------------------------------------------------
-      // (2) euclidean cluster extraction process
-      //--------------------------------------------------
-      extraction_slope(cloud_transformed);
-      //NODELET_INFO("total cluster points:%5d", (int)pc_slope->size());
+      extraction_cluster(cloud_transformed);
+      NODELET_INFO("total cluster points:%5d", (int)cloud_transformed->size());
 
 			cloud_transformed->header.frame_id = base_link_frame;
       pcl_conversions::toPCL(ros::Time::now(), cloud_transformed->header.stamp);
@@ -147,151 +124,68 @@ namespace soma_perception
       }
     }
 
-    void detection_slope(pcl::PointCloud<PointT>::Ptr raw,
-                         sensor_msgs::ImuConstPtr imu_data,
-                         pcl::PointCloud<PointT>::Ptr &ground,
-                         pcl::PointCloud<PointT>::Ptr &slope,
-                         pcl::PointCloud<PointT>::Ptr &others)
-    {
-      pcl::PointIndices::Ptr inliers;
-      pcl::ModelCoefficients::Ptr coeffs;
-      inliers.reset(new pcl::PointIndices());
-      coeffs.reset(new pcl::ModelCoefficients());
-      pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>());
-      pcl::ExtractIndices<PointT> EI;
-      pcl::copyPointCloud<PointT>(*raw, *tmp); //copyt to tempolary
-      int count = 1;
-      std_msgs::Float32MultiArray absolute_ary;
-      std_msgs::Float32MultiArray relative_ary;
-      while (1)
-      {
-        //plane detection
-        int ret = segmentation(tmp, *inliers, *coeffs);
-        if (ret == -1)
-          break;
-        // NODELET_INFO("plane size:%d", (int)inliers->indices.size());
-        // NODELET_INFO("coeffs(a,b,c,d): %.2f, %.2f, %.2f, %.2f",
-        //              coeffs->values[0], coeffs->values[1], coeffs->values[2], coeffs->values[3]);
-
-        if (inliers->indices.size() > 30) //平面検出をやめる条件式はここ
-        // if(count < 2) //1回だけ検出回す用
-        {
-          pcl::PointCloud<PointT>::Ptr tmp2(new pcl::PointCloud<PointT>());
-          EI.setInputCloud(tmp);
-          EI.setIndices(inliers);
-          EI.setNegative(false);
-          EI.filter(*tmp2);
-          //--------------------------------------------------
-          // calc relative tilt for segmented plane
-          //--------------------------------------------------
-          relative_ary.data.resize(count);
-          tf2::Vector3 ex(1, 0, 0), ey(0, 1, 0), ez(0, 0, 1);
-          tf2::Vector3 normal(coeffs->values[0], coeffs->values[1], coeffs->values[2]);
-          float _relative_tilt = normal.dot(ez) / (normal.length() * ez.length());
-          _relative_tilt = acos(_relative_tilt); //pitch angle [rad]
-          float relative_tilt = atan2(sin(_relative_tilt), cos(_relative_tilt));
-          relative_tilt = RAD2DEG(relative_tilt);
-          // NODELET_INFO("relative_tilt: %5.2f", relative_tilt);
-          relative_ary.data[count - 1] = relative_tilt;
-          //--------------------------------------------------
-          // calc absolute tilt for segmented plane
-          //--------------------------------------------------
-          tf2::Quaternion quat;
-          tf2::fromMsg(imu_data->orientation, quat);
-          absolute_ary.data.resize(count);
-          tf2::Vector3 normal_world = tf2::quatRotate(quat, normal);
-          // NODELET_INFO("ezw:%f, %f, %f, %f", normal_world.x(), normal_world.y(), normal_world.z(), normal_world.w());
-          float _absolute_tilt = normal_world.dot(ez) / (normal_world.length() * ez.length());
-          _absolute_tilt = acos(_absolute_tilt);
-          float absolute_tilt = atan2(sin(_absolute_tilt), cos(_absolute_tilt));
-          absolute_tilt = RAD2DEG(absolute_tilt);
-          // NODELET_INFO("absolute_tilt: %5.2f", absolute_tilt);
-          absolute_ary.data[count - 1] = absolute_tilt;
-          //--------------------------------------------------
-          // store the segmented plane into *ground or *slope
-          //--------------------------------------------------
-          if (relative_ary.data[count - 1] < setted_ground_tilt)
-          {
-            *ground += *tmp2;
-          }
-          else if (setted_slope_tilt < absolute_ary.data[count - 1])
-          {
-            *slope += *tmp2; //append (marge) points to result object
-          }
-          tmp2->clear();
-          EI.setNegative(true);
-          EI.filter(*tmp2); //extraction other points
-          tmp->clear();
-          pcl::copyPointCloud<PointT>(*tmp2, *tmp);
-        }
-        else
-        {
-          //条件を満たしたら平面検出終わり
-          break;
-        }
-        count++;
-      } //end while loop
-      pcl::copyPointCloud<PointT>(*tmp, *others);
-      return;
-    }
-
-    void extraction_slope(pcl::PointCloud<PointT>::Ptr slope)
+    void extraction_cluster(pcl::PointCloud<PointT>::Ptr obstacle)
     {
       pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
-      tree->setInputCloud(slope);
+      tree->setInputCloud(obstacle);
       std::vector<pcl::PointIndices> cluster_indices; //clusters
       pcl::EuclideanClusterExtraction<PointT> ec;
       ec.setClusterTolerance(cluster_tolerance); //[m] if two point distance is less than the tlerance, it will be cluster
       ec.setMinClusterSize(min_clustersize);    //number of points in a cluster
       ec.setMaxClusterSize(25000); //about
       ec.setSearchMethod(tree);    //set kd-tree
-      ec.setInputCloud(slope);  //set input cloud
+      ec.setInputCloud(obstacle);  //set input cloud
       ec.extract(cluster_indices);
       NODELET_INFO("Cluster num: %2d", (int)cluster_indices.size());
 
-      pcl::PointCloud<PointT>::Ptr tmp_slope(new pcl::PointCloud<PointT>());
+      pcl::PointCloud<PointT>::Ptr tmp_obstacle(new pcl::PointCloud<PointT>());
       for (int i = 0; i < cluster_indices.size(); i++)
       {
         pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
-        pcl::copyPointCloud(*slope, cluster_indices[i].indices, *tmp);
-        *tmp_slope += *tmp;
+        pcl::copyPointCloud(*obstacle, cluster_indices[i].indices, *tmp); 
+        *tmp_obstacle += *tmp;
       }
-      slope->clear();
-      pcl::copyPointCloud(*tmp_slope, *slope);
-    }
 
-    int segmentation(pcl::PointCloud<PointT>::Ptr input,
-                     pcl::PointIndices &inliers,
-                     pcl::ModelCoefficients &coeffs)
-    {
-      //そもそも入力点群数が少なすぎるとRANSACの計算ができない
-      //RANSACのOptimizeCoefficientsをtrueにするときはたぶん10点以上ないとまずい
-      if (input->size() < 10)
-        return -1;
-
-      //instance of RANSAC segmentation processing object
-      pcl::SACSegmentation<PointT> sacseg;
-
-      //set RANSAC parameters
-      sacseg.setOptimizeCoefficients(true);
-      sacseg.setModelType(pcl::SACMODEL_PLANE);
-      sacseg.setMethodType(pcl::SAC_RANSAC);
-      sacseg.setMaxIterations(100);
-      sacseg.setDistanceThreshold(distance_thres); //[m]
-      sacseg.setInputCloud(input);
-
-      try
+      //marker
+      visualization_msgs::MarkerArray marker_array;
+      visualization_msgs::Marker marker;
+      int marker_id = 0;
+      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
       {
-        sacseg.segment(inliers, coeffs);
-      }
-      catch (const pcl::PCLException &e)
-      {
-        //エラーハンドリング (反応しない...)
-        NODELET_WARN("Plane Model Detection Error");
-        return -1; //failure
-      }
+        Eigen::Vector4f min_pt, max_pt;
+        pcl::getMinMax3D(*obstacle, *it, min_pt, max_pt);
+        Eigen::Vector4f cluster_size = max_pt - min_pt;
+        if(cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
+        {
+          marker.header.frame_id = base_link_frame;
+          marker.header.stamp = ros::Time();
+          marker.ns = "marker";
+          marker.id = marker_id;
+          marker.type = visualization_msgs::Marker::CUBE;
+          marker.action = visualization_msgs::Marker::ADD;
+          marker.pose.position.x = cluster_size.x() / 2 + min_pt.x();
+          marker.pose.position.y = cluster_size.y() / 2 + min_pt.y();
+          marker.pose.position.z = cluster_size.z() / 2 + min_pt.z();
+          marker.scale.x = cluster_size.x();
+          marker.scale.y = cluster_size.y();
+          marker.scale.z = cluster_size.z();
+          marker.pose.orientation.x = 0.0;
+          marker.pose.orientation.y = 0.0;
+          marker.pose.orientation.z = 0.0;
+          marker.pose.orientation.w = 1.0;
+          marker.color.r = 0.0f;
+          marker.color.g = 1.0f;
+          marker.color.b = 0.0f;
+          marker.color.a = 0.5f;
+          marker_array.markers.push_back(marker);
 
-      return 0; //success
+          //marker_array.markers.push_back(makeMarker(base_link_frame, "marker", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.5f));
+        }
+      }
+      marker_pub.publish(marker_array);
+
+      obstacle->clear();
+      pcl::copyPointCloud(*tmp_obstacle, *obstacle);
     }
 
   private:
@@ -302,23 +196,16 @@ namespace soma_perception
 
     //params
     std::string base_link_frame; //base_link frame id
-    float setted_slope_tilt;
-    float setted_ground_tilt;
-    double distance_thres; //segmentation_plane
     double cluster_tolerance;//extraction_cluster
     int min_clustersize;//extracion_cluster
 
     //subscribers
-    message_filters::Subscriber<sensor_msgs::PointCloud2> *points_sub;
-    //message_filters::Subscriber<sensor_msgs::Imu> *imu_sub;
-    message_filters::Synchronizer<MySyncPolicy> *sync;
+		ros::Subscriber points_sub;
 
     //publishers
-    //ros::Publisher ground_pub;
-    //ros::Publisher slope_pub;
-    //ros::Publisher others_pub;
 		ros::Publisher cloud_transformed_pub;
-	};
+    ros::Publisher marker_pub;
+  };
 } // namespace soma_perception
 
 PLUGINLIB_EXPORT_CLASS(soma_perception::EuclideanClustering, nodelet::Nodelet);
