@@ -14,3 +14,11 @@
     </description>
   </class>
 </library>
+<library path="lib/libeuclidean_clustering">
+  <class name="soma_perception/EuclideanClustering"
+     type="soma_perception::EuclideanClustering"
+     base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+</library>

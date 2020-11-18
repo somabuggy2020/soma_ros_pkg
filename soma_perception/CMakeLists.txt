@@ -47,10 +47,20 @@ add_library(soma_prefiltering_nodelet
     src/prefiltering_nodelet.cpp
 )
 
+##add takegami
+add_library(euclidean_clustering
+    src/clustering.cpp
+)
+
 target_link_libraries(soma_plane_segmentation_nodelet
     ${catkin_LIBRARIES}
 )
 target_link_libraries(soma_prefiltering_nodelet
+    ${catkin_LIBRARIES}
+)
+
+##add takegami
+target_link_libraries(euclidean_clustering
     ${catkin_LIBRARIES}
 )
 

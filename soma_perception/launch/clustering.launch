@@ -1,0 +1,36 @@
+<launch>
+  <arg name="base_link" default="soma_link"/>
+  <arg name="camera_name" default="camera_R"/>
+
+  <arg name="nodelet_manager_name" default="soma_clustering_manager"/>
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />
+
+  <node pkg="nodelet" type="nodelet" name="pt_x_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
+    <remap from="~input" to="/$(arg camera_name)/depth_registered/points"/>
+    <param name="input_frame" value="$(arg base_link)"/>
+    <param name="filter_field_name" value="x"/>
+    <param name="filter_limit_min" value="0.1"/>
+    <param name="filter_limit_max" value="6.0"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="pt_z_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
+    <remap from="~input" to="/pt_x_filter/output"/>
+    <param name="input_frame" value="$(arg base_link)"/>
+    <param name="filter_field_name" value="z"/>
+    <param name="filter_limit_min" value="-0.2"/>
+    <param name="filter_limit_max" value="1.5"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="vg_filter" args="load pcl/VoxelGrid $(arg nodelet_manager_name)">
+    <remap from="~input" to="/pt_z_filter/output"/>
+    <remap from="~output" to="/$(arg camera_name)/filtered"/>
+    <param name="input_frame" value="$(arg base_link)"/>
+    <param name="filter_field_name" value="z"/>
+    <param name="filter_limit_min" value="-10.0"/>
+    <param name="filter_limit_max" value="10.0"/>
+    <param name="leaf_size" value="0.03"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+</launch>
