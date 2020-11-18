@@ -43,6 +43,11 @@ namespace soma_perception
 
       output_points_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_points", 3);
 
+      base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+      //passthrough filter parameters
+      use_pt_filter = pnh.param<bool>("use_pt_filter", true);
+      pt_min = pnh.param<double>("pt_min", 0.0);
+      pt_max = pnh.param<double>("pt_max", 1.0);
       //distance filter parameter
       use_distance_filter = pnh.param<bool>("use_distance_filter", true);
       distance_near_thresh = pnh.param<double>("distance_near_thresh", 1.0);
@@ -86,6 +91,9 @@ namespace soma_perception
       output_points_pub.publish(filtered);
     }
 
+    //--------------------------------------------------
+    //Transform function
+    //--------------------------------------------------
     void transform_pointCloud(pcl::PointCloud<PointT>::ConstPtr input,
                               pcl::PointCloud<PointT> &output)
     {
@@ -107,6 +115,21 @@ namespace soma_perception
         output.header.stamp = input->header.stamp;
         NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
       }
+    }
+
+    //--------------------------------------------------
+    //Passthrough filter function
+    //--------------------------------------------------
+    
+    void pt_filter(const pcl::PointCloud<PointT>::Ptr &src)
+    {
+      pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>);
+      pcl::PassThrough<PointT> pass;
+      pass.setInputCloud(src);
+      pass.setFilterFieldName("z");
+      pass.setFilterLimits(pt_min, pt_max);
+      pass.filter(*filtered);
+      pcl::copyPointCloud<PointT>(*filtered, *src);     
     }
 
     //--------------------------------------------------
@@ -173,6 +196,13 @@ namespace soma_perception
     ros::Subscriber input_points_sub;
     ros::Publisher output_points_pub;
     tf::TransformListener tf_listener;
+
+    //parameters
+    std::string base_link_frame;
+    
+    bool use_pt_filter;
+    double pt_min;
+    double pt_max;
 
     bool use_distance_filter;
     double distance_near_thresh;
