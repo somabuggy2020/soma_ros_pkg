@@ -16,6 +16,8 @@
   <arg name="frame_id" default="soma_link"/>
   <arg name="input_points" default="/$(arg camera_name)/prefiltered"/>
   <arg name="input_imu" default="/imu/data"/>
+
+      <node pkg="tf2_ros" type="static_transform_publisher" name="Base2FootPrint" args="0 0 -0.23 0 0 0 $(arg frame_id) foot_print" />
 	
   <!-- launch the nodelet manager -->
   <arg name="nodelet_manager_name" default="soma_vision_manager"/>
@@ -25,14 +27,9 @@
   <node pkg="nodelet" type="nodelet" name="plane_z_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
       <remap from="~input" to="/$(arg input_points)"/>
       <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
-<<<<<<< HEAD
-      <param name="filter_field_name" value="z"/>
-      <param name="filter_limit_min" value="0.1"/>
-=======
       <param name="filter_field_name" value="y"/>
-      <param name="filter_limit_min" value="0.0"/>
->>>>>>> tomokawa
-      <param name="filter_limit_max" value="0.8"/>
+      <param name="filter_limit_min" value="-0.8"/>
+      <param name="filter_limit_max" value="0.5"/>
       <param name="filter_limit_negative" value="false"/>
   </node>
 
