@@ -119,14 +119,15 @@ namespace soma_perception
       pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
       pcl::PointCloud<PointT>::Ptr pc_others(new pcl::PointCloud<PointT>());
       detection_slope(cloud_transformed, imu_data, pc_ground, pc_slope, pc_others);
-      NODELET_INFO("total slope points:%5d", (int)pc_slope->size());
-      NODELET_INFO("total others points:%5d", (int)pc_others->size());
+      // NODELET_INFO("total slope points:%5d", (int)pc_slope->size());
+      // NODELET_INFO("total others points:%5d", (int)pc_others->size());
 
       //--------------------------------------------------
       // (2) euclidean cluster extraction process
       //--------------------------------------------------
-      extraction_slope(pc_slope);
-      NODELET_INFO("total cluster points:%5d", (int)pc_slope->size());
+      extraction_cluster(pc_slope);
+      extraction_cluster(pc_ground);
+      // NODELET_INFO("total cluster points:%5d", (int)pc_slope->size());
 
       //publish of results
       //パブリッシュする前に必ずframe_idとstampを設定すること
@@ -164,7 +165,7 @@ namespace soma_perception
         pcl_ros::transformPointCloud(*input, output, transform);
         output.header.frame_id = base_link_frame;
         output.header.stamp = input->header.stamp;
-        NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
+        // NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
       }
     }
 
@@ -182,6 +183,10 @@ namespace soma_perception
       pcl::ExtractIndices<PointT> EI;
       pcl::copyPointCloud<PointT>(*raw, *tmp); //copyt to tempolary
       int count = 1;
+
+      int ground_count = 0;
+      int slope_count = 0;
+
       std_msgs::Float32MultiArray absolute_ary;
       std_msgs::Float32MultiArray relative_ary;
       while (1)
@@ -234,10 +239,16 @@ namespace soma_perception
           if (relative_ary.data[count - 1] < setted_ground_tilt)
           {
             *ground += *tmp2;
+            ground_count++;
+            NODELET_INFO("ground %d times -> relative_ary.data[%d]: %f", ground_count, count, relative_ary.data[count-1]);
+            NODELET_INFO("ground %d times -> absolute_ary.data[%d]: %f", ground_count, count, absolute_ary.data[count-1]);
           }
           else if (setted_slope_tilt < absolute_ary.data[count - 1])
           {
             *slope += *tmp2; //append (marge) points to result object
+            slope_count++;
+            NODELET_INFO("slope %d times -> relative_ary.data[%d]: %f", slope_count, count, relative_ary.data[count-1]);
+            NODELET_INFO("slope %d times -> absolute_ary.data[%d]: %f", slope_count, count, absolute_ary.data[count-1]);
           }
           tmp2->clear();
           EI.setNegative(true);
@@ -256,7 +267,7 @@ namespace soma_perception
       return;
     }
 
-    void extraction_slope(pcl::PointCloud<PointT>::Ptr slope)
+    void extraction_cluster(pcl::PointCloud<PointT>::Ptr slope)
     {
       pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
       tree->setInputCloud(slope);
