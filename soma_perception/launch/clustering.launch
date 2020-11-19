@@ -37,4 +37,6 @@
   <node pkg="nodelet" type="nodelet" name="euclidean_clustering"
         args="load soma_perception/EuclideanClustering $(arg nodelet_manager_name)" >
   </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
 </launch>
