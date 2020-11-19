@@ -50,6 +50,7 @@ namespace soma_perception
       //advertise
 			cloud_transformed_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_transformed", 1);
       marker_pub = nh.advertise<visualization_msgs::MarkerArray>("marker", 1);
+      marker_center_pub = nh.advertise<visualization_msgs::MarkerArray>("marker_center", 1);
       //sub
       points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
 		}
@@ -147,15 +148,16 @@ namespace soma_perception
 
       //marker
       visualization_msgs::MarkerArray marker_array;
-     
+      visualization_msgs::MarkerArray marker_array_center;
       int marker_id = 0;
-      //marker_array.markers.clear();
+
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
       {
         Eigen::Vector4f min_pt, max_pt;
         pcl::getMinMax3D(*obstacle, *it, min_pt, max_pt);
         Eigen::Vector4f cluster_size = max_pt - min_pt;
         visualization_msgs::Marker marker;
+        visualization_msgs::Marker marker_center;
         if(cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
         {
           marker.header.frame_id = base_link_frame;
@@ -164,10 +166,9 @@ namespace soma_perception
           marker.id = marker_id;
           marker.type = visualization_msgs::Marker::CUBE;
           marker.action = visualization_msgs::Marker::ADD;
-          //center position
           marker.pose.position.x = (max_pt.x() + min_pt.x())/2.0;
-          marker.pose.position.y = cluster_size.y() / 2 + min_pt.y();
-          marker.pose.position.z = cluster_size.z() / 2 + min_pt.z();
+          marker.pose.position.y = (max_pt.y() + min_pt.y())/2.0;
+          marker.pose.position.z = (max_pt.z() + min_pt.z())/2.0;
           marker.scale.x = cluster_size.x();
           marker.scale.y = cluster_size.y();
           marker.scale.z = cluster_size.z();
@@ -178,15 +179,40 @@ namespace soma_perception
           marker.color.r = 0.0f;
           marker.color.g = 1.0f;
           marker.color.b = 0.0f;
-          marker.color.a = 0.5f;
+          marker.color.a = 0.2f;
           marker.lifetime = ros::Duration(0.1);
           marker_array.markers.push_back(marker);
+
+          //marker_center
+          marker_center.header.frame_id = base_link_frame;
+          marker_center.header.stamp = ros::Time();
+          marker_center.ns = "marker_center";
+          marker_center.id = marker_id;
+          marker_center.type = visualization_msgs::Marker::CUBE;
+          marker_center.action = visualization_msgs::Marker::ADD;
+          marker_center.pose.position.x = (max_pt.x() + min_pt.x())/2.0;
+          marker_center.pose.position.y = (max_pt.y() + min_pt.y())/2.0;
+          marker_center.pose.position.z = (max_pt.z() + min_pt.z())/2.0;
+          marker_center.scale.x = 0.1;
+          marker_center.scale.y = 0.1;
+          marker_center.scale.z = 0.1;
+          marker_center.pose.orientation.x = 0.0;
+          marker_center.pose.orientation.y = 0.0;
+          marker_center.pose.orientation.z = 0.0;
+          marker_center.pose.orientation.w = 1.0;
+          marker_center.color.r = 1.0f;
+          marker_center.color.g = 0.0f;
+          marker_center.color.b = 0.0f;
+          marker_center.color.a = 1.0f;
+          marker_center.lifetime = ros::Duration(0.1);
+          marker_array_center.markers.push_back(marker_center);
         }
       }
 
       if(marker_array.markers.empty() == false)
       {
         marker_pub.publish(marker_array);
+        marker_center_pub.publish(marker_array_center);
       }
 
       obstacle->clear();
@@ -208,6 +234,7 @@ namespace soma_perception
     //publishers
 		ros::Publisher cloud_transformed_pub;
     ros::Publisher marker_pub;
+    ros::Publisher marker_center_pub;
   };
 } // namespace soma_perception
 
