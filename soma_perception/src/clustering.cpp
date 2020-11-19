@@ -49,8 +49,9 @@ namespace soma_perception
       initialize_params();
       //advertise
 			cloud_transformed_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_transformed", 1);
+      marker_pub = nh.advertise<visualization_msgs::MarkerArray>("marker", 1);
       //sub
-			points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
+      points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
 		}
 
   private:
@@ -60,8 +61,6 @@ namespace soma_perception
     void initialize_params()
     {
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-      cluster_tolerance = pnh.param<double>("cluster_tolerance", 0.1);
-      min_clustersize = pnh.param<int>("min_clustersize", 50);
     }
 
     void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &cloud_input)
@@ -130,8 +129,8 @@ namespace soma_perception
       tree->setInputCloud(obstacle);
       std::vector<pcl::PointIndices> cluster_indices; //clusters
       pcl::EuclideanClusterExtraction<PointT> ec;
-      ec.setClusterTolerance(cluster_tolerance); //[m] if two point distance is less than the tlerance, it will be cluster
-      ec.setMinClusterSize(min_clustersize);    //number of points in a cluster
+      ec.setClusterTolerance(0.1); //[m] if two point distance is less than the tlerance, it will be cluster
+      ec.setMinClusterSize(1000);    //number of points in a cluster
       ec.setMaxClusterSize(25000); //about
       ec.setSearchMethod(tree);    //set kd-tree
       ec.setInputCloud(obstacle);  //set input cloud
@@ -150,6 +149,7 @@ namespace soma_perception
       visualization_msgs::MarkerArray marker_array;
       visualization_msgs::Marker marker;
       int marker_id = 0;
+      //marker_array.markers.clear();
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
       {
         Eigen::Vector4f min_pt, max_pt;
@@ -177,12 +177,15 @@ namespace soma_perception
           marker.color.g = 1.0f;
           marker.color.b = 0.0f;
           marker.color.a = 0.5f;
+          marker.lifetime = ros::Duration(0.1);
           marker_array.markers.push_back(marker);
-
-          //marker_array.markers.push_back(makeMarker(base_link_frame, "marker", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.5f));
         }
       }
-      marker_pub.publish(marker_array);
+
+      if(marker_array.markers.empty() == false)
+      {
+        marker_pub.publish(marker_array);
+      }
 
       obstacle->clear();
       pcl::copyPointCloud(*tmp_obstacle, *obstacle);
@@ -196,8 +199,6 @@ namespace soma_perception
 
     //params
     std::string base_link_frame; //base_link frame id
-    double cluster_tolerance;//extraction_cluster
-    int min_clustersize;//extracion_cluster
 
     //subscribers
 		ros::Subscriber points_sub;
