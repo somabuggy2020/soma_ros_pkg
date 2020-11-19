@@ -12,7 +12,7 @@
   <arg name="rviz_switch" default="false"/>
   <arg name="pcdfile" default="/home/soma1/catkin_ws/src/soma_ros_pkg/soma_ros/data/outside_tf.pcd"/>
 
-  <arg name="camera_name" default="camera_L"/>
+  <arg name="camera_name" default="camera_R"/>
   <arg name="frame_id" default="soma_link"/>
   <arg name="input_points" default="/$(arg camera_name)/prefiltered"/>
   <arg name="input_imu" default="/imu/data"/>
@@ -25,26 +25,48 @@
 
   <!-- passthrough z_axis -->
   <node pkg="nodelet" type="nodelet" name="plane_z_filter" args="load pcl/PassThrough $(arg nodelet_manager_name)">
-      <remap from="~input" to="/$(arg input_points)"/>
-      <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
-      <param name="filter_field_name" value="y"/>
-      <param name="filter_limit_min" value="-0.1"/>
-      <param name="filter_limit_max" value="0.8"/>
-      <param name="filter_limit_negative" value="false"/>
+    <remap from="~input" to="/$(arg input_points)"/>
+    <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
+    <param name="filter_field_name" value="y"/>
+    <param name="filter_limit_min" value="-3.0"/>
+    <param name="filter_limit_max" value="0.1"/>
+    <param name="filter_limit_negative" value="false"/>
   </node>
+  
+  <!-- downsample -->
+  <node pkg="nodelet" type="nodelet" name="downsample" args="load pcl/VoxelGrid $(arg nodelet_manager_name)">
+    <remap from="~input" to="/plane_z_filter/output"/>
+    <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
+    <param name="leaf_size" value="0.07"/>
+    <param name="filter_limit_min" value="-10"/>
+    <param name="filter_limit_max" value="10"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+
+  <!-- launch Floor Detection Nodelet -->
+  <!-- <include file="$(find soma_perception)/launch/floor_detection_sample.launch">
+    <arg name="nodelet_manager_name" value="$(arg nodelet_manager_name)"/>
+    <arg name="input_points" value="/plane_z_filter/output"/>
+  </include> -->
+
+  <!-- launch Prefiltering nodelet -->
+  <!-- <node pkg="nodelet" type="nodelet" name="prefiltering"
+        args="load soma_perception/PrefilteringNodelet $(arg nodelet_manager_name)">
+    <remap from="input_points" to="/plane_z_filter/output"/>
+  </node> -->
 
   <!-- launch Plane Segmentation nodelet -->
   <node pkg="nodelet" type="nodelet" name="plane_segmenatation"
         args="load soma_perception/PlaneSegmentationNodelet $(arg nodelet_manager_name)">
-        <param name="base_link" value="$(arg frame_id)"/>
-        <param name="setted_slope_tilt" value="20.0"/>
-        <param name="setted_ground_tilt" value="5.0"/>
-        <param name="distance_thres" value="0.03"/>
-        <param name="cluster_tolerance" value="0.05"/>
-        <param name="min_clustersize" value="100"/>
+    <param name="base_link" value="$(arg frame_id)"/>
+    <param name="setted_slope_tilt" value="17.0"/>
+    <param name="setted_ground_tilt" value="5.0"/>
+    <param name="distance_thres" value="0.03"/>
+    <param name="cluster_tolerance" value="0.1"/>
+    <param name="min_clustersize" value="100"/>
 
-        <remap from="input_points" to="/plane_z_filter/output"/>
-        <remap from="input_imu" to="$(arg input_imu)"/>
+    <remap from="input_points" to="/downsample/output"/>
+    <remap from="input_imu" to="$(arg input_imu)"/>
 
   </node>
 
