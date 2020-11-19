@@ -80,9 +80,8 @@ namespace soma_perception
 
 
       //好きなフィルタリング
-
-
-
+      // pt_filter(filtered);
+      downsample(filtered);
 
       // pcl::PointCloud<PointT>::ConstPtr filtered = distance_filter(input);
       // filtered = downsample(filtered);
@@ -161,7 +160,7 @@ namespace soma_perception
     //--------------------------------------------------
     //Down sampling function
     //--------------------------------------------------
-    pcl::PointCloud<PointT>::ConstPtr downsample(const pcl::PointCloud<PointT>::ConstPtr &src) const
+    void downsample(const pcl::PointCloud<PointT>::Ptr &src)
     {
       pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
 
@@ -169,9 +168,7 @@ namespace soma_perception
       filter.setInputCloud(src);
       filter.setLeafSize(downsample_leaf_size, downsample_leaf_size, downsample_leaf_size);
       filter.filter(*filtered);
-      filtered->header = src->header;
-
-      return filtered;
+      pcl::copyPointCloud(*filtered, *src);
     }
 
     //--------------------------------------------------
