@@ -147,7 +147,7 @@ namespace soma_perception
 
       //marker
       visualization_msgs::MarkerArray marker_array;
-      visualization_msgs::Marker marker;
+     
       int marker_id = 0;
       //marker_array.markers.clear();
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
@@ -155,6 +155,7 @@ namespace soma_perception
         Eigen::Vector4f min_pt, max_pt;
         pcl::getMinMax3D(*obstacle, *it, min_pt, max_pt);
         Eigen::Vector4f cluster_size = max_pt - min_pt;
+        visualization_msgs::Marker marker;
         if(cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
         {
           marker.header.frame_id = base_link_frame;
@@ -163,7 +164,8 @@ namespace soma_perception
           marker.id = marker_id;
           marker.type = visualization_msgs::Marker::CUBE;
           marker.action = visualization_msgs::Marker::ADD;
-          marker.pose.position.x = cluster_size.x() / 2 + min_pt.x();
+          //center position
+          marker.pose.position.x = (max_pt.x() + min_pt.x())/2.0;
           marker.pose.position.y = cluster_size.y() / 2 + min_pt.y();
           marker.pose.position.z = cluster_size.z() / 2 + min_pt.z();
           marker.scale.x = cluster_size.x();
