@@ -42,10 +42,10 @@ namespace soma_perception
 
       initialize_params();
 
-      points_sub = nh.subscribe("/filtered_points", 256, &FloorDetectionNodelet::cloud_callback, this);
+      points_sub = nh.subscribe("input_points", 256, &FloorDetectionNodelet::cloud_callback, this);
       // floor_pub = nh.advertise<hdl_graph_slam::FloorCoeffs>("/floor_detection/floor_coeffs", 32);
 
-      read_until_pub = nh.advertise<std_msgs::Header>("/floor_detection/read_until", 32);
+      // read_until_pub = nh.advertise<std_msgs::Header>("/floor_detection/read_until", 32);
       floor_filtered_pub = nh.advertise<sensor_msgs::PointCloud2>("/floor_detection/floor_filtered_points", 32);
       floor_points_pub = nh.advertise<sensor_msgs::PointCloud2>("/floor_detection/floor_points", 32);
     }
@@ -99,13 +99,13 @@ namespace soma_perception
       // floor_pub.publish(coeffs);
 
       // for offline estimation
-      std_msgs::HeaderPtr read_until(new std_msgs::Header());
-      read_until->frame_id = points_topic;
-      read_until->stamp = cloud_msg->header.stamp + ros::Duration(1, 0);
-      read_until_pub.publish(read_until);
+      // std_msgs::HeaderPtr read_until(new std_msgs::Header());
+      // read_until->frame_id = points_topic;
+      // read_until->stamp = cloud_msg->header.stamp + ros::Duration(1, 0);
+      // read_until_pub.publish(read_until);
 
-      read_until->frame_id = "/filtered_points";
-      read_until_pub.publish(read_until);
+      // read_until->frame_id = "/filtered_points";
+      // read_until_pub.publish(read_until);
     }
 
     /**
@@ -267,7 +267,7 @@ namespace soma_perception
     ros::Publisher floor_filtered_pub;
 
     std::string points_topic;
-    ros::Publisher read_until_pub;
+    // ros::Publisher read_until_pub;
 
     // floor detection parameters
     // see initialize_params() for the details
