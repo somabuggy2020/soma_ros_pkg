@@ -22,6 +22,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <visualization_msgs/MarkerArray.h>
+//#include <jsk_rviz_plugins/bounding_box_display.h>
 
 #include <string>
 #include <vector>
@@ -51,6 +52,7 @@ namespace soma_perception
 			cloud_transformed_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_transformed", 1);
       marker_pub = nh.advertise<visualization_msgs::MarkerArray>("marker", 1);
       marker_center_pub = nh.advertise<visualization_msgs::MarkerArray>("marker_center", 1);
+      //bounding_pub = nh.advertise<jsk_rviz_plugins::BoudingBox>("bounding_box", 1);
       //sub
       points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
 		}
@@ -213,6 +215,21 @@ namespace soma_perception
       {
         marker_pub.publish(marker_array);
         marker_center_pub.publish(marker_array_center);
+
+        //jsk_rviz_plugins::BoundingBox bounding_box;
+        //bounding_box.header.frame_id = base_link_frame;
+        //bounding_box.header.stamp = ros::Time();
+        //bounding_box.pose.position.x = 1.0;
+        //bounding_box.pose.position.y = 1.0;
+        //bounding_box.pose.position.z = 1.0;
+        //bounding_box.pose.orientation.x = 0.0;
+        //bounding_box.pose.orientation.y = 0.0;
+        //bounding_box.pose.orientation.z = 0.0;
+        //bounding_box.pose.orientation.w = 1.0;
+        //bounding_box.dimensions.x = 1.0;
+        //bounding_box.dimensions.y = 1.0;
+        //bounding_box.dimensions.z = 1.0;
+        //bounding_pub.publish(bounding_box);
       }
 
       obstacle->clear();
@@ -235,6 +252,7 @@ namespace soma_perception
 		ros::Publisher cloud_transformed_pub;
     ros::Publisher marker_pub;
     ros::Publisher marker_center_pub;
+    //ros::Publisher bouning_pub;
   };
 } // namespace soma_perception
 
