@@ -22,7 +22,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include <visualization_msgs/MarkerArray.h>
-//#include <jsk_rviz_plugins/bounding_box_display.h>
+#include <jsk_recognition_msgs/BoundingBox.h>
+#include <jsk_recognition_msgs/BoundingBoxArray.h>
 
 #include <string>
 #include <vector>
@@ -48,11 +49,13 @@ namespace soma_perception
       pnh = getPrivateNodeHandle();
 
       initialize_params();
+
       //advertise
 			cloud_transformed_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_transformed", 1);
       marker_pub = nh.advertise<visualization_msgs::MarkerArray>("marker", 1);
       marker_center_pub = nh.advertise<visualization_msgs::MarkerArray>("marker_center", 1);
-      //bounding_pub = nh.advertise<jsk_rviz_plugins::BoudingBox>("bounding_box", 1);
+      bounding_pub = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("bounding_box", 1);
+
       //sub
       points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
 		}
@@ -151,6 +154,7 @@ namespace soma_perception
       //marker
       visualization_msgs::MarkerArray marker_array;
       visualization_msgs::MarkerArray marker_array_center;
+      jsk_recognition_msgs::BoundingBoxArray bounding_box_array;
       int marker_id = 0;
 
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
@@ -160,6 +164,7 @@ namespace soma_perception
         Eigen::Vector4f cluster_size = max_pt - min_pt;
         visualization_msgs::Marker marker;
         visualization_msgs::Marker marker_center;
+        jsk_recognition_msgs::BoundingBox bounding_box;
         if(cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
         {
           marker.header.frame_id = base_link_frame;
@@ -184,6 +189,24 @@ namespace soma_perception
           marker.color.a = 0.2f;
           marker.lifetime = ros::Duration(0.1);
           marker_array.markers.push_back(marker);
+
+          //bounding
+          bounding_box.header.frame_id = base_link_frame;
+          bounding_box.header.stamp = ros::Time();
+          bounding_box.pose.position.x = (max_pt.x() + min_pt.x()) / 2.0;
+          bounding_box.pose.position.y = (max_pt.y() + min_pt.y())/2.0;
+          bounding_box.pose.position.z = (max_pt.z() + min_pt.z())/2.0;
+          bounding_box.pose.orientation.x = 0.0;
+          bounding_box.pose.orientation.y = 0.0;
+          bounding_box.pose.orientation.z = 0.0;
+          bounding_box.pose.orientation.w = 1.0;
+          bounding_box.dimensions.x = cluster_size.x();
+          bounding_box.dimensions.y = cluster_size.y();
+          bounding_box.dimensions.z = cluster_size.z();
+          bounding_box.label = marker_id;
+          bounding_box_array.header.stamp = ros::Time();
+          bounding_box_array.header.frame_id = base_link_frame;
+          bounding_box_array.boxes.push_back(bounding_box);
 
           //marker_center
           marker_center.header.frame_id = base_link_frame;
@@ -215,21 +238,7 @@ namespace soma_perception
       {
         marker_pub.publish(marker_array);
         marker_center_pub.publish(marker_array_center);
-
-        //jsk_rviz_plugins::BoundingBox bounding_box;
-        //bounding_box.header.frame_id = base_link_frame;
-        //bounding_box.header.stamp = ros::Time();
-        //bounding_box.pose.position.x = 1.0;
-        //bounding_box.pose.position.y = 1.0;
-        //bounding_box.pose.position.z = 1.0;
-        //bounding_box.pose.orientation.x = 0.0;
-        //bounding_box.pose.orientation.y = 0.0;
-        //bounding_box.pose.orientation.z = 0.0;
-        //bounding_box.pose.orientation.w = 1.0;
-        //bounding_box.dimensions.x = 1.0;
-        //bounding_box.dimensions.y = 1.0;
-        //bounding_box.dimensions.z = 1.0;
-        //bounding_pub.publish(bounding_box);
+        bounding_pub.publish(bounding_box_array);
       }
 
       obstacle->clear();
@@ -252,7 +261,7 @@ namespace soma_perception
 		ros::Publisher cloud_transformed_pub;
     ros::Publisher marker_pub;
     ros::Publisher marker_center_pub;
-    //ros::Publisher bouning_pub;
+    ros::Publisher bounding_pub;
   };
 } // namespace soma_perception
 
