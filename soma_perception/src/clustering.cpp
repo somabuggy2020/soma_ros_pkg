@@ -75,7 +75,7 @@ namespace soma_perception
 
       if (cloud_input->data.size() == 0)
       {
-        NODELET_WARN("empty point cloud");
+        //NODELET_WARN("empty point cloud");
         return;
       }
 
@@ -234,12 +234,42 @@ namespace soma_perception
         }
       }
 
+      //clear bounding_box
+      if(cluster_indices.begin() == cluster_indices.end())
+      {
+        NODELET_WARN("empty point cloud");
+        int num;
+        for (num = marker_id; marker_id >= 0; marker_id--)
+        {
+          jsk_recognition_msgs::BoundingBox bounding_box;
+
+          bounding_box.header.frame_id = base_link_frame;
+          bounding_box.header.stamp = ros::Time();
+          bounding_box.pose.position.x = 0.0;
+          bounding_box.pose.position.y = 0.0;
+          bounding_box.pose.position.z = 0.0;
+          bounding_box.pose.orientation.x = 0.0;
+          bounding_box.pose.orientation.y = 0.0;
+          bounding_box.pose.orientation.z = 0.0;
+          bounding_box.pose.orientation.w = 1.0;
+          bounding_box.dimensions.x = 0.01;
+          bounding_box.dimensions.y = 0.01;
+          bounding_box.dimensions.z = 0.01;
+          bounding_box.label = marker_id;
+          bounding_box_array.header.stamp = ros::Time();
+          bounding_box_array.header.frame_id = base_link_frame;
+          bounding_box_array.boxes.push_back(bounding_box);
+        }
+      }
+
       if(marker_array.markers.empty() == false)
       {
         marker_pub.publish(marker_array);
         marker_center_pub.publish(marker_array_center);
-        bounding_pub.publish(bounding_box_array);
+        //bounding_pub.publish(bounding_box_array);
       }
+
+      bounding_pub.publish(bounding_box_array);
 
       obstacle->clear();
       pcl::copyPointCloud(*tmp_obstacle, *obstacle);
