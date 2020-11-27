@@ -107,42 +107,14 @@ namespace soma_perception
       cloud_transformed->clear();
       transform_pointCloud(cloud_raw, *cloud_transformed); //transform
 
-
-      //normal vector filtering process
-      pcl::NormalEstimationOMP<PointT, pcl::Normal> impl;
-      impl.setInputCloud(cloud_transformed);
-      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
-      impl.setSearchMethod(tree);
-      impl.setRadiusSearch(radius_search);
-      pcl::PointCloud<pcl::Normal>::Ptr normal_cloud(new pcl::PointCloud<pcl::Normal>);
-      impl.compute(*normal_cloud);
-
-
+      //--------------------------------------------------
+      // (1) normal vector filtering process
+      //--------------------------------------------------
       pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr normal_xyz(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
-      normal_xyz->points.resize(cloud_transformed->points.size());
-      for (size_t i = 0; i < normal_xyz->points.size(); i++) {
-        pcl::PointXYZRGBNormal p;
-        p.x = cloud_transformed->points[i].x;
-        p.y = cloud_transformed->points[i].y;
-        p.z = cloud_transformed->points[i].z;
-        p.rgb = cloud_transformed->points[i].rgb;
-        p.normal_x = normal_cloud->points[i].normal_x;
-        p.normal_y = normal_cloud->points[i].normal_y;
-        p.normal_z = normal_cloud->points[i].normal_z;
-        normal_xyz->points[i] = p;
-      }
-
-      // sensor_msgs::PointCloud2 ros_normal_cloud;
-      // pcl::toROSMsg(*normal_cloud, ros_normal_cloud);
-      // ros_normal_cloud.header.frame_id = base_link_frame;
-      sensor_msgs::PointCloud2 ros_normal_cloud;
-      pcl::toROSMsg(*normal_xyz, ros_normal_cloud);
-      ros_normal_cloud.header.frame_id = base_link_frame;
-      normal_pub.publish(ros_normal_cloud);
-
+      estimation_normal(cloud_transformed, normal_xyz);
 
       //--------------------------------------------------
-      // (1) slope detection process
+      // (2) slope detection process
       //--------------------------------------------------
       pcl::PointCloud<PointT>::Ptr pc_ground(new pcl::PointCloud<PointT>());
       pcl::PointCloud<PointT>::Ptr pc_slope(new pcl::PointCloud<PointT>());
@@ -152,7 +124,7 @@ namespace soma_perception
       // NODELET_INFO("total others points:%5d", (int)pc_others->size());
 
       //--------------------------------------------------
-      // (2) euclidean cluster extraction process
+      // (3) euclidean cluster extraction process
       //--------------------------------------------------
       extraction_cluster(pc_slope);
       extraction_cluster(pc_ground);
@@ -172,6 +144,11 @@ namespace soma_perception
       pc_others->header.frame_id = base_link_frame;
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
+
+      sensor_msgs::PointCloud2 ros_normal_cloud;
+      pcl::toROSMsg(*normal_xyz, ros_normal_cloud);
+      ros_normal_cloud.header.frame_id = base_link_frame;
+      normal_pub.publish(ros_normal_cloud);
       
     }// finsh callback
 
@@ -195,6 +172,31 @@ namespace soma_perception
         output.header.frame_id = base_link_frame;
         output.header.stamp = input->header.stamp;
         // NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
+      }
+    }
+
+    void estimation_normal(pcl::PointCloud<PointT>::Ptr input, 
+                           pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr output)
+    {
+      pcl::NormalEstimationOMP<PointT, pcl::Normal> impl;
+      impl.setInputCloud(input);
+      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+      impl.setSearchMethod(tree);
+      impl.setRadiusSearch(radius_search);
+      pcl::PointCloud<pcl::Normal>::Ptr normal_cloud(new pcl::PointCloud<pcl::Normal>);
+      impl.compute(*normal_cloud);
+
+      output->points.resize(input->points.size());
+      for (size_t i = 0; i < output->points.size(); i++) {
+        pcl::PointXYZRGBNormal p;
+        p.x = input->points[i].x;
+        p.y = input->points[i].y;
+        p.z = input->points[i].z;
+        p.rgb = input->points[i].rgb;
+        p.normal_x = normal_cloud->points[i].normal_x;
+        p.normal_y = normal_cloud->points[i].normal_y;
+        p.normal_z = normal_cloud->points[i].normal_z;
+        output->points[i] = p;
       }
     }
 
