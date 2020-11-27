@@ -23,6 +23,8 @@
 #include <pcl/exceptions.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
+#include <pcl/features/normal_3d_omp.h>
+
 #include <boost/shared_ptr.hpp>
 
 #include <string>
@@ -54,6 +56,7 @@ namespace soma_perception
       ground_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_ground", 1);
       slope_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_slope", 1);
       others_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_others", 1);
+      normal_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_normals",1);
       //sub
       points_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh, "input_points", 3);
       imu_sub = new message_filters::Subscriber<sensor_msgs::Imu>(nh, "input_imu", 3);
@@ -74,6 +77,7 @@ namespace soma_perception
       distance_thres = pnh.param<double>("distance_thres", 0.01);
       cluster_tolerance = pnh.param<double>("cluster_tolerance", 0.1);
       min_clustersize = pnh.param<int>("min_clustersize", 50);
+      radius_search= pnh.param<double>("radius_search", 0.1);
     }
 
     void cloud_callback(const sensor_msgs::PointCloud2ConstPtr &cloud_input,
@@ -105,11 +109,36 @@ namespace soma_perception
 
 
       //normal vector filtering process
-      
+      pcl::NormalEstimationOMP<PointT, pcl::Normal> impl;
+      impl.setInputCloud(cloud_transformed);
+      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+      impl.setSearchMethod(tree);
+      impl.setRadiusSearch(radius_search);
+      pcl::PointCloud<pcl::Normal>::Ptr normal_cloud(new pcl::PointCloud<pcl::Normal>);
+      impl.compute(*normal_cloud);
 
 
+      pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr normal_xyz(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+      normal_xyz->points.resize(cloud_transformed->points.size());
+      for (size_t i = 0; i < normal_xyz->points.size(); i++) {
+        pcl::PointXYZRGBNormal p;
+        p.x = cloud_transformed->points[i].x;
+        p.y = cloud_transformed->points[i].y;
+        p.z = cloud_transformed->points[i].z;
+        p.rgb = cloud_transformed->points[i].rgb;
+        p.normal_x = normal_cloud->points[i].normal_x;
+        p.normal_y = normal_cloud->points[i].normal_y;
+        p.normal_z = normal_cloud->points[i].normal_z;
+        normal_xyz->points[i] = p;
+      }
 
-
+      // sensor_msgs::PointCloud2 ros_normal_cloud;
+      // pcl::toROSMsg(*normal_cloud, ros_normal_cloud);
+      // ros_normal_cloud.header.frame_id = base_link_frame;
+      sensor_msgs::PointCloud2 ros_normal_cloud;
+      pcl::toROSMsg(*normal_xyz, ros_normal_cloud);
+      ros_normal_cloud.header.frame_id = base_link_frame;
+      normal_pub.publish(ros_normal_cloud);
 
 
       //--------------------------------------------------
@@ -340,6 +369,8 @@ namespace soma_perception
     double cluster_tolerance;//extraction_cluster
     int min_clustersize;//extracion_cluster
 
+    double radius_search;
+
     //subscribers
     message_filters::Subscriber<sensor_msgs::PointCloud2> *points_sub;
     message_filters::Subscriber<sensor_msgs::Imu> *imu_sub;
@@ -349,6 +380,7 @@ namespace soma_perception
     ros::Publisher ground_pub;
     ros::Publisher slope_pub;
     ros::Publisher others_pub;
+    ros::Publisher normal_pub;
   };
 } // namespace soma_perception
 
