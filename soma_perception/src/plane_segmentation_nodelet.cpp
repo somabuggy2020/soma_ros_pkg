@@ -110,8 +110,8 @@ namespace soma_perception
       //--------------------------------------------------
       // (1) normal vector filtering process
       //--------------------------------------------------
-      pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr normal_xyz(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
-      estimation_normal(cloud_transformed, normal_xyz);
+      pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr normal_output(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+      estimation_normal(cloud_transformed, normal_output);
 
       //--------------------------------------------------
       // (2) slope detection process
@@ -145,10 +145,10 @@ namespace soma_perception
       pcl_conversions::toPCL(ros::Time::now(), pc_others->header.stamp);
       others_pub.publish(pc_others);
 
-      sensor_msgs::PointCloud2 ros_normal_cloud;
-      pcl::toROSMsg(*normal_xyz, ros_normal_cloud);
-      ros_normal_cloud.header.frame_id = base_link_frame;
-      normal_pub.publish(ros_normal_cloud);
+      sensor_msgs::PointCloud2 pc_normal;
+      pcl::toROSMsg(*normal_output, pc_normal);
+      pc_normal.header.frame_id = base_link_frame;
+      normal_pub.publish(pc_normal);
       
     }// finsh callback
 
