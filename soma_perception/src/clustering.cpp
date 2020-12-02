@@ -137,7 +137,7 @@ namespace soma_perception
       pcl::EuclideanClusterExtraction<PointT> ec;
       ec.setClusterTolerance(0.1); //[m] if two point distance is less than the tlerance, it will be cluster
       ec.setMinClusterSize(1000);    //number of points in a cluster
-      ec.setMaxClusterSize(25000); //about
+      ec.setMaxClusterSize(50000); //about
       ec.setSearchMethod(tree);    //set kd-tree
       ec.setInputCloud(obstacle);  //set input cloud
       ec.extract(cluster_indices);
