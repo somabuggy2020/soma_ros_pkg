@@ -8,10 +8,22 @@ class Point(object):
     self.y = y_init
     self.pid = pid
 
+class obscood(object):
+  def __init__(self, X_init, Y_init, dist_init):
+    self.x = X_init
+    self.y = Y_init
+    self.dist = dist_init
+
+class similarity_cood(object):
+  def __init__(self, D_init, id_init):
+    self.D = D_init
+    self.id = id_init
+
 class pSide(object):
   def __init__(self, aPoint, adist):
     self.p = aPoint
     self.dist = adist
+
 
 class Triangle(object):
   def __init__(self, aPoint):
@@ -63,7 +75,6 @@ class Triangle(object):
 
     return height
 
-
   def makeTriangle(self, a, b, c):
     abD = np.sqrt((a.x - b.x) **2 + (a.y - b.y) **2)
     bcD = np.sqrt((b.x - c.x) **2 + (b.y - c.y) **2)
@@ -87,3 +98,38 @@ class Triangle(object):
       s2, s3 = s3, s2
 
     return s1, s2, s3
+
+
+class SimiTriangle(object):
+  def __init__(self, aTriangle, alikehood, aid):
+    self.triangle = aTriangle
+    self.likehood = alikehood
+    self.id = aid
+
+
+class PairP(object):
+  def __init__(self, adist, aindex):
+    self.dist = adist
+    self.index = aindex
+
+
+class simiIDdata(object):
+  def __init__(self, alikehood, aid, a, b, c):
+    self.dict = self.makedict(a,b,c)
+    self.id = aid
+    self.likehood = alikehood 
+  def makedict(self,a,b,c):
+    d = {'a':a,'b':b,'c':c}
+    return d
+
+
+class mgData(object):
+  def __init__(self, aTriangle, aRpose):
+    self.pose = aRpose
+    self.triangle = aTriangle
+
+
+class nearTree(object):
+  def __init__(self, value, index):
+    self.val = value
+    self.index_p = index

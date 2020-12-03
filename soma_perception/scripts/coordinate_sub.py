@@ -93,16 +93,53 @@ class coodinateSub():
       return False
 
 
+  def get_NearestPoint(self, Center):
+    D_maplist = []
+    for i in range(len(Center.markers)):
+      x = Center.markers[i].pose.position.x
+      y = Center.markers[i].pose.position.y
+      dist = np.sqrt(x**2 + y**2)
+      point = structure.obscood(x,y,dist)
+      D_maplist.append(point)
+    
+    D_maplist.sort(key=lambda x: x.dist)
+
+    #print("0 : ",D_maplist[0].dist)
+    #print("1 : ",D_maplist[1].dist)
+    #print("2 : ",D_maplist[2].dist)
+
+    obs = structure.Triangle(D_maplist)
+    print(" a : ", obs.a.dist)
+    print(" b : ", obs.b.dist)
+    print(" c : ", obs.c.dist)
+    
+    return obs
+
+
+  def similarity(self, obs_Triangle):
+    similarity_list = []
+    for i in range(len(self.TRIANGLE_LIST)):
+      D = (obs_Triangle.a.dist - self.TRIANGLE_LIST[i].a.dist)** 2 + (obs_Triangle.b.dist - self.TRIANGLE_LIST[i].b.dist)** 2 + (obs_Triangle.c.dist - self.TRIANGLE_LIST[i].c.dist)**2
+      if (D <= 10):
+        sim = structure.similarity_cood(D,i)
+        similarity_list.append(sim)
+
+    return similarity_list
+
 
   def call_back(self, center):
-    if (len(center.markers) == 3):
-      print("333333333333333333333333")
+    if (len(center.markers) >= 3):
       print("0.x    ",center.markers[0].pose.position.x)
       print("0.y    ",center.markers[0].pose.position.y)
       print("1.x    ",center.markers[1].pose.position.x)
       print("1.y    ",center.markers[1].pose.position.y)
       print("2.x    ",center.markers[2].pose.position.x)
       print("2.y    ",center.markers[2].pose.position.y)
+      
+      obs_triangle = self.get_NearestPoint(center)
+      msg = self.similarity(obs_triangle)
+      print("simi : ",msg[0].D)
+
     else:
       return;
 
