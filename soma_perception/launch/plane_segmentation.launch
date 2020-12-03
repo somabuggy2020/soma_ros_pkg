@@ -33,7 +33,7 @@
     <param name="filter_limit_negative" value="false"/>
   </node>
   
-  <!-- downsample -->
+  <!-- downsample_voxel_grid -->
   <node pkg="nodelet" type="nodelet" name="downsample" args="load pcl/VoxelGrid $(arg nodelet_manager_name)">
     <remap from="~input" to="/plane_z_filter/output"/>
     <param name="input_frame" value="$(arg camera_name)_color_optical_frame"/>
@@ -43,16 +43,11 @@
     <param name="filter_limit_negative" value="false"/>
   </node>
 
-  <!-- launch Floor Detection Nodelet -->
-  <!-- <include file="$(find soma_perception)/launch/floor_detection_sample.launch">
-    <arg name="nodelet_manager" value="$(arg nodelet_manager_name)"/>
-    <arg name="input_points" value="/downsample/output"/>
-  </include> -->
-
-  <!-- launch Prefiltering nodelet -->
-  <!-- <node pkg="nodelet" type="nodelet" name="prefiltering"
-        args="load soma_perception/PrefilteringNodelet $(arg nodelet_manager_name)">
+  <!-- downsample_octree -->
+  <!-- <node pkg="nodelet" type="nodelet" name="octree_filter" args="load soma_perception/OctreeVoxelGridNodelet $(arg nodelet_manager_name)" output="screen">
     <remap from="input_points" to="/plane_z_filter/output"/>
+    <param name="base_link" value="$(arg camera_name)_color_optical_frame"/>
+    <param name="resolution" value="0.1"/>
   </node> -->
 
   <!-- launch Plane Segmentation nodelet -->

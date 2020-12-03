@@ -16,3 +16,9 @@
 		</description>
 	</class>
 </library>
+<library path="lib/libsoma_octree_voxel_grid_nodelet">
+	<class name="soma_perception/OctreeVoxelGridNodelet" type="soma_perception::OctreeVoxelGridNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
+</library>
