@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!-- 2020.9.28 tominaga
+  平面・斜面検出ノードのデバッグができるようにテストフラグ"test"を追加
+  test == true でpcdファイルをPointCloud2にしてパブリッシュするノードが動く
+  test == false はリアルタイムでセンサと連携するモード
+  "pcdfile"変数にpcdファイルまでの絶対パスを入れてroslaunchしてください
+-->
+
+<launch>
+  <arg name="camera_name" default="camera_L"/>
+  <arg name="frame_id" default="soma_link"/>
+  <arg name="input_points" default="/$(arg camera_name)/prefiltered"/>
+  <arg name="input_imu" default="/imu/data"/>
+
+  <!-- launch the nodelet manager -->
+  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" output="screen" />
+
+  <!-- launch Plane Segmentation nodelet -->
+  <node pkg="nodelet" type="nodelet" name="segmenatation"
+        args="load soma_perception/SampleSegmentationNodelet $(arg nodelet_manager_name)">
+    <param name="base_link" value="$(arg frame_id)"/>
+    <remap from="input_points" to="$(arg input_points)"/>
+    <!-- <remap from="input_imu" to="$(arg input_imu)"/> -->
+
+  </node>
+
+ 
+</launch>

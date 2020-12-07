@@ -4,6 +4,12 @@
 		</description>
 	</class>
 </library>
+<library path="lib/libsoma_sample_segmentation_nodelet">
+	<class name="soma_perception/SampleSegmentationNodelet" type="soma_perception::SampleSegmentationNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
+</library>
 <library path="lib/libsoma_floor_detection_nodelet">
 	<class name="soma_perception/FloorDetectionNodelet" type="soma_perception::FloorDetectionNodelet" base_class_type="nodelet::Nodelet">
 		<description>
