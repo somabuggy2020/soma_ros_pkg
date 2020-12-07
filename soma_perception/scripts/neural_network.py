@@ -3,6 +3,7 @@
 import rospy
 import numpy as np
 import csv
+import gc
 
 def setLandMarks():
   #36
@@ -49,46 +50,56 @@ def setLandMarks():
 class Neural_Network():
   def __init__(self):
     self.LAND_MARKS = setLandMarks()
-    self.LAND_MARKS_ROTATE = self.rotate_cood()
+    self.robot_cood = self.get_robot_cood()
+    #self.LAND_MARKS_ROTATE = self.rotate_cood()
 
     #print('len : ', len(self.LAND_MARKS_ROTATE[0][1]))
     #print('robo_cood_x : ', self.LAND_MARKS_ROTATE[0][0])
     #print('robo_cood_y : ', self.LAND_MARKS_ROTATE[1][0][0])
     #print('robo_cood_z : ', self.LAND_MARKS_ROTATE[2])
     #print('robo_cood_deg : ', self.LAND_MARKS_ROTATE[0][1][2])
-    self.write_csv()
+    print('robot_cood', self.robot_cood[1])
+    #self.write_csv()
     print('finish')
 
-  def rotate_cood(self):
+  def get_robot_cood(self):
     ROBOT_COOD = []
-    TREE_COOD = []
-    LAND_MARKS_rotate = []
-    #LAND_MARKS_rotate = [ROBOT_COOD, TREE_COOD]
-
     for x in np.linspace(0, 35, 351):    #351
       for y in np.linspace(0, 35, 351):
         for deg in range(360):  #360
-
           r = np.radians(deg)
-          C = np.cos(r)
-          S = np.sin(r)
-          R_x = np.array([
-                         [C, -S, x],
-                         [S, C, y],
-                         [0, 0, 1]
-                         ])
-          robot_cood = np.array([x, y, r])
-          ROBOT_COOD.append(robot_cood)
-          #ROBOT_COOD.append([x, y, r])
-          for i in range(len(self.LAND_MARKS)):
-            coordinate = np.dot(R_x, self.LAND_MARKS[i])
-            TREE_COOD.append(coordinate)
+          ROBOT_COOD.append([x, y, r])
+    
+    return ROBOT_COOD
 
-          LAND_MARKS_rotate.append([ROBOT_COOD, TREE_COOD])
+  #def rotate_cood(self):
+  #  ROBOT_COOD = []
+  #  TREE_COOD = []
+  #  LAND_MARKS_rotate = []
+    #LAND_MARKS_rotate = [ROBOT_COOD, TREE_COOD]
 
-    return LAND_MARKS_rotate
-
+    #for x in np.linspace(0, 35, 36):    #351
+    #  for y in np.linspace(0, 35, 36):
+    #    for deg in range(360):  #360
+#
+    #      r = np.radians(deg)
+    #      C = np.cos(r)
+    #      S = np.sin(r)
+    #      R_x = np.array([
+    #                     [C, -S, x],
+    #                     [S, C, y],
+    #                     [0, 0, 1]
+    #                     ])
+    #      ROBOT_COOD.append([x, y, deg])
+    #      for i in range(len(self.LAND_MARKS)):
+    #        coordinate = np.dot(R_x, self.LAND_MARKS[i])
+    #        TREE_COOD.append(coordinate)
+#
+    #      LAND_MARKS_rotate.append([ROBOT_COOD, TREE_COOD])
+#
+    #return LAND_MARKS_rotate
   
+
   def write_csv(self):
     with open('/home/soma1/Documents/noboru/csv/dataset.csv', 'w') as file:
       writer = csv.writer(file)
