@@ -58,9 +58,9 @@ class Neural_Network():
 
   def rotate_cood(self):
     q_set = []  #list for c-space samples (x,y,theta)
-    x_set = np.arange(0, 35, 1)
-    y_set = np.arange(0, 35, 1)
-    th_set = np.arange(0, 360, 1)
+    x_set = np.arange(0, 35, 7)
+    y_set = np.arange(0, 35, 7)
+    th_set = np.arange(0, 360, 360)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
     # print(x_set, y_set, th_set)
     #print(self.q_set[0])
@@ -71,8 +71,8 @@ class Neural_Network():
       C = np.cos(r)
       S = np.sin(r)
       R_x = np.array([
-                      [C, -S, x],
-                      [S, C, y],
+                      [C, -S, -x],
+                      [S, C, -y],
                       [0, 0, 1]
                       ])
       # print(R_x)
@@ -83,7 +83,6 @@ class Neural_Network():
 
   def get_nearTree(self):
     self.NEARTREE = []
-    #nearTree = []
     for n in range(len(self.q_set)):
       num = 0
       nearTree = []
@@ -102,6 +101,9 @@ class Neural_Network():
           #print('nearTree: ', nearTree)
         #print('nearTree1 : ', sort_nearTree[n])
         num += 1
+      for a in range(len(nearTree)):
+        LAND_MARKS_ROLL = np.dot(self.R_set[n], [nearTree[a][0], nearTree[a][1], nearTree[a][2]])
+        nearTree[a] = [LAND_MARKS_ROLL[0], LAND_MARKS_ROLL[1], LAND_MARKS_ROLL[2], nearTree[a][3]]
       self.NEARTREE.append(nearTree)
       
     #print('nearTreelen : ', len(NearTree))
@@ -111,7 +113,7 @@ class Neural_Network():
     #print('nearTree3 : ', NearTree[0][2])
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/dataset.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/dataset_test2.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['x', 'y', 'theta',
                        'tree1_x', 'tree1_y', 'tree1_d',
