@@ -14,6 +14,7 @@
 #include <pcl/search/kdtree.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/segmentation/region_growing.h>
+#include <pcl/exceptions.h>
 
 #include <pcl_ros/point_cloud.h>
 #include <pcl_ros/transforms.h>
@@ -47,6 +48,7 @@ namespace soma_perception
       this);
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+      number_of_neighbours = pnh.param<double>("number_of_neighbours", 30);
 
       segmented_pub = nh.advertise<sensor_msgs::PointCloud2>("segmented_points", 3);
     }
@@ -62,6 +64,7 @@ namespace soma_perception
       //--------------------------------------------------
       pcl::PointCloud<PointT>::Ptr cloud_transformed(new pcl::PointCloud<PointT>());
       transform_pointCloud(input, *cloud_transformed);
+      if(cloud_transformed->empty()) return;
 
       //--------------------------------------------------
       // RegionGrowing
@@ -78,7 +81,7 @@ namespace soma_perception
       reg.setMinClusterSize (50);
       reg.setMaxClusterSize (1000000);
       reg.setSearchMethod (tree);
-      reg.setNumberOfNeighbours (30);
+      reg.setNumberOfNeighbours (number_of_neighbours);
       reg.setInputCloud (cloud_transformed);
       //reg.setIndices (indices);
       reg.setInputNormals (normals);
@@ -101,20 +104,20 @@ namespace soma_perception
       //--------------------------------------------------
       // export pcd_file
       //--------------------------------------------------
-      for (int i=0; i < clusters.size(); i++) {
-        pcl::PointCloud<PointT>::Ptr _tmp(new pcl::PointCloud<PointT>);
-        pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
-        pcl::copyPointCloud(*cloud_transformed, clusters[i].indices, *_tmp);
-        transform_pointCloud(_tmp,*tmp);
-        std::string ros_now = std::to_string(ros::Time::now().toSec());
-        std::string id = std::to_string(i);
-        //座標変換前
-        std::string before_save_file_name = "/home/soma/Documents/tomokawa/pcd/before/" + ros_now + "_" + id + ".pcd";
-        pcl::io::savePCDFileBinary(before_save_file_name,*_tmp);
-        //座標変換後
-        std::string save_file_name = "/home/soma/Documents/tomokawa/pcd/after/" + ros_now + "_" + id + ".pcd";
-        pcl::io::savePCDFileBinary(save_file_name, *tmp);
-      }
+      // for (int i=0; i < clusters.size(); i++) {
+      //   pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
+      //   pcl::copyPointCloud(*cloud_transformed, clusters[i].indices, *tmp);
+      //   std::string ros_now = std::to_string(ros::Time::now().toSec());
+      //   std::string id = std::to_string(i);
+      //   std::string save_file_name = "/home/soma/Documents/tomokawa/pcd/region_growing/" + ros_now + "_" + id + ".pcd";
+        
+      //   try{
+      //     pcl::io::savePCDFileBinary(save_file_name, *tmp);
+      //   }
+      //   catch(pcl::PCLException::exception &e){
+      //     NODELET_WARN(e.what());
+      //   }
+      // }
 
       return;
     }
@@ -124,15 +127,15 @@ namespace soma_perception
     {
       if (!base_link_frame.empty())
       {
-        if (!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0)))
-        {
-          NODELET_WARN("cannot transform %s->%s", input->header.frame_id.c_str(), base_link_frame.c_str());
-          return;
-        }
+        // if (!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0)))
+        // {
+        //   NODELET_WARN("cannot transform %s->%s", input->header.frame_id.c_str(), base_link_frame.c_str());
+        //   return;
+        // }
 
         //get transform
         tf::StampedTransform transform;
-        tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(2.0));
+        tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(10.0));
         tf_listener.lookupTransform(base_link_frame, input->header.frame_id, ros::Time(0), transform);
         //apply transform
         pcl_ros::transformPointCloud(*input, output, transform);
@@ -153,6 +156,7 @@ namespace soma_perception
     ros::Publisher segmented_pub;
 
     std::string base_link_frame;
+    double number_of_neighbours;
   };
 }
 

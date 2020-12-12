@@ -20,6 +20,8 @@
   <node pkg="nodelet" type="nodelet" name="segmenatation"
         args="load soma_perception/SampleSegmentationNodelet $(arg nodelet_manager_name)">
     <param name="base_link" value="$(arg frame_id)"/>
+    <param name="number_of_neighbours" value="10"/>
+
     <remap from="input_points" to="$(arg input_points)"/>
     <!-- <remap from="input_imu" to="$(arg input_imu)"/> -->
 
