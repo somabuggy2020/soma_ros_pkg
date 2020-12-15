@@ -8,44 +8,13 @@ import gc
 import matplotlib.pyplot as plt
 
 def setLandMarks():
-  #36
+  #4
   LandMarkMap = np.array([
-                         [ 3.15, 10.4, 4],
-                         [ 5.86, 8.89, 5],
-                         [ 7.45, 7.28, 6],
-                         [ 11.4, 4.93, 7],
-                         [ 13.5, 6.91, 8],
-                         [ 16.3, 5.21, 9],
-                         [ 19.3, 6.18, 10],
-                         [ 21.2, 3.1, 11],
-                         [ 24.3, 5.53, 12],
-                         [ 22.1, 9.45, 13],
-                         [ 17.4, 8.78, 14],
-                         [ 11.5, 8.71, 15],
-                         [ 5.61, 13.3, 16],
-                         [ 3.19, 15.3, 17],
-                         [ 5.29, 16.9, 18],
-                         [ 8.96, 15.3, 22],
-                         [ 10.7, 13.1, 23],
-                         [ 13.7, 11.4, 24],
-                         [ 18.3, 12.9, 25],
-                         [ 23.9, 13.2, 26],
-                         [ 21.2, 15.6, 27],
-                         [ 7.39, 19., 30],
-                         [ 2.69, 22.5, 31],
-                         [ 5.93, 21.3, 32],
-                         [ 20.0, 19.3, 34],
-                         [ 22.8, 19.8, 35],
-                         [ 19.3, 22.9, 36],
-                         [ 17.1, 21.7, 37],
-                         [ 14.2, 23.1, 38],
-                         [ 12.3, 25.1, 39],
-                         [ 9.18, 24.0, 40],
-                         [ 5.79, 24.4, 41],
-                         [ 4.97, 29.9, 42],
-                         [ 8.37, 28.6, 43],
-                         [ 15.1, 26.3, 44],
-                         [ 22.7, 26.7, 45]
+                         [2.3, 5.1, 1],
+                         [4.2, 3.1, 2],
+                         [5.1, 6.3, 3],
+                         [7.1, 1.7, 4],
+                         [9.3, 2.9, 5]
                          ])
   return LandMarkMap
 
@@ -62,8 +31,8 @@ class Neural_Network():
 
   def rotate_cood(self):
     q_set = []  #list for c-space samples (x,y,theta)
-    x_set = np.arange(10.0, 10.1, 1)
-    y_set = np.arange(10.0, 10.1, 1)
+    x_set = np.arange(2, 9, 0.05)
+    y_set = np.arange(2, 8, 0.05)
     th_set = np.arange(0, 360, 360)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
@@ -124,6 +93,7 @@ class Neural_Network():
       if(cross > 0):
           self.NEARTREE[n][1], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][1]
 
+
   def probability(self):
     self.PROB =[]
     for n in range(len(self.NEARTREE)):
@@ -133,21 +103,28 @@ class Neural_Network():
         prob.append([0, 0, 0, 0, 0])
         prob[m][int(ID)-1] = 1
       self.PROB.append(prob)
+
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/full_tree_detection_test.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/5_tree_detection_test.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['#x', 'y', 'theta',
                        'a_x', 'a_y', 
                        'b_x', 'b_y', 
-                       'c_x', 'c_y',
-                       'a_id', 'b_id', 'c_id'])
+                       'c_x', 'c_y', 
+                       'a_id', 'b_id', 'c_id', 
+                       'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5',
+                       'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5',
+                       'p_c1', 'p_c2', 'p_c3', 'p_c4', 'p_c5'])
       for a in range(len(self.q_set)):
         writer.writerow([self.q_set[a][0], self.q_set[a][1], self.q_set[a][2],
                          self.NEARTREE[a][0][0], self.NEARTREE[a][0][1], 
                          self.NEARTREE[a][1][0], self.NEARTREE[a][1][1], 
                          self.NEARTREE[a][2][0], self.NEARTREE[a][2][1], 
-                         self.NEARTREE[a][0][2], self.NEARTREE[a][1][2], self.NEARTREE[a][2][2]])
+                         self.NEARTREE[a][0][2], self.NEARTREE[a][1][2], self.NEARTREE[a][2][2],
+                         self.PROB[a][0][0], self.PROB[a][0][1], self.PROB[a][0][2], self.PROB[a][0][3], self.PROB[a][0][4],
+                         self.PROB[a][1][0], self.PROB[a][1][1], self.PROB[a][1][2], self.PROB[a][1][3], self.PROB[a][1][4],
+                         self.PROB[a][2][0], self.PROB[a][2][1], self.PROB[a][2][2], self.PROB[a][2][3], self.PROB[a][2][4]])
 
     return
 

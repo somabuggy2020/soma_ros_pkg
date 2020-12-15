@@ -35,16 +35,19 @@ def main():
     model = Sequential()
 
     # 入力の次元数6, 36次元に線形変換, 活性化関数
-    model.add(Dense(units=3, activation='relu', input_dim=9))
+    #model.add(Dense(units=3, activation='relu', input_dim=9))
+    model.add(Dense(units=8, activation='relu', input_dim=9))
 
     # 3次元に線形変換, 活性化関数
-    # model.add(Dense(units=(3*4), activation='softmax'))
+    #model.add(Dense(units=(3*4), activation='softmax'))
+    model.add(Dense(units=3, activation=None))
     
     # コンパイル（勾配法：adam、誤差関数：categorical_crossentropy）
-    model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.1))
+    #model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.1))
+    model.compile(loss='mean_squared_error', optimizer='adam')
 
     # 構築したモデルで学習
-    history = model.fit(x_train, y_train, epochs=1000, verbose=1)
+    history = model.fit(x_train, y_train, epochs=100, verbose=1)
 
     # モデルの検証・性能評価
     #y_test = model.predict(x_train)
@@ -62,7 +65,6 @@ def main():
     plt.xlabel('Epoch')
     plt.legend(['Train'], loc='upper left')
     plt.show()
-
 
 if __name__ == '__main__':
     main()
