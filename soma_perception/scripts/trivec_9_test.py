@@ -15,20 +15,18 @@ def main():
     # 訓練データ
     #x_train  入力（学習データ）
     #y_train  出力（教師データ）
-    dataset = np.loadtxt('/home/soma1/Documents/noboru/csv/kyoku_9_tree_detection_train.csv', delimiter=',', comments='#')
-    x_train = dataset[:, 3:9]
-    #x_train = dataset[:, 0:9]
-    y_train_alpha = dataset[:, 12:21]
-    y_train_beta = dataset[:, 21:30]
-    y_train_gamma = dataset[:, 30:39]
+    dataset = np.loadtxt('/home/soma1/Documents/noboru/csv/trivec_kyoku_9_tree_detection_train.csv', delimiter=',', comments='#')
+    x_train = dataset[:, 3:15]
+    y_train_alpha = dataset[:, 18:27]
+    y_train_beta = dataset[:, 27:36]
+    y_train_gamma = dataset[:, 36:45]
     
     # テスト用データ
-    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/kyoku_9_tree_detection_test.csv', delimiter=',', comments='#')
-    x_test = test_data[:, 3:9]
-    #x_test = test_data[:, 0:9]
-    y_test_alpha = test_data[:, 12:21]
-    y_test_beta = test_data[:, 21:30]
-    y_test_gamma = test_data[:, 30:39]
+    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/trivec_kyoku_9_tree_detection_test.csv', delimiter=',', comments='#')
+    x_test = test_data[:, 3:15]
+    y_test_alpha = test_data[:, 18:27]
+    y_test_beta = test_data[:, 27:36]
+    y_test_gamma = test_data[:, 36:45]
     
     # モデル生成
     model_alpha = Sequential()
@@ -36,9 +34,9 @@ def main():
     model_gamma = Sequential()
 
     # 3次元に線形変換, 活性化関数
-    model_alpha.add(Dense(units=9, activation='softmax', input_dim=6))
-    model_beta.add(Dense(units=9, activation='softmax', input_dim=6))
-    model_gamma.add(Dense(units=9, activation='softmax', input_dim=6))
+    model_alpha.add(Dense(units=9, activation='softmax', input_dim=12))
+    model_beta.add(Dense(units=9, activation='softmax', input_dim=12))
+    model_gamma.add(Dense(units=9, activation='softmax', input_dim=12))
 
     # コンパイル（勾配法：adam、誤差関数：categorical_crossentropy）
     #model_alpha.compile(loss='categorical_crossentropy', optimizer=SGD(lr=0.1))
@@ -124,9 +122,9 @@ def main():
 
     #np.savetxt('tmp.txt',y_test,encoding='utf-8')
 
-    model_alpha.save('/home/soma1/Documents/noboru/model/kyoku_9_alpha.h5')
-    model_beta.save('/home/soma1/Documents/noboru/model/kyoku_9_beta.h5')
-    model_gamma.save('/home/soma1/Documents/noboru/model/kyoku_9_gamma.h5')
+    model_alpha.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_alpha.h5')
+    model_beta.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_beta.h5')
+    model_gamma.save('/home/soma1/Documents/noboru/model/kypku_trivec_9_gamma.h5')
 
 if __name__ == '__main__':
     main()

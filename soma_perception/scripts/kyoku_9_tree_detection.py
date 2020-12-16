@@ -29,14 +29,15 @@ class Neural_Network():
     self.rotate_cood()
     self.get_nearTree()
     self.make_triangle()
+    self.convert_kyoku()
     self.probability()
     self.write_csv()
 
 
   def rotate_cood(self):
     q_set = []  #list for c-space samples (x,y,theta)
-    x_set = np.arange(0.0, 15.1, 0.1)
-    y_set = np.arange(0.0, 15.1, 0.1)
+    x_set = np.arange(0.05, 15.05, 0.1)
+    y_set = np.arange(0.05, 15.05, 0.1)
     th_set = np.arange(0, 360, 360)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
@@ -97,6 +98,13 @@ class Neural_Network():
       if(cross > 0):
           self.NEARTREE[n][1], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][1]
 
+  def convert_kyoku(self):
+    for a in range(len(self.q_set)):
+      for b in range(3):
+        x = self.NEARTREE[a][b][0]
+        y = self.NEARTREE[a][b][1]
+        self.NEARTREE[a][b][0] = np.sqrt(x** 2 + y** 2)
+        self.NEARTREE[a][b][1] = np.arctan2(y,x)
 
   def probability(self):
     self.PROB =[]
@@ -110,12 +118,12 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/9_tree_detection_train.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/kyoku_9_tree_detection_test.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['#x', 'y', 'theta',
-                       'a_x', 'a_y', 
-                       'b_x', 'b_y', 
-                       'c_x', 'c_y', 
+                       'a_r', 'a_theta', 
+                       'b_r', 'b_theta', 
+                       'c_r', 'c_theta', 
                        'a_id', 'b_id', 'c_id', 
                        'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
                        'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',

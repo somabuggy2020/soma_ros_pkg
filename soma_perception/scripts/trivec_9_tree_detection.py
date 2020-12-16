@@ -29,14 +29,15 @@ class Neural_Network():
     self.rotate_cood()
     self.get_nearTree()
     self.make_triangle()
+    self.get_tri_vec()
     self.probability()
     self.write_csv()
 
 
   def rotate_cood(self):
     q_set = []  #list for c-space samples (x,y,theta)
-    x_set = np.arange(0.0, 15.1, 0.1)
-    y_set = np.arange(0.0, 15.1, 0.1)
+    x_set = np.arange(0.05, 15.05, 0.1)
+    y_set = np.arange(0.05, 15.05, 0.1)
     th_set = np.arange(0, 360, 360)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
@@ -97,6 +98,17 @@ class Neural_Network():
       if(cross > 0):
           self.NEARTREE[n][1], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][1]
 
+  def get_tri_vec(self):
+    self.TRI_VEC = []
+    for n in range(len(self.NEARTREE)):
+      ab_x = self.NEARTREE[n][0][0] - self.NEARTREE[n][1][0]
+      ab_y = self.NEARTREE[n][0][1] - self.NEARTREE[n][1][1]
+      bc_x = self.NEARTREE[n][1][0] - self.NEARTREE[n][2][0]
+      bc_y = self.NEARTREE[n][1][1] - self.NEARTREE[n][2][1]
+      ca_x = self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]
+      ca_y = self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]
+      self.TRI_VEC.append([ab_x, ab_y, bc_x, bc_y, ca_x, ca_y])
+
 
   def probability(self):
     self.PROB =[]
@@ -110,12 +122,13 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/9_tree_detection_train.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/tri_vec_9_tree_detection_test.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['#x', 'y', 'theta',
                        'a_x', 'a_y', 
                        'b_x', 'b_y', 
-                       'c_x', 'c_y', 
+                       'c_x', 'c_y',
+                       'ab_x', 'ab_y', 'bc_x', 'bc_y', 'ca_x', 'ca_y',
                        'a_id', 'b_id', 'c_id', 
                        'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
                        'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',
@@ -124,7 +137,8 @@ class Neural_Network():
         writer.writerow([self.q_set[a][0], self.q_set[a][1], self.q_set[a][2],
                          self.NEARTREE[a][0][0], self.NEARTREE[a][0][1], 
                          self.NEARTREE[a][1][0], self.NEARTREE[a][1][1], 
-                         self.NEARTREE[a][2][0], self.NEARTREE[a][2][1], 
+                         self.NEARTREE[a][2][0], self.NEARTREE[a][2][1],
+                         self.TRI_VEC[a][0], self.TRI_VEC[a][1], self.TRI_VEC[a][2], self.TRI_VEC[a][3], self.TRI_VEC[a][4], self.TRI_VEC[a][5],
                          self.NEARTREE[a][0][2], self.NEARTREE[a][1][2], self.NEARTREE[a][2][2],
                          self.PROB[a][0][0], self.PROB[a][0][1], self.PROB[a][0][2], self.PROB[a][0][3], self.PROB[a][0][4], self.PROB[a][0][5], self.PROB[a][0][6], self.PROB[a][0][7], self.PROB[a][0][8],
                          self.PROB[a][1][0], self.PROB[a][1][1], self.PROB[a][1][2], self.PROB[a][1][3], self.PROB[a][1][4], self.PROB[a][1][5], self.PROB[a][1][6], self.PROB[a][1][7], self.PROB[a][1][8],
