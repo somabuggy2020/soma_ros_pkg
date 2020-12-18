@@ -38,6 +38,14 @@ def main():
     model_beta.add(Dense(units=9, activation='softmax', input_dim=12))
     model_gamma.add(Dense(units=9, activation='softmax', input_dim=12))
 
+    #model_alpha.add(Dense(units=3, activation=None, input_dim=12))
+    #model_beta.add(Dense(units=3, activation=None, input_dim=12))
+    #model_gamma.add(Dense(units=3, activation=None, input_dim=12))
+#
+    #model_alpha.add(Dense(units=9, activation='softmax'))
+    #model_beta.add(Dense(units=9, activation='softmax'))
+    #model_gamma.add(Dense(units=9, activation='softmax'))
+
     # コンパイル（勾配法：adam、誤差関数：categorical_crossentropy）
     #model_alpha.compile(loss='categorical_crossentropy', optimizer=SGD(lr=0.1))
     model_alpha.compile(loss='categorical_crossentropy', optimizer=SGD(lr=0.1), metrics=['accuracy'])
@@ -46,7 +54,7 @@ def main():
 
     # 構築したモデルで学習
     #history_alpha = model_alpha.fit(x_train, y_train_alpha, epochs=100, verbose=1)
-    EPOCH = 1000
+    EPOCH = 100
     history_alpha = model_alpha.fit(x_train, y_train_alpha, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_alpha))
     history_beta = model_beta.fit(x_train, y_train_beta, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_beta))
     history_gamma = model_gamma.fit(x_train, y_train_gamma, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_gamma))
@@ -122,9 +130,9 @@ def main():
 
     #np.savetxt('tmp.txt',y_test,encoding='utf-8')
 
-    model_alpha.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_alpha.h5')
-    model_beta.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_beta.h5')
-    model_gamma.save('/home/soma1/Documents/noboru/model/kypku_trivec_9_gamma.h5')
+    model_alpha.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_alpha.h5')
+    model_beta.save('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_beta.h5')
+    model_gamma.save('/home/soma1/Documents/noboru/model/kypku_trivec_9_node9_gamma.h5')
 
 if __name__ == '__main__':
     main()

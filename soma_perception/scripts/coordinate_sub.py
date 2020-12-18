@@ -54,8 +54,8 @@ def setLandMarks():
 
 class coodinateSub():
   def __init__(self):
-    self.LAND_MARKS = setLandMarks()
-    self.TRIANGLE_LIST = self.makeTriangleList(self.LAND_MARKS)
+    #self.LAND_MARKS = setLandMarks()
+    #self.TRIANGLE_LIST = self.makeTriangleList(self.LAND_MARKS)
     #rospy.Subscriber('marker', MarkerArray, self.call_back)
     rospy.Subscriber('marker_center', MarkerArray, self.call_back)
     #rospy.Subscriber('bounding_box', BoundingBoxArray, self.call_back)
@@ -136,9 +136,9 @@ class coodinateSub():
       print("2.x    ",center.markers[2].pose.position.x)
       print("2.y    ",center.markers[2].pose.position.y)
       
-      obs_triangle = self.get_NearestPoint(center)
-      msg = self.similarity(obs_triangle)
-      print("simi : ",msg[0].D)
+      #obs_triangle = self.get_NearestPoint(center)
+      #msg = self.similarity(obs_triangle)
+      #print("simi : ",msg[0].D)
 
     else:
       return;
