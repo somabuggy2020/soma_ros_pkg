@@ -9,16 +9,21 @@ if __name__ == '__main__':
     np.random.seed(12345)
 
     # create a set of points to be the reference for ICP
-    #xs = np.random.random_sample((50, 1))
-    #ys = np.random.random_sample((50, 1))
-    #reference_points = np.hstack((xs, ys))
-    
+    reference_points = np.array([
+                                [2.3, 10.1],
+                                [4.2, 8.1],
+                                [5.1, 11.3]
+                                ])
 
     # transform the set of reference points to create a new set of
     # points for testing the ICP implementation
 
     # 1. remove some points
-    points_to_be_aligned = reference_points[1:47]
+    points_to_be_aligned = np.array([
+                                    [2.3, 10.1],
+                                    [4.5, 7.8],
+                                    [5.7, 11.5]
+                                    ])
 
     # 2. apply rotation to the new point set
     theta = math.radians(12)
@@ -26,9 +31,6 @@ if __name__ == '__main__':
     rot = np.array([[c, -s],
                     [s, c]])
     points_to_be_aligned = np.dot(points_to_be_aligned, rot)
-
-    # 3. apply translation to the new point set
-    points_to_be_aligned += np.array([np.random.random_sample(), np.random.random_sample()])
 
     # run icp
     transformation_history, aligned_points = icp(reference_points, points_to_be_aligned, verbose=True)

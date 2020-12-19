@@ -1,6 +1,6 @@
 <launch>
   <arg name="base_link" default="soma_link"/>
-  <arg name="camera_name" default="camera_R"/>
+  <arg name="camera_name" default="camera_F"/>
 
   <arg name="nodelet_manager_name" default="soma_clustering_manager"/>
   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" />

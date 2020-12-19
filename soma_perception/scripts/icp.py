@@ -68,7 +68,7 @@ def point_based_matching(point_pairs):
 
 
 def icp(reference_points, points, max_iterations=100, distance_threshold=0.3, convergence_translation_threshold=1e-3,
-        convergence_rotation_threshold=1e-4, point_pairs_threshold=10, verbose=False):
+        convergence_rotation_threshold=1e-4, point_pairs_threshold=3, verbose=False):
     """
     An implementation of the Iterative Closest Point algorithm that matches a set of M 2D points to another set
     of N 2D (reference) points.

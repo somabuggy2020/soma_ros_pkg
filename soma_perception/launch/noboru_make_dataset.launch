@@ -1,0 +1,55 @@
+<launch>
+  <arg name="input_cloud" value="/camera_F/depth_registered/points" />
+  <arg name="frame_id" value="soma_link"/>
+
+  <node name="manager" pkg="nodelet" type="nodelet" args="manager">
+  </node>
+
+  <node name="tf" pkg="nodelet" type="nodelet" args="load jsk_pcl/TfTransformCloud manager">
+    <remap from="~input" to="$(arg input_cloud)"/>
+    <param name="target_frame_id" value="$(arg frame_id)"/>
+  </node>
+
+  <node name="pt_x_filter" pkg="nodelet" type="nodelet" args="load pcl/PassThrough manager">
+    <remap from="~input" to="/tf/output"/>
+    <param name="input_frame" value="$(arg frame_id)"/>
+    <param name="filter_field_name" value="x"/>
+    <param name="filter_limit_min" value="0.1"/>
+    <param name="filter_limit_max" value="6.0"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+
+  <node name="pt_z_filter" pkg="nodelet" type="nodelet" args="load pcl/PassThrough manager">
+    <remap from="~input" to="/pt_x_filter/output"/>
+    <param name="input_frame" value="$(arg frame_id)"/>
+    <param name="filter_field_name" value="z"/>
+    <param name="filter_limit_min" value="-0.1"/>
+    <param name="filter_limit_max" value="1.5"/>
+    <param name="filter_limit_negative" value="false"/>
+  </node>
+
+  <node name="vg_filter" pkg="nodelet" type="nodelet" args="load jsk_pcl/VoxelGridLargeScale manager">
+    <remap from="~input" to="/pt_z_filter/output"/>
+    <param name="leaf_size" value="0.03"/>
+  </node>
+
+  <node name="clustering" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
+    <remap from="~input" to="/vg_filter/output"/>
+    <param name="tolerance" value="0.1"/>
+    <param name="min_size" value="500"/>
+    <param name="max_size" value="50000"/>
+  </node>
+
+  <node name="bounding" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer manager">
+    <remap from="~input" to="/vg_filter/output"/>
+    <remap from="~target" to="/clustering/output"/>
+    <param name="align_boxes" value="False"/>
+    <param name="align_boxes_with_plane" value="False"/>
+    <param name="target_frame_id" value="$(arg frame_id)"/>
+    <!--param name="publish_clouds" value="True"/-->
+    <!--param name="align_boxes" value="True"/-->
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
+
+</launch>

@@ -57,7 +57,8 @@ namespace soma_perception
       bounding_pub = nh.advertise<jsk_recognition_msgs::BoundingBoxArray>("bounding_box", 1);
 
       //sub
-      points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
+      //points_sub = nh.subscribe("camera_R/filtered", 1, &EuclideanClustering::cloud_callback, this);
+      points_sub = nh.subscribe("camera_F/filtered", 1, &EuclideanClustering::cloud_callback, this);
 		}
 
   private:
