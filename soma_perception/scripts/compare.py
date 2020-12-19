@@ -14,13 +14,14 @@ import math
 
 def main():
     # テスト用データ
-    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/trivec_kyoku_9_tree_detection_test.csv', delimiter=',', comments='#')
-    x_test = test_data[:, 3:15]
+    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/213_1_test.csv', delimiter=',', comments='#')
+    #x_test = test_data[:, 3:15]
+    x_test = np.array([test_data[3:15]])
     
     # モデル生成
-    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_alpha.h5', compile=False)
-    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_beta.h5', compile=False)
-    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/kypku_trivec_9_gamma.h5', compile=False)
+    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_alpha.h5', compile=False)
+    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_beta.h5', compile=False)
+    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/kypku_trivec_9_node9_gamma.h5', compile=False)
 
     # モデルの検証・性能評価
     y_test_alpha = model_alpha.predict(x_test)
@@ -30,7 +31,8 @@ def main():
     y_test_gamma = model_gamma.predict(x_test)
     #y_test_gamma = np.round(y_test_gamma)
     
-    x_id = test_data[:, 15:18]
+    #x_id = test_data[:, 15:18]
+    x_id = np.array([test_data[15:18]])
     FLAT_LIST = []
     for x in range(len(x_id)):
       a_id = 0

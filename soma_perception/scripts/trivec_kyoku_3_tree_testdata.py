@@ -10,15 +10,9 @@ import matplotlib.pyplot as plt
 def setLandMarks():
   #9
   LandMarkMap = np.array([
-                         [2.3, 10.1, 1],
-                         [4.2, 8.1, 2],
-                         [5.1, 11.3, 3],
-                         [7.1, 6.7, 4],
-                         [9.3, 7.9, 5],
-                         [10.0, 4.3, 6],
-                         [11.2, 0.6, 7],
-                         [12.8, 4.8, 8],
-                         [12.7, 11.7, 9]
+                         [5.67, -1.97, 1],
+                         [2.61, -0.09, 2],
+                         [5.49, 1.25, 3],
                          ])
   return LandMarkMap
 
@@ -37,8 +31,8 @@ class Neural_Network():
 
   def rotate_cood(self):
     q_set = []  #list for c-space samples (x,y,theta)
-    x_set = np.arange(0.0, 15.1, 0.1)
-    y_set = np.arange(0.0, 15.1, 0.1)
+    x_set = np.arange(0, 1, 1)
+    y_set = np.arange(0, 1, 1)
     th_set = np.arange(0, 360, 360)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
@@ -69,6 +63,7 @@ class Neural_Network():
         if num <= 2:
           nearTree.append(np.append(self.LAND_MARKS[m], distance))
           nearTree.sort(key=lambda x: x[3])
+          #print('near tree : ', nearTree)
         elif distance <= nearTree[2][3]:
           nearTree[2] = np.append(self.LAND_MARKS[m], distance)
           nearTree.sort(key=lambda x: x[3])
@@ -77,6 +72,7 @@ class Neural_Network():
         LAND_MARKS_ROLL = np.dot(self.R_set[n], [nearTree[a][0], nearTree[a][1], 1])
         nearTree[a] = [LAND_MARKS_ROLL[0], LAND_MARKS_ROLL[1], nearTree[a][2]]
       self.NEARTREE.append(nearTree)
+      #print('near tree : ', self.NEARTREE)
 
 
   def make_triangle(self):
@@ -98,6 +94,7 @@ class Neural_Network():
       cross = np.cross(vec_ab, vec_ac)
       if(cross > 0):
           self.NEARTREE[n][1], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][1]
+    print('near tree : ', self.NEARTREE)
 
   def get_tri_vec(self):
     self.TRI_VEC = []
@@ -144,7 +141,7 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_9_tree_detection_train.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/213_1_test.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['#x', 'y', 'theta',
                        'a_r', 'a_theta', 

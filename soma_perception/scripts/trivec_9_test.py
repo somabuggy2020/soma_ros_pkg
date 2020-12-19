@@ -38,9 +38,9 @@ def main():
     model_beta.add(Dense(units=9, activation='softmax', input_dim=12))
     model_gamma.add(Dense(units=9, activation='softmax', input_dim=12))
 
-    #model_alpha.add(Dense(units=3, activation=None, input_dim=12))
-    #model_beta.add(Dense(units=3, activation=None, input_dim=12))
-    #model_gamma.add(Dense(units=3, activation=None, input_dim=12))
+    #model_alpha.add(Dense(units=12, activation=None, input_dim=12))
+    #model_beta.add(Dense(units=12, activation=None, input_dim=12))
+    #model_gamma.add(Dense(units=12, activation=None, input_dim=12))
 #
     #model_alpha.add(Dense(units=9, activation='softmax'))
     #model_beta.add(Dense(units=9, activation='softmax'))
@@ -54,7 +54,7 @@ def main():
 
     # 構築したモデルで学習
     #history_alpha = model_alpha.fit(x_train, y_train_alpha, epochs=100, verbose=1)
-    EPOCH = 100
+    EPOCH = 200
     history_alpha = model_alpha.fit(x_train, y_train_alpha, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_alpha))
     history_beta = model_beta.fit(x_train, y_train_beta, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_beta))
     history_gamma = model_gamma.fit(x_train, y_train_gamma, epochs=EPOCH, verbose=1, validation_data=(x_test, y_test_gamma))
