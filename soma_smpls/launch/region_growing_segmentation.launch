@@ -1,0 +1,39 @@
+<!--
+jsk_pcl_rosパッケージを用いた
+点群のRegion Growing Segmentation
+-->
+<launch>
+	<arg name="input_cloud" default="/camera_F/depth_registered/points" />
+	<arg name="frame_id" default="soma_link" />
+	<!-- run nodelet manager -->
+	<node name="manager" pkg="nodelet" type="nodelet" args="manager">
+		<param name="manager_threads" value="4" />
+	</node>
+	<node name="tf" pkg="nodelet" type="nodelet" args="load jsk_pcl_utils/TfTransformCloud manager">
+		<remap from="~input" to="$(arg input_cloud)" />
+		<param name="target_frame_id" value="$(arg frame_id)" />
+	</node>
+	<!--
+	<node name="pt" pkg="nodelet" type="nodelet" args="load pcl/PassThrough manager">
+	<remap from="~input" to="tf/output" />
+	<param name="filter_field_name" value="x" />
+	<param name="filter_limit_min" value="0.0" />
+	<param name="filter_limit_max" value="6.0" />
+	</node>
+	-->
+	<!-- run region growing segmentation nodelet -->
+	<node name="rgs" pkg="nodelet" type="nodelet" args="load jsk_pcl/RegionGrowingSegmentation manager" output="screen">
+		<remap from="~input" to="pt/output" />
+		<param name="max_size" value="50000" />
+		<param name="min_size" value="20" />
+		<param name="number_of_neighbors" value="20" />
+		<param name="smoothness_threashold" value="3.1415" />
+		<param name="curvature_threashold" value="1.0" />
+	</node>
+	<!--
+	<node name="decomposer" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer manager">
+	<remap from="~input" to="pt/output" />
+	<remap from="~target" to="rgs/output" />
+	</node>
+	-->
+</launch>
