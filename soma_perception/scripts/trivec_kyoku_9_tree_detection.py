@@ -39,21 +39,40 @@ class Neural_Network():
     q_set = []  #list for c-space samples (x,y,theta)
     x_set = np.arange(0.0, 15.1, 0.1)
     y_set = np.arange(0.0, 15.1, 0.1)
-    th_set = np.arange(0, 360, 360)
+    th_set = np.arange(330, 360, 1)
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
 
-    self.R_set = []
+    #self.R_set = []
+    #for x,y,th in self.q_set:
+    #  r = np.radians(th)
+    #  C = np.cos(r)
+    #  S = np.sin(r)
+    #  R_x = np.array([
+    #                  [C, -S, -x],
+    #                  [S, C, -y],
+    #                  [0, 0, 1]
+    #                  ])
+    #  self.R_set.append(R_x)
+
+    self.R_set1 = []
+    self.R_set2 = []
     for x,y,th in self.q_set:
       r = np.radians(th)
       C = np.cos(r)
       S = np.sin(r)
-      R_x = np.array([
-                      [C, -S, -x],
-                      [S, C, -y],
+      R_x1 = np.array([
+                      [1, 0, -x],
+                      [0, 1, -y],
                       [0, 0, 1]
                       ])
-      self.R_set.append(R_x)
+      R_x2 = np.array([
+                      [C, -S, 0],
+                      [S, C, 0],
+                      [0, 0, 1]
+                      ])
+      self.R_set1.append(R_x1)
+      self.R_set2.append(R_x2)
     
     return 
 
@@ -74,7 +93,9 @@ class Neural_Network():
           nearTree.sort(key=lambda x: x[3])
         num += 1
       for a in range(len(nearTree)):
-        LAND_MARKS_ROLL = np.dot(self.R_set[n], [nearTree[a][0], nearTree[a][1], 1])
+        #LAND_MARKS_ROLL = np.dot(self.R_set[n], [nearTree[a][0], nearTree[a][1], 1])
+        LAND_MARKS_ROLL1 = np.dot(self.R_set1[n], [nearTree[a][0], nearTree[a][1], 1])
+        LAND_MARKS_ROLL = np.dot(self.R_set2[n], [LAND_MARKS_ROLL1[0], LAND_MARKS_ROLL1[1], 1])
         nearTree[a] = [LAND_MARKS_ROLL[0], LAND_MARKS_ROLL[1], nearTree[a][2]]
       self.NEARTREE.append(nearTree)
 
@@ -144,18 +165,31 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_9_tree_detection_train.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_range_9_tree_detection_train.csv', 'a') as file:
       writer = csv.writer(file)
-      writer.writerow(['#x', 'y', 'theta',
-                       'a_r', 'a_theta', 
-                       'b_r', 'b_theta', 
-                       'c_r', 'c_theta',
-                       'ab_r', 'ab_theta', 'bc_r', 'bc_theta', 'ca_r', 'ca_theta', 
-                       'a_id', 'b_id', 'c_id', 
-                       'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
-                       'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',
-                       'p_c1', 'p_c2', 'p_c3', 'p_c4', 'p_c5', 'p_c6', 'p_c7', 'p_c8', 'p_c9'])
+      #writer.writerow(['#x', 'y', 'theta',
+      #                 'a_r', 'a_theta', 
+      #                 'b_r', 'b_theta', 
+      #                 'c_r', 'c_theta',
+      #                 'ab_r', 'ab_theta', 'bc_r', 'bc_theta', 'ca_r', 'ca_theta', 
+      #                 'a_id', 'b_id', 'c_id', 
+      #                 'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
+      #                 'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',
+      #                 'p_c1', 'p_c2', 'p_c3', 'p_c4', 'p_c5', 'p_c6', 'p_c7', 'p_c8', 'p_c9'])
+
       for a in range(len(self.q_set)):
+        if (self.NEARTREE[a][0][0] > 6 or self.NEARTREE[a][1][0] > 6 or self.NEARTREE[a][2][0] > 6 
+          or np.radians(0) < self.NEARTREE[a][0][1] < np.radians(55.5)
+          or np.radians(124.5) < self.NEARTREE[a][0][1] < np.radians(235.5)
+          or np.radians(304.5) < self.NEARTREE[a][0][1] < np.radians(360)
+          or np.radians(0) < self.NEARTREE[a][1][1] < np.radians(55.5)
+          or np.radians(124.5) < self.NEARTREE[a][1][1] < np.radians(235.5)
+          or np.radians(304.5) < self.NEARTREE[a][1][1] < np.radians(360)
+          or np.radians(0) < self.NEARTREE[a][2][1] < np.radians(55.5)
+          or np.radians(124.5) < self.NEARTREE[a][2][1] < np.radians(235.5)
+          or np.radians(304.5) < self.NEARTREE[a][2][1] < np.radians(360)):
+            continue
+
         writer.writerow([self.q_set[a][0], self.q_set[a][1], self.q_set[a][2],
                          self.NEARTREE[a][0][0], self.NEARTREE[a][0][1], 
                          self.NEARTREE[a][1][0], self.NEARTREE[a][1][1], 
