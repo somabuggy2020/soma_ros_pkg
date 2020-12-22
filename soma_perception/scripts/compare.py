@@ -19,17 +19,21 @@ def main():
     x_test = np.array([test_data[3:15]])
     
     # モデル生成
-    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_alpha.h5', compile=False)
-    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/kyoku_trivec_9_node9_beta.h5', compile=False)
-    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/kypku_trivec_9_node9_gamma.h5', compile=False)
+    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_node9_alpha.h5', compile=False)
+    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_node9_beta.h5', compile=False)
+    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_node9_gamma.h5', compile=False)
 
     # モデルの検証・性能評価
     y_test_alpha = model_alpha.predict(x_test)
-    #y_test_alpha = np.round(y_test_alpha)
+    y_test_alpha = np.round(y_test_alpha)
     y_test_beta = model_beta.predict(x_test)
-    #y_test_beta = np.round(y_test_beta)
+    y_test_beta = np.round(y_test_beta)
     y_test_gamma = model_gamma.predict(x_test)
-    #y_test_gamma = np.round(y_test_gamma)
+    y_test_gamma = np.round(y_test_gamma)
+
+    print('a : ', y_test_alpha)
+    print('b : ', y_test_beta)
+    print('c : ', y_test_gamma)
     
     #x_id = test_data[:, 15:18]
     x_id = np.array([test_data[15:18]])

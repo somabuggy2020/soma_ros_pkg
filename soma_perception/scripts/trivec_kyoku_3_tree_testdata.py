@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 def setLandMarks():
   #9
   LandMarkMap = np.array([
-                         [5.67, -1.97, 1],
-                         [2.61, -0.09, 2],
-                         [5.49, 1.25, 3],
+                         [-1.97, 5.68, 1],
+                         [-0.09, 2.61, 2],
+                         [1.25, 5.5, 3],
                          ])
   return LandMarkMap
 
@@ -37,17 +37,24 @@ class Neural_Network():
     self.q_set = list(itertools.product(x_set, y_set, th_set))
 
 
-    self.R_set = []
+    self.R_set1 = []
+    self.R_set2 = []
     for x,y,th in self.q_set:
       r = np.radians(th)
       C = np.cos(r)
       S = np.sin(r)
-      R_x = np.array([
-                      [C, -S, -x],
-                      [S, C, -y],
+      R_x1 = np.array([
+                      [1, 0, -x],
+                      [0, 1, -y],
                       [0, 0, 1]
                       ])
-      self.R_set.append(R_x)
+      R_x2 = np.array([
+                      [C, -S, 0],
+                      [S, C, 0],
+                      [0, 0, 1]
+                      ])
+      self.R_set1.append(R_x1)
+      self.R_set2.append(R_x2)
     
     return 
 
@@ -69,7 +76,8 @@ class Neural_Network():
           nearTree.sort(key=lambda x: x[3])
         num += 1
       for a in range(len(nearTree)):
-        LAND_MARKS_ROLL = np.dot(self.R_set[n], [nearTree[a][0], nearTree[a][1], 1])
+        LAND_MARKS_ROLL1 = np.dot(self.R_set1[n], [nearTree[a][0], nearTree[a][1], 1])
+        LAND_MARKS_ROLL = np.dot(self.R_set2[n], [LAND_MARKS_ROLL1[0], LAND_MARKS_ROLL1[1], 1])
         nearTree[a] = [LAND_MARKS_ROLL[0], LAND_MARKS_ROLL[1], nearTree[a][2]]
       self.NEARTREE.append(nearTree)
       #print('near tree : ', self.NEARTREE)
