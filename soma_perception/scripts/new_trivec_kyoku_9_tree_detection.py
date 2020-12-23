@@ -94,17 +94,17 @@ class Neural_Network():
 
   def make_triangle(self):
     for n in range(len(self.NEARTREE)):
-      abD = np.sqrt((self.NEARTREE[n][0][0] - self.NEARTREE[n][1][0]) **2 + (self.NEARTREE[n][0][1] - self.NEARTREE[n][1][1]) **2)
-      bcD = np.sqrt((self.NEARTREE[n][1][0] - self.NEARTREE[n][2][0]) **2 + (self.NEARTREE[n][1][1] - self.NEARTREE[n][2][1]) **2)
-      caD = np.sqrt((self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]) **2 + (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]) **2)
-
-      if(bcD > caD):
-        if(bcD < abD):
-          self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
-      elif(caD > abD):
-        self.NEARTREE[n][0], self.NEARTREE[n][1] = self.NEARTREE[n][1], self.NEARTREE[n][0]
-      else:
-        self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
+      #abD = np.sqrt((self.NEARTREE[n][0][0] - self.NEARTREE[n][1][0]) **2 + (self.NEARTREE[n][0][1] - self.NEARTREE[n][1][1]) **2)
+      #bcD = np.sqrt((self.NEARTREE[n][1][0] - self.NEARTREE[n][2][0]) **2 + (self.NEARTREE[n][1][1] - self.NEARTREE[n][2][1]) **2)
+      #caD = np.sqrt((self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]) **2 + (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]) **2)
+#
+      #if(bcD > caD):
+      #  if(bcD < abD):
+      #    self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
+      #elif(caD > abD):
+      #  self.NEARTREE[n][0], self.NEARTREE[n][1] = self.NEARTREE[n][1], self.NEARTREE[n][0]
+      #else:
+      #  self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
 
       vec_ab = np.array([(self.NEARTREE[n][1][0] - self.NEARTREE[n][0][0]), (self.NEARTREE[n][1][1] - self.NEARTREE[n][0][1])])
       vec_ac = np.array([(self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]), (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1])])
@@ -157,17 +157,17 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_NEWrange_9_tree_detection_test_1.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_NEWrange_9_tree_detection_test_test.csv', 'a') as file:
       writer = csv.writer(file)
-      writer.writerow(['#x', 'y', 'theta',
-                       'a_r', 'a_theta', 
-                       'b_r', 'b_theta', 
-                       'c_r', 'c_theta',
-                       'ab_r', 'ab_theta', 'bc_r', 'bc_theta', 'ca_r', 'ca_theta', 
-                       'a_id', 'b_id', 'c_id', 
-                       'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
-                       'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',
-                       'p_c1', 'p_c2', 'p_c3', 'p_c4', 'p_c5', 'p_c6', 'p_c7', 'p_c8', 'p_c9'])
+      #writer.writerow(['#x', 'y', 'theta',
+      #                 'a_r', 'a_theta', 
+      #                 'b_r', 'b_theta', 
+      #                 'c_r', 'c_theta',
+      #                 'ab_r', 'ab_theta', 'bc_r', 'bc_theta', 'ca_r', 'ca_theta', 
+      #                 'a_id', 'b_id', 'c_id', 
+      #                 'p_a1', 'p_a2', 'p_a3', 'p_a4', 'p_a5', 'p_a6', 'p_a7', 'p_a8', 'p_a9',
+      #                 'p_b1', 'p_b2', 'p_b3', 'p_b4', 'p_b5', 'p_b6', 'p_b7', 'p_b8', 'p_b9',
+      #                 'p_c1', 'p_c2', 'p_c3', 'p_c4', 'p_c5', 'p_c6', 'p_c7', 'p_c8', 'p_c9'])
 
       for a in range(len(self.NEARTREE)):
         writer.writerow([self.NEARTREE[a][0][3], self.NEARTREE[a][0][4], self.NEARTREE[a][0][5],
