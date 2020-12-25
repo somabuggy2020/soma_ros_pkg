@@ -38,9 +38,9 @@ def main():
     #model_beta.add(Dense(units=9, activation='softmax', input_dim=12))
     #model_gamma.add(Dense(units=9, activation='softmax', input_dim=12))
 
-    model_alpha.add(Dense(units=12, activation='sigmoid', input_dim=12)) #None
-    model_beta.add(Dense(units=12, activation='sigmoid', input_dim=12))
-    model_gamma.add(Dense(units=12, activation='sigmoid', input_dim=12))
+    model_alpha.add(Dense(units=9, activation='sigmoid', input_dim=12)) #None
+    model_beta.add(Dense(units=9, activation='sigmoid', input_dim=12))
+    model_gamma.add(Dense(units=9, activation='sigmoid', input_dim=12))
 
     model_alpha.add(Dense(units=9, activation='softmax'))
     model_beta.add(Dense(units=9, activation='softmax'))
@@ -130,9 +130,9 @@ def main():
 
     #np.savetxt('tmp.txt',y_test,encoding='utf-8')
 
-    model_alpha.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node12_alpha.h5')
-    model_beta.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node12_beta.h5')
-    model_gamma.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node12_gamma.h5')
+    model_alpha.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_alpha.h5')
+    model_beta.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_beta.h5')
+    model_gamma.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_gamma.h5')
 
 if __name__ == '__main__':
     main()
