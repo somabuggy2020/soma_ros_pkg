@@ -10,9 +10,9 @@ if __name__ == '__main__':
 
     # create a set of points to be the reference for ICP
     reference_points = np.array([
-                                [12.37, 12.87],
-                                [10.0, 4.3],
-                                [13.6, 5.3]
+                                [12.7, 11.7],
+                                [12.8, 4.8],
+                                [10.0, 4.3]
                                 ])
 
     # transform the set of reference points to create a new set of
@@ -20,9 +20,9 @@ if __name__ == '__main__':
 
     # 1. remove some points
     points_to_be_aligned = np.array([
-                                    [12.7, 11.7],
-                                    [12.8, 4.8],
-                                    [10.0, 4.3]
+                                    [12.37, 12.87],
+                                    [10.0, 4.3],
+                                    [13.6, 5.3]
                                     ])
 
     # 2. apply rotation to the new point set

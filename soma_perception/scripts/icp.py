@@ -67,7 +67,9 @@ def point_based_matching(point_pairs):
     return rot_angle, translation_x, translation_y
 
 
-def icp(reference_points, points, max_iterations=3, distance_threshold=3, convergence_translation_threshold=1e-3,
+#def icp(reference_points, points, max_iterations=3, distance_threshold=3, convergence_translation_threshold=1e-3,
+#        convergence_rotation_threshold=1e-4, point_pairs_threshold=3, verbose=False):
+def icp(reference_points, points, robot_pose, max_iterations=3, distance_threshold=3, convergence_translation_threshold=1e-3,
         convergence_rotation_threshold=1e-4, point_pairs_threshold=3, verbose=False):
     """
     An implementation of the Iterative Closest Point algorithm that matches a set of M 2D points to another set
@@ -128,6 +130,13 @@ def icp(reference_points, points, max_iterations=3, distance_threshold=3, conver
         aligned_points[:, 0] += closest_translation_x
         aligned_points[:, 1] += closest_translation_y
 
+        robot_pose_r = np.dot([robot_pose[0], robot_pose[1]], rot.T)
+        robot_pose = [robot_pose_r[0], robot_pose_r[1], robot_pose[2]]
+        robot_pose[0] += closest_translation_x
+        robot_pose[1] += closest_translation_y
+        robot_pose[2] += math.degrees(closest_rot_angle)
+
+
         # update 'points' for the next iteration
         points = aligned_points
 
@@ -142,4 +151,4 @@ def icp(reference_points, points, max_iterations=3, distance_threshold=3, conver
                 print('Converged!')
             break
 
-    return transformation_history, points
+    return transformation_history, points, robot_pose
