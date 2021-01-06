@@ -49,7 +49,10 @@ namespace soma_perception
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
       number_of_neighbours = pnh.param<double>("number_of_neighbours", 30);
-
+      smoothThreshold = pnh.param<double>("smoothThreshold", 3.0);
+      curvatureThreshold = pnh.param<double>("curvatureThreshold", 1.0);
+      output_dirpath = pnh.param<std::string>("output_dirpath", "/home/soma/Documents/tomokawa/pcd/20201212_rgs/");
+      export_switch = pnh.param<bool>("export_switch", false);
       segmented_pub = nh.advertise<sensor_msgs::PointCloud2>("segmented_points", 3);
     }
 
@@ -85,8 +88,9 @@ namespace soma_perception
       reg.setInputCloud (cloud_transformed);
       //reg.setIndices (indices);
       reg.setInputNormals (normals);
-      reg.setSmoothnessThreshold (3.0 / 180.0 * M_PI);
-      reg.setCurvatureThreshold (1.0);
+      reg.setSmoothnessThreshold (smoothThreshold / 180.0 * M_PI);
+      // reg.setSmoothnessThreshold (3.1415);
+      reg.setCurvatureThreshold (curvatureThreshold);
 
       std::vector <pcl::PointIndices> clusters;
       reg.extract (clusters);
@@ -104,20 +108,23 @@ namespace soma_perception
       //--------------------------------------------------
       // export pcd_file
       //--------------------------------------------------
-      // for (int i=0; i < clusters.size(); i++) {
-      //   pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
-      //   pcl::copyPointCloud(*cloud_transformed, clusters[i].indices, *tmp);
-      //   std::string ros_now = std::to_string(ros::Time::now().toSec());
-      //   std::string id = std::to_string(i);
-      //   std::string save_file_name = "/home/soma/Documents/tomokawa/pcd/region_growing/" + ros_now + "_" + id + ".pcd";
-        
-      //   try{
-      //     pcl::io::savePCDFileBinary(save_file_name, *tmp);
-      //   }
-      //   catch(pcl::PCLException::exception &e){
-      //     NODELET_WARN(e.what());
-      //   }
-      // }
+      if(export_switch) {
+        for (int i=0; i < clusters.size(); i++) {
+          pcl::PointCloud<PointT>::Ptr tmp(new pcl::PointCloud<PointT>);
+          pcl::copyPointCloud(*cloud_transformed, clusters[i].indices, *tmp);
+          std::string ros_now = std::to_string(ros::Time::now().toSec());
+          std::string id = std::to_string(i);
+          std::string save_file_name = output_dirpath + ros_now + "_" + id + ".pcd";
+          
+          try{
+            pcl::io::savePCDFileBinary(save_file_name, *tmp);
+          }
+          catch(pcl::PCLException::exception &e){
+            NODELET_WARN(e.what());
+          }
+        }
+      }
+
 
       return;
     }
@@ -157,6 +164,10 @@ namespace soma_perception
 
     std::string base_link_frame;
     double number_of_neighbours;
+    double smoothThreshold;
+    double curvatureThreshold;
+    std::string output_dirpath;
+    bool export_switch;
   };
 }
 

@@ -3,7 +3,9 @@ jsk_pcl_rosパッケージを用いた
 点群のRegion Growing Segmentation
 -->
 <launch>
-	<arg name="input_cloud" default="/camera_F/depth_registered/points" />
+	<arg name="camera_name" default="camera_F"/>
+	<!-- <arg name="input_cloud" default="/$(arg camera_name)/prefiltered"/> -->
+  <arg name="input_cloud" default="/$(arg camera_name)/depth_registered/points"/>
 	<arg name="frame_id" default="soma_link" />
 	<!-- run nodelet manager -->
 	<node name="manager" pkg="nodelet" type="nodelet" args="manager">
@@ -13,27 +15,57 @@ jsk_pcl_rosパッケージを用いた
 		<remap from="~input" to="$(arg input_cloud)" />
 		<param name="target_frame_id" value="$(arg frame_id)" />
 	</node>
-	<!--
-	<node name="pt" pkg="nodelet" type="nodelet" args="load pcl/PassThrough manager">
+	
+	<!-- <node name="pt" pkg="nodelet" type="nodelet" args="load pcl/PassThrough manager">
 	<remap from="~input" to="tf/output" />
 	<param name="filter_field_name" value="x" />
 	<param name="filter_limit_min" value="0.0" />
 	<param name="filter_limit_max" value="6.0" />
-	</node>
-	-->
+	</node> -->
+
+	    <node pkg="nodelet" type="nodelet" name="pt_x_filter" args="load pcl/PassThrough manager">
+        <remap from="~input" to="tf/output"/>
+        <param name="input_frame" value="$(arg frame_id)"/>
+        <param name="filter_field_name" value="x"/>
+        <param name="filter_limit_min" value="-6.0"/>
+        <param name="filter_limit_max" value="6.0"/>
+        <param name="filter_limit_negative" value="false"/>
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="pt_z_filter" args="load pcl/PassThrough manager">
+        <remap from="~input" to="/pt_x_filter/output"/>
+        <param name="input_frame" value="$(arg frame_id)"/>
+        <param name="filter_field_name" value="z"/>
+        <param name="filter_limit_min" value="-0.5"/>
+        <param name="filter_limit_max" value="1.5"/>
+        <param name="filter_limit_negative" value="false"/>
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="vg_filter" args="load pcl/VoxelGrid manager">
+        <remap from="~input" to="/pt_z_filter/output"/>
+        <remap from="~output" to="/$(arg camera_name)/prefiltered"/>
+        <param name="input_frame" value="$(arg frame_id)"/>
+        <param name="filter_field_name" value="z"/>
+        <param name="filter_limit_min" value="-10.0"/>
+        <param name="filter_limit_max" value="10.0"/>
+        <param name="leaf_size" value="0.03"/>
+        <param name="filter_limit_negative" value="false"/>
+    </node>
+
+	
 	<!-- run region growing segmentation nodelet -->
 	<node name="rgs" pkg="nodelet" type="nodelet" args="load jsk_pcl/RegionGrowingSegmentation manager" output="screen">
-		<remap from="~input" to="pt/output" />
-		<param name="max_size" value="50000" />
-		<param name="min_size" value="20" />
-		<param name="number_of_neighbors" value="20" />
-		<param name="smoothness_threashold" value="3.1415" />
+		<remap from="~input" to="/$(arg camera_name)/prefiltered" />
+		<param name="max_size" value="1000000" />
+		<param name="min_size" value="50" />
+		<param name="number_of_neighbors" value="10" />
+		<param name="smoothness_threashold" value="0.5" />
 		<param name="curvature_threashold" value="1.0" />
 	</node>
-	<!--
+	
 	<node name="decomposer" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer manager">
-	<remap from="~input" to="pt/output" />
+	<remap from="~input" to="/$(arg camera_name)/prefiltered" />
 	<remap from="~target" to="rgs/output" />
 	</node>
-	-->
+	
 </launch>
