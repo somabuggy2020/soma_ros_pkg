@@ -55,6 +55,9 @@ add_library(soma_prefiltering_nodelet
 add_library(soma_octree_voxel_grid_nodelet
     src/octree_voxel_grid_nodelet.cpp
     )
+add_library(soma_mlp_prefiltering_nodelet
+    src/mlp_prefiltering_nodelet.cpp
+    )
 
 target_link_libraries(soma_plane_segmentation_nodelet
     ${catkin_LIBRARIES}
@@ -70,6 +73,10 @@ target_link_libraries(soma_prefiltering_nodelet
     )
 
 target_link_libraries(soma_octree_voxel_grid_nodelet
+    ${catkin_LIBRARIES}
+    )
+
+target_link_libraries(soma_mlp_prefiltering_nodelet
     ${catkin_LIBRARIES}
     )
 

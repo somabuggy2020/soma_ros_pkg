@@ -28,3 +28,9 @@
 		</description>
 	</class>
 </library>
+<library path="lib/libsoma_mlp_prefiltering_nodelet">
+	<class name="soma_perception/MlpPrefilteringNodelet" type="soma_perception::MlpPrefilteringNodelet" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
+</library>
