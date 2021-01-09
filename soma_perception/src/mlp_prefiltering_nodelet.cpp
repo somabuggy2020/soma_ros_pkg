@@ -13,6 +13,7 @@
 #include <pcl/search/search.h>
 #include <pcl/search/kdtree.h>
 #include <pcl/exceptions.h>
+#include <pcl/features/normal_3d_omp.h>
 
 #include <pcl_ros/point_cloud.h>
 #include <pcl_ros/transforms.h>
@@ -28,15 +29,16 @@ namespace soma_perception
   {
   public:
     MlpPrefilteringNodelet(){};
-    virtual ~MlpPrefilteringNodelet();
+    virtual ~MlpPrefilteringNodelet(){};
 
     virtual void onInit()
     {
-      NODELET_INFO("InitializingMlpPrefilteringNodelet");
+      NODELET_INFO("Initializing MlpPrefilteringNodelet");
 
       nh = getNodeHandle();
       pnh = getPrivateNodeHandle();
 
+      pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_normal", 3);
       points_sub = nh.subscribe("input_points",
       3, 
       &MlpPrefilteringNodelet::callback, 
@@ -48,7 +50,7 @@ namespace soma_perception
 
     void callback(const sensor_msgs::PointCloud2ConstPtr &_input)
     {
-      NODELET_INFO("point size: %d", _input->data.size());
+      // NODELET_INFO("point size: %d", _input->data.size());
 
       pcl::PointCloud<PointT>::Ptr input(new pcl::PointCloud<PointT>());
       pcl::fromROSMsg(*_input, *input);
@@ -61,9 +63,21 @@ namespace soma_perception
       if(cloud_transformed->empty()) return;
 
       //--------------------------------------------------
-      // distance filter
+      // normal_estimation
       //--------------------------------------------------
+      pcl::PointCloud<pcl::PointNormal>::Ptr normal_output(new pcl::PointCloud<pcl::PointNormal>);
+      estimation_normal(cloud_transformed, normal_output);
 
+      //--------------------------------------------------
+      // publish
+      //--------------------------------------------------
+      sensor_msgs::PointCloud2 pc_normal;
+      pcl::toROSMsg(*normal_output, pc_normal);
+      pc_normal.header.frame_id = base_link_frame;
+      NODELET_INFO("pub points size:%5d", (int)normal_output->size());
+      if((int)normal_output->size() >= 4096){
+        pub.publish(pc_normal);
+      }
     }
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
@@ -88,6 +102,31 @@ namespace soma_perception
         // NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
       }
     }
+
+    void estimation_normal(pcl::PointCloud<PointT>::Ptr input, 
+                           pcl::PointCloud<pcl::PointNormal>::Ptr output)
+    {
+      pcl::NormalEstimationOMP<PointT, pcl::Normal> impl;
+      impl.setInputCloud(input);
+      pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+      impl.setSearchMethod(tree);
+      impl.setRadiusSearch(0.1);
+      pcl::PointCloud<pcl::Normal>::Ptr normal_cloud(new pcl::PointCloud<pcl::Normal>);
+      impl.compute(*normal_cloud);
+
+      output->points.resize(input->points.size());
+      for (size_t i = 0; i < output->points.size(); i++) {
+        pcl::PointNormal p;
+        p.x = input->points[i].x;
+        p.y = input->points[i].y;
+        p.z = input->points[i].z;
+        // p.rgb = input->points[i].rgb;
+        p.normal_x = normal_cloud->points[i].normal_x;
+        p.normal_y = normal_cloud->points[i].normal_y;
+        p.normal_z = normal_cloud->points[i].normal_z;
+        output->points[i] = p;
+      }
+    }
   
   private:
     ros::NodeHandle nh;
@@ -96,7 +135,7 @@ namespace soma_perception
     tf::TransformListener tf_listener;
 
     ros::Subscriber points_sub;
-    ros::Publisher prefiltered_pub;
+    ros::Publisher pub;
 
     std::string base_link_frame;
 
