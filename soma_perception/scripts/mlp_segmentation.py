@@ -6,6 +6,7 @@ import rosbag
 import rosparam
 import ros_numpy
 import numpy as np
+import sensor_msgs.msg as sensor_msgs
 from sensor_msgs.msg import PointCloud2
 
 import tensorflow as tf
@@ -14,6 +15,32 @@ from tensorflow.keras import models
 
 INPUT_WEIGHT_DIR = '/home/soma/slope_classification/weight/4096/mymodel.h5'
 SIZE_OF_CLOUDS = 4096
+BASE_LINK = 'soma_link'
+
+def ary_to_pc2(points, frame_id):
+  cloud = PointCloud2()
+
+  ros_dtype = sensor_msgs.PointField.FLOAT32
+  dtype = np.float32
+  itemsize = np.dtype(dtype).itemsize
+  data = points.astype(dtype).tobytes()
+  fields = [sensor_msgs.PointField(
+      name=n, offset=i*itemsize, datatype=ros_dtype, count=1)
+      for i, n in enumerate('xyz')]
+
+  cloud.header.frame_id = frame_id
+  cloud.header.stamp = rospy.Time.now()
+  cloud.height = 1
+  cloud.width = points.shape[0]
+  cloud.is_dense = False
+  cloud.is_bigendian = False
+  cloud.fields = fields
+  cloud .point_step = (itemsize*3)
+  cloud.row_step=(itemsize*3*points.shape[0])
+  cloud.data = data
+
+  return cloud
+
 
 def callback(data):
   model = models.load_model(INPUT_WEIGHT_DIR)
@@ -43,31 +70,31 @@ def callback(data):
   test_clouds = test_clouds.reshape(-1, N, 6)
   print('random choiced test_clouds.shape', test_clouds.shape)
 
-
   #############
   ## predict ##
   #############
-  predicted_ground = np.empty((0, 6))
-  predicted_slope = np.empty((0, 6))
   raw_predictions = model.predict(test_clouds)
   predictions = np.round(raw_predictions)
   print('predictions', predictions.shape)
   
-  for j in range(test_clouds.shape[1]):
+  test_clouds = test_clouds.reshape(N,6)
+  print('test after', test_clouds.shape)
+  predicted_ground = np.empty((0, 3))
+  predicted_slope = np.empty((0, 3))
+
+  for j in range(test_clouds.shape[0]):
     if predictions[0,j] == 0:
-      predicted_ground = np.vstack((predicted_ground, test_clouds[0,j]))
+      predicted_ground = np.vstack((predicted_ground, test_clouds[j,0:3]))
     else:
-      predicted_slope = np.vstack((predicted_slope, test_clouds[0,j]))
+      predicted_slope = np.vstack((predicted_slope, test_clouds[j,0:3]))
     j = j + 1
   print('ground', predicted_ground.shape, 'slope', predicted_slope.shape)
 
-  ################################
-  ## convert ary to sensor_msgs ##
-  ################################
-  ground = PointCloud2()
-  slope = PointCloud2()
-  ground.data = str(predicted_ground)
-  slope.data = str(predicted_slope)
+  ##########################
+  ## publish ground,slope ##
+  ##########################
+  ground = ary_to_pc2(predicted_ground, frame_id=BASE_LINK)
+  slope = ary_to_pc2(predicted_slope, frame_id=BASE_LINK)
 
   ground_pub.publish(ground)
   slope_pub.publish(slope)
@@ -86,5 +113,5 @@ if __name__ == "__main__":
   ground_pub = rospy.Publisher('ground', PointCloud2, queue_size=3)
   slope_pub = rospy.Publisher('slope', PointCloud2, queue_size=3)
 
-  rospy.Subscriber("normal_cloud", PointCloud2, callback)
+  rospy.Subscriber("cloud_normal", PointCloud2, callback)
   rospy.spin()
