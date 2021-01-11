@@ -13,7 +13,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
-INPUT_WEIGHT_DIR = '/home/soma/slope_classification/weight/4096/mymodel.h5'
+INPUT_WEIGHT_DIR = '/home/soma/slope_classification/weight/200_4096/mymodel.h5'
 SIZE_OF_CLOUDS = 4096
 BASE_LINK = 'soma_link'
 
@@ -78,16 +78,18 @@ def callback(data):
   print('predictions', predictions.shape)
   
   test_clouds = test_clouds.reshape(N,6)
-  print('test after', test_clouds.shape)
+  predictions = predictions.reshape(N,1)
+  print('test', test_clouds.shape, 'predictions', predictions.shape)
   predicted_ground = np.empty((0, 3))
   predicted_slope = np.empty((0, 3))
-
-  for j in range(test_clouds.shape[0]):
-    if predictions[0,j] == 0:
-      predicted_ground = np.vstack((predicted_ground, test_clouds[j,0:3]))
-    else:
-      predicted_slope = np.vstack((predicted_slope, test_clouds[j,0:3]))
-    j = j + 1
+  tmp = np.empty((0,7))
+  
+  test_clouds = np.hstack((test_clouds, predictions))
+  print('concatenate', test_clouds.shape)
+  tmp = test_clouds[test_clouds[:,6]==0]
+  predicted_ground = tmp[:, 0:3]
+  tmp = test_clouds[test_clouds[:,6]==1]
+  predicted_slope = tmp[:, 0:3]
   print('ground', predicted_ground.shape, 'slope', predicted_slope.shape)
 
   ##########################
@@ -102,16 +104,12 @@ def callback(data):
 
 
 
-
 if __name__ == "__main__":
   rospy.init_node('listener', anonymous=True)
   print("Initialized")
 
-  # model = models.load_model(INPUT_WEIGHT_DIR)
-  # print(model.summary())
-
-  ground_pub = rospy.Publisher('ground', PointCloud2, queue_size=3)
-  slope_pub = rospy.Publisher('slope', PointCloud2, queue_size=3)
+  ground_pub = rospy.Publisher('ground', PointCloud2, queue_size=1)
+  slope_pub = rospy.Publisher('slope', PointCloud2, queue_size=1)
 
   rospy.Subscriber("cloud_normal", PointCloud2, callback)
   rospy.spin()
