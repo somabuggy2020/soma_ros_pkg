@@ -22,3 +22,12 @@
     </description>
   </class>
 </library>
+<library path="lib/libmarge_pcd">
+  <class name="soma_perception/marge_pcd"
+     type="soma_perception::marge_pcd"
+     base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+</library>
+

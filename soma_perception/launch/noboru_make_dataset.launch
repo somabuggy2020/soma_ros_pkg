@@ -94,6 +94,10 @@
     <param name="target_frame_id" value="$(arg frame_id)"/>
   </node>
 
+  <node name="marge_pcd" pkg="nodelet" type="nodelet" args="load soma_perception/marge_pcd manager">
+  </node>
+ 
+
   <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
 
 </launch>

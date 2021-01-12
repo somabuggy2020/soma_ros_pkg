@@ -12,7 +12,7 @@ def setLandMarks():
   LandMarkMap = np.array([
                          [0.37, 3.5, 9],
                          [-2.0, -5.0, 6],
-                         [1.6, -4.2, 8],
+                         [1.6, -4.2, 8]
                          ])
   return LandMarkMap
 

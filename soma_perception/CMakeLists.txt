@@ -51,6 +51,9 @@ add_library(soma_prefiltering_nodelet
 add_library(euclidean_clustering
     src/clustering.cpp
 )
+add_library(marge_pcd
+    src/marge_pcd.cpp
+)
 
 target_link_libraries(soma_plane_segmentation_nodelet
     ${catkin_LIBRARIES}
@@ -61,6 +64,9 @@ target_link_libraries(soma_prefiltering_nodelet
 
 ##add takegami
 target_link_libraries(euclidean_clustering
+    ${catkin_LIBRARIES}
+)
+target_link_libraries(marge_pcd
     ${catkin_LIBRARIES}
 )
 
