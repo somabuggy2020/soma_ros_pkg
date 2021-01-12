@@ -13,7 +13,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
-INPUT_WEIGHT_DIR = '/home/soma/slope_classification/weight/200_4096/mymodel.h5'
+INPUT_WEIGHT_DIR = '/home/soma/development/slope_classification/weight/200_4096/mymodel.h5'
 SIZE_OF_CLOUDS = 4096
 BASE_LINK = 'soma_link'
 
@@ -68,11 +68,11 @@ def callback(data):
   N = SIZE_OF_CLOUDS
   test_clouds = test_clouds[np.random.choice(test_clouds.shape[0], N, replace=False), :]
   test_clouds = test_clouds.reshape(-1, N, 6)
-  print('random choiced test_clouds.shape', test_clouds.shape)
+  print('random choiced from test_clouds', test_clouds.shape)
 
-  #############
-  ## predict ##
-  #############
+  ######################
+  ## predict and sort ##
+  ######################
   raw_predictions = model.predict(test_clouds)
   predictions = np.round(raw_predictions)
   print('predictions', predictions.shape)
