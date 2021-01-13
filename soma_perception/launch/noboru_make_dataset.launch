@@ -34,7 +34,7 @@
     <param name="leaf_size" value="0.03"/>
   </node>
 
-  <node name="clustering_F" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
+  <!--node name="clustering_F" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
     <remap from="~input" to="/vg_filter_F/output"/>
     <param name="tolerance" value="0.1"/>
     <param name="min_size" value="500"/>
@@ -47,7 +47,7 @@
     <param name="align_boxes" value="False"/>
     <param name="align_boxes_with_plane" value="False"/>
     <param name="target_frame_id" value="$(arg frame_id)"/>
-  </node>
+  </node-->
 
 
 
@@ -79,7 +79,7 @@
     <param name="leaf_size" value="0.03"/>
   </node>
 
-  <node name="clustering_B" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
+  <!--node name="clustering_B" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
     <remap from="~input" to="/vg_filter_B/output"/>
     <param name="tolerance" value="0.1"/>
     <param name="min_size" value="500"/>
@@ -92,7 +92,7 @@
     <param name="align_boxes" value="False"/>
     <param name="align_boxes_with_plane" value="False"/>
     <param name="target_frame_id" value="$(arg frame_id)"/>
-  </node>
+  </node-->
 
   <node name="marge_pcd" pkg="nodelet" type="nodelet" args="load soma_perception/marge_pcd manager">
   </node>
