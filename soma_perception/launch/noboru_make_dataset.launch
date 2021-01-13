@@ -97,6 +97,20 @@
   <node name="marge_pcd" pkg="nodelet" type="nodelet" args="load soma_perception/marge_pcd manager">
   </node>
  
+  <node name="clustering" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
+    <remap from="~input" to="marge_pcd"/>
+    <param name="tolerance" value="0.1"/>
+    <param name="min_size" value="500"/>
+    <param name="max_size" value="50000"/>
+  </node>
+
+  <node name="bounding" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer manager">
+    <remap from="~input" to="marge_pcd"/>
+    <remap from="~target" to="/clustering/output"/>
+    <param name="align_boxes" value="False"/>
+    <param name="align_boxes_with_plane" value="False"/>
+    <param name="target_frame_id" value="$(arg frame_id)"/>
+  </node>
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
 
