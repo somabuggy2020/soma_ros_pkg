@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*
 import numpy as np
 import keras
@@ -16,7 +17,6 @@ import rospy
 import rosparam
 
 from std_msgs.msg import Float32MultiArray
-import rospy
 
 
 def setLandMarks():
@@ -34,18 +34,18 @@ def setLandMarks():
                          ])
   return LandMarkMap
 
-
 class compare():
   def __init__(self):
-   rospy.Subscriber('tree_list', Float32MultiArray, self.call_back)
+    rospy.Subscriber('tree_list', Float32MultiArray, self.call_back)
+    self.tree_id_pub = rospy.Publisher("tree_id", Float32MultiArray, queue_size=10)
+    
 
   def call_back(self, cood):
     LAND_MARKS = setLandMarks()
     # テスト用データ
     #test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/noboru_make_treelist_test.csv', delimiter=',', comments='#')
     #x_test = np.array([test_data[3:15]])
-    #x_test = cood.data
-    print("get_data")
+    x_test = np.array([cood.data])
 
     # モデル生成
     model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5', compile=False)
@@ -83,6 +83,10 @@ class compare():
     print('b_id : ', b)
     print('c_id : ', c)
 
+    tree_id = Float32MultiArray()
+    tree_id.data = np.array([a, b, c])
+    self.tree_id_pub.publish(tree_id)
+
     ab = np.sqrt((LAND_MARKS[a - 1][0] - LAND_MARKS[b - 1][0])** 2 + (LAND_MARKS[a - 1][1] - LAND_MARKS[b - 1][1])** 2)
     bc = np.sqrt((LAND_MARKS[b - 1][0] - LAND_MARKS[c - 1][0])** 2 + (LAND_MARKS[b - 1][1] - LAND_MARKS[c - 1][1])** 2)
     ca = np.sqrt((LAND_MARKS[c - 1][0] - LAND_MARKS[a - 1][0])** 2 + (LAND_MARKS[c - 1][1] - LAND_MARKS[a - 1][1])** 2)    
@@ -109,10 +113,6 @@ class compare():
     return
 
 if __name__ == '__main__':
-    #main()
-
     rospy.init_node('compare', anonymous=True)
-  
     node = compare()
-
     rospy.spin()

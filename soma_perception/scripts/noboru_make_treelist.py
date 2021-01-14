@@ -16,12 +16,12 @@ class make_treelist():
     self.old_tree_num = 0
     rospy.Subscriber('/bounding/centroid_pose_array', PoseArray, self.call_back)
     self.list_pub = rospy.Publisher("tree_list", Float32MultiArray, queue_size=10)
+    self.cood_pub = rospy.Publisher("tree_cood", Float32MultiArray, queue_size=10)
   
   def call_back(self, center):
     self.list = []
 
     self.tree_num = len(center.poses)
-
 
     if self.tree_num >= 3 and self.tree_num != self.old_tree_num:
       self.old_tree_num = self.tree_num
@@ -106,6 +106,7 @@ class make_treelist():
       cross = np.cross(vec_ab, vec_ac)
       if(cross > 0):
           self.NEARTREE[n][1], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][1]
+    
 
   def get_tri_vec(self):
     self.TRI_VEC = []
@@ -117,6 +118,13 @@ class make_treelist():
       ca_x = self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]
       ca_y = self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]
       self.TRI_VEC.append([ab_x, ab_y, bc_x, bc_y, ca_x, ca_y])
+
+    for a in range(len(self.q_set)):
+      tree_cood_data = Float32MultiArray()
+      tree_cood_data.data = np.array([self.NEARTREE[a][0][0], self.NEARTREE[a][0][1], 
+                                      self.NEARTREE[a][1][0], self.NEARTREE[a][1][1], 
+                                      self.NEARTREE[a][2][0], self.NEARTREE[a][2][1]])
+      self.cood_pub.publish(tree_cood_data)
 
   def convert_kyoku(self):
     for a in range(len(self.q_set)):

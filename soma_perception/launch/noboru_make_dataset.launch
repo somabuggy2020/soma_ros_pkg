@@ -112,6 +112,15 @@
     <param name="target_frame_id" value="$(arg frame_id)"/>
   </node>
 
-  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
+  <node name="make_treelist" pkg="soma_perception" type="noboru_make_treelist.py" output="screen">
+  </node>
+
+  <node name="compare" pkg="soma_perception" type="noboru_compare.py" output="screen">
+  </node>
+
+  <node name="icp" pkg="soma_perception" type="noboru_icp_input.py" output="screen">
+  </node>
+
+  <!--node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/-->
 
 </launch>
