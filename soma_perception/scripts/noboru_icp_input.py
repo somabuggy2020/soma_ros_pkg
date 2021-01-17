@@ -81,7 +81,10 @@ class icp_input():
     print('robot pose_cor : ', robot_pose_cor)
     pose = Float32MultiArray()
     pose.data = np.array([robot_pose_cor[0], robot_pose_cor[1], robot_pose_cor[2]])
-    self.pose_pub.publish(pose)
+    if robot_pose != robot_pose_cor:
+      self.pose_pub.publish(pose)
+    else:
+      print('icp_error')
 
     # show results
     plt.plot(self.reference_points[:, 0], self.reference_points[:, 1], 'rx', label='reference points')
