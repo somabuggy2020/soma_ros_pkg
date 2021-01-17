@@ -13,5 +13,6 @@
  /soma/odom_dr 
  /soma/ut 
  /tf 
- /tf_static "/>
+ /tf_static
+ /fix "/>
 </launch>
