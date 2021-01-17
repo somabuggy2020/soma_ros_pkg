@@ -3,16 +3,15 @@
  args="-o /home/soma1/Documents/noboru/ 
  /camera_F/color/camera_info 
  /camera_F/color/image_raw 
- /camera_F/depth/image_rect_raw 
- /camera_F/prefiltered 
+ /camera_F/depth/image_rect_raw
+ /camera_F/depth_registered/points 
  /camera_B/color/camera_info 
  /camera_B/color/image_raw 
- /camera_B/depth/image_rect_raw 
- /camera_B/prefiltered 
+ /camera_B/depth/image_rect_raw
+ /camera_B/depth_registered/points  
  /imu/data 
  /soma/odom_dr 
  /soma/ut 
  /tf 
- /tf_static 
- /fix"/>
+ /tf_static "/>
 </launch>
