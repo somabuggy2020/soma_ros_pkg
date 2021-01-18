@@ -46,6 +46,7 @@ class fix_pose():
     self.x_dif = self.pose_x - self.odom_pose_x
     self.y_dif = self.pose_y - self.odom_pose_y
 
+    
 
 
 if __name__ == '__main__':

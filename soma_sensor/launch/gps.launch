@@ -1,3 +1,7 @@
 <launch>
-	<node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver" />
+	<include file="$(find nmea_navsat_driver)/launch/nmea_serial_driver.launch">
+		<arg name="port" value="/dev/ttyACM0"/>
+		<arg name="baud" value="115200"/>
+		<arg name="frame_id" value="gps"/>
+	</include>
 </launch>
