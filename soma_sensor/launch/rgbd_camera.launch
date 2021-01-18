@@ -31,8 +31,8 @@
         <arg name="enable_gyro" value="false"/>
         <arg name="enable_accel" value="false"/>
 
-        <arg name="color_fps" value="6"/>
-        <arg name="depth_fps" value="6"/>
+        <arg name="color_fps" value="15"/>
+        <arg name="depth_fps" value="15"/>
 
         <arg name="publish_tf" value="true"/>
         <arg name="tf_publish_rate" value="0"/>
@@ -60,7 +60,7 @@
             <remap from="~input" to="/$(arg camera_name)/depth_registered/points"/>
             <param name="input_frame" value="$(arg base_link)"/>
             <param name="filter_field_name" value="x"/>
-            <param name="filter_limit_min" value="0.1"/>
+            <param name="filter_limit_min" value="-6.0"/>
             <param name="filter_limit_max" value="6.0"/>
             <param name="filter_limit_negative" value="false"/>
         </node>
