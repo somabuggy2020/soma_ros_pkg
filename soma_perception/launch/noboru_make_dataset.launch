@@ -51,6 +51,7 @@
 
 
 
+
   <node name="tf_B" pkg="nodelet" type="nodelet" args="load jsk_pcl/TfTransformCloud manager">
     <remap from="~input" to="$(arg input_cloud_B)"/>
     <param name="target_frame_id" value="$(arg frame_id)"/>
