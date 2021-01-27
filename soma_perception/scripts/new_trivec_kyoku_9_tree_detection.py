@@ -82,7 +82,7 @@ class Neural_Network():
         LAND_MARKS_ROLL = np.dot(self.R_set2[n], [LAND_MARKS_ROLL1[0], LAND_MARKS_ROLL1[1], 1])
         dig = np.arctan2(LAND_MARKS_ROLL[1], LAND_MARKS_ROLL[0])
 
-        if (tree_dis[a][3] <= 6 and (np.radians(55.5) < dig < np.radians(124.5) or np.radians(-124.5) < dig < np.radians(-55.5))):
+        if (tree_dis[a][3] <= 6.5 and (np.radians(55.5) < dig < np.radians(124.5) or np.radians(-124.5) < dig < np.radians(-55.5))):
           if num >= 3:
             break
           nearTree.append([LAND_MARKS_ROLL[0], LAND_MARKS_ROLL[1], tree_dis[a][2], self.q_set[n][0], self.q_set[n][1], self.q_set[n][2]])
@@ -94,17 +94,17 @@ class Neural_Network():
 
   def make_triangle(self):
     for n in range(len(self.NEARTREE)):
-      #abD = np.sqrt((self.NEARTREE[n][0][0] - self.NEARTREE[n][1][0]) **2 + (self.NEARTREE[n][0][1] - self.NEARTREE[n][1][1]) **2)
-      #bcD = np.sqrt((self.NEARTREE[n][1][0] - self.NEARTREE[n][2][0]) **2 + (self.NEARTREE[n][1][1] - self.NEARTREE[n][2][1]) **2)
-      #caD = np.sqrt((self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]) **2 + (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]) **2)
-#
-      #if(bcD > caD):
-      #  if(bcD < abD):
-      #    self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
-      #elif(caD > abD):
-      #  self.NEARTREE[n][0], self.NEARTREE[n][1] = self.NEARTREE[n][1], self.NEARTREE[n][0]
-      #else:
-      #  self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
+      abD = np.sqrt((self.NEARTREE[n][0][0] - self.NEARTREE[n][1][0]) **2 + (self.NEARTREE[n][0][1] - self.NEARTREE[n][1][1]) **2)
+      bcD = np.sqrt((self.NEARTREE[n][1][0] - self.NEARTREE[n][2][0]) **2 + (self.NEARTREE[n][1][1] - self.NEARTREE[n][2][1]) **2)
+      caD = np.sqrt((self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]) **2 + (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1]) **2)
+
+      if(bcD > caD):
+        if(bcD < abD):
+          self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
+      elif(caD > abD):
+        self.NEARTREE[n][0], self.NEARTREE[n][1] = self.NEARTREE[n][1], self.NEARTREE[n][0]
+      else:
+        self.NEARTREE[n][0], self.NEARTREE[n][2] = self.NEARTREE[n][2], self.NEARTREE[n][0]
 
       vec_ab = np.array([(self.NEARTREE[n][1][0] - self.NEARTREE[n][0][0]), (self.NEARTREE[n][1][1] - self.NEARTREE[n][0][1])])
       vec_ac = np.array([(self.NEARTREE[n][2][0] - self.NEARTREE[n][0][0]), (self.NEARTREE[n][2][1] - self.NEARTREE[n][0][1])])
@@ -157,7 +157,7 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/trivec_kyoku_NEWrange_9_tree_detection_test_test.csv', 'a') as file:
+    with open('/home/soma1/Documents/noboru/csv/65m_trivec_kyoku_NEWrange_9_tree_detection_test.csv', 'a') as file:
       writer = csv.writer(file)
       #writer.writerow(['#x', 'y', 'theta',
       #                 'a_r', 'a_theta', 

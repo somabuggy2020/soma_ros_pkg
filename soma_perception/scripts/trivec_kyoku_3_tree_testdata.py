@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 def setLandMarks():
   #9
   LandMarkMap = np.array([
-                         [0.37, 3.5, 9],
-                         [-2.0, -5.0, 6],
-                         [1.6, -4.2, 8]
+                         [0.4996, -2.4548, 4],
+                         [-0.1848, 4.9661, 7],
+                         [2.2882, -5.4540, 2]
                          ])
   return LandMarkMap
 
@@ -149,7 +149,7 @@ class Neural_Network():
 
   
   def write_csv(self):
-    with open('/home/soma1/Documents/noboru/csv/986_1_test.csv', 'w') as file:
+    with open('/home/soma1/Documents/noboru/csv/fil_test.csv', 'w') as file:
       writer = csv.writer(file)
       writer.writerow(['#x', 'y', 'theta',
                        'a_r', 'a_theta', 

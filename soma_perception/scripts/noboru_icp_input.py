@@ -63,8 +63,22 @@ class icp_input():
 
       robot_pose = [0, 0, 0]
 
+      th = 240
+      r = np.radians(th)
+      C = np.cos(r)
+      S = np.sin(r)
+
+      for n in range(len(self.points_to_be_aligned)):
+        self.points_to_be_aligned[n][0] = self.points_to_be_aligned[n][0] * C + self.points_to_be_aligned[n][1] * (-S)
+        self.points_to_be_aligned[n][1] = self.points_to_be_aligned[n][0] * S + self.points_to_be_aligned[n][1] * C
+
+      
       robot_pose[0] = self.reference_points[0][0] - self.points_to_be_aligned[0][0]
       robot_pose[1] = self.reference_points[0][1] - self.points_to_be_aligned[0][1]
+
+      #robot_pose[0] = self.reference_points[1][0] - self.points_to_be_aligned[1][0]
+      #robot_pose[1] = self.reference_points[1][1] - self.points_to_be_aligned[1][1]
+
 
     for n in range(len(self.points_to_be_aligned)):
       self.points_to_be_aligned[n][0] += robot_pose[0]
@@ -80,20 +94,20 @@ class icp_input():
 
     print('robot pose_cor : ', robot_pose_cor)
     pose = Float32MultiArray()
-    pose.data = np.array([robot_pose_cor[0], robot_pose_cor[1], robot_pose_cor[2]])
+    pose.data = np.array([robot_pose_cor[0], robot_pose_cor[1], robot_pose_cor[2]+r])
     if robot_pose != robot_pose_cor:
       self.pose_pub.publish(pose)
     else:
       print('icp_error')
 
     # show results
-    plt.plot(self.reference_points[:, 0], self.reference_points[:, 1], 'rx', label='reference points')
-    plt.plot(self.points_to_be_aligned[:, 0], self.points_to_be_aligned[:, 1], 'b1', label='points to be aligned')
-    plt.plot(aligned_points[:, 0], aligned_points[:, 1], 'g+', label='aligned points')
-    plt.plot(robot_pose[0], robot_pose[1], 'b^', label='robot pose')
-    plt.plot(robot_pose_cor[0], robot_pose_cor[1], 'g^', label='robot pose ICP')
-    plt.legend()
-    plt.show()
+    #plt.plot(self.reference_points[:, 0], self.reference_points[:, 1], 'rx', label='reference points')
+    #plt.plot(self.points_to_be_aligned[:, 0], self.points_to_be_aligned[:, 1], 'b1', label='points to be aligned')
+    #plt.plot(aligned_points[:, 0], aligned_points[:, 1], 'g+', label='aligned points')
+    #plt.plot(robot_pose[0], robot_pose[1], 'b^', label='robot pose')
+    #plt.plot(robot_pose_cor[0], robot_pose_cor[1], 'g^', label='robot pose ICP')
+    #plt.legend()
+    #plt.show()
 
 
 if __name__ == '__main__':

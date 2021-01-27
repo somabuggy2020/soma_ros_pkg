@@ -42,13 +42,18 @@ namespace soma_perception
   {
     nh_ = getNodeHandle();
 
-    point_F_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/vg_filter_F/output", 10);
-    point_B_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/vg_filter_B/output", 10);
-    sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(100), *point_F_sub, *point_B_sub);
+    //point_F_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/vg_filter_F/output", 10);
+    //point_B_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/vg_filter_F/output", 10);
+    //sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(100), *point_F_sub, *point_B_sub);
+
+    point_F_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/marge/input_cloud_1", 10);
+    point_B_sub = new message_filters::Subscriber<sensor_msgs::PointCloud2>(nh_, "/marge/input_cloud_2", 10);
+    sync = new message_filters::Synchronizer<MySyncPolicy>(MySyncPolicy(250), *point_F_sub, *point_B_sub);
 
     sync->registerCallback(boost::bind(&marge_pcd::callback, this, _1, _2));
 
-    pub = nh_.advertise<sensor_msgs::PointCloud2>("marge_pcd", 10);
+    //pub = nh_.advertise<sensor_msgs::PointCloud2>("marge_pcd", 10);
+    pub = nh_.advertise<sensor_msgs::PointCloud2>("/marge/output", 3);
   }
 
   void marge_pcd::callback(const sensor_msgs::PointCloud2ConstPtr& pt_F, const sensor_msgs::PointCloud2ConstPtr& pt_B)

@@ -25,7 +25,8 @@
     <param name="input_frame" value="$(arg frame_id)"/>
     <param name="filter_field_name" value="z"/>
     <param name="filter_limit_min" value="-0.1"/>
-    <param name="filter_limit_max" value="1.5"/>
+    <!--param name="filter_limit_max" value="1.5"/-->
+    <param name="filter_limit_max" value="0.5"/>
     <param name="filter_limit_negative" value="false"/>
   </node>
 
@@ -50,8 +51,6 @@
   </node-->
 
 
-
-
   <node name="tf_B" pkg="nodelet" type="nodelet" args="load jsk_pcl/TfTransformCloud manager">
     <remap from="~input" to="$(arg input_cloud_B)"/>
     <param name="target_frame_id" value="$(arg frame_id)"/>
@@ -61,7 +60,8 @@
     <remap from="~input" to="/tf_B/output"/>
     <param name="input_frame" value="$(arg frame_id)"/>
     <param name="filter_field_name" value="x"/>
-    <param name="filter_limit_min" value="-7.0"/>
+    <param name="filter_limit_min" value="-6.5"/>
+    <!--param name="filter_limit_min" value="-7.0"/--> 
     <param name="filter_limit_max" value="-0.1"/>
     <param name="filter_limit_negative" value="false"/>
   </node>
@@ -96,17 +96,27 @@
   </node-->
 
   <node name="marge_pcd" pkg="nodelet" type="nodelet" args="load soma_perception/marge_pcd manager">
+    <remap from="/marge/input_cloud_1" to="/vg_filter_F/output"/>
+    <remap from="/marge/input_cloud_2" to="/vg_filter_B/output"/>
   </node>
- 
+
+  <node name="sor" pkg="nodelet" type="nodelet" args="load pcl/StatisticalOutlierRemoval manager">
+    <remap from="~input" to="/marge/output"/>
+    <param name="~mean_k" value="50"/>
+    <param name="~stddev" value="0.1"/>
+  </node>
+
   <node name="clustering" pkg="nodelet" type="nodelet" args="load jsk_pcl/EuclideanClustering manager">
-    <remap from="~input" to="marge_pcd"/>
-    <param name="tolerance" value="0.1"/>
-    <param name="min_size" value="500"/>
-    <param name="max_size" value="50000"/>
+    <remap from="~input" to="/sor/output"/>
+    <!--param name="tolerance" value="0.1"/-->
+    <param name="tolerance" value="0.5"/>
+    <!--param name="min_size" value="500"/-->
+    <param name="min_size" value="200"/>
+    <param name="max_size" value="100000"/>
   </node>
 
   <node name="bounding" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer manager">
-    <remap from="~input" to="marge_pcd"/>
+    <remap from="~input" to="/sor/output"/>
     <remap from="~target" to="/clustering/output"/>
     <param name="align_boxes" value="False"/>
     <param name="align_boxes_with_plane" value="False"/>
@@ -122,6 +132,6 @@
   <node name="icp" pkg="soma_perception" type="noboru_icp_input.py" output="screen">
   </node>
 
-  <!--node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/-->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/soma1/noboru_clustering.rviz"/>
 
 </launch>

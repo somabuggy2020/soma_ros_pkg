@@ -48,9 +48,9 @@ class compare():
     x_test = np.array([cood.data])
 
     # モデル生成
-    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5', compile=False)
-    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_beta.h5', compile=False)
-    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_gamma.h5', compile=False)
+    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5', compile=False)
+    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_beta.h5', compile=False)
+    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_gamma.h5', compile=False)
 
     # モデルの検証・性能評価
     y_test_alpha = model_alpha.predict(x_test)
@@ -83,25 +83,28 @@ class compare():
     print('b_id : ', b)
     print('c_id : ', c)
 
-    tree_id = Float32MultiArray()
-    tree_id.data = np.array([a, b, c])
-    self.tree_id_pub.publish(tree_id)
+    #tree_id = Float32MultiArray()
+    #tree_id.data = np.array([a, b, c])
+    #self.tree_id_pub.publish(tree_id)
 
     ab = np.sqrt((LAND_MARKS[a - 1][0] - LAND_MARKS[b - 1][0])** 2 + (LAND_MARKS[a - 1][1] - LAND_MARKS[b - 1][1])** 2)
     bc = np.sqrt((LAND_MARKS[b - 1][0] - LAND_MARKS[c - 1][0])** 2 + (LAND_MARKS[b - 1][1] - LAND_MARKS[c - 1][1])** 2)
     ca = np.sqrt((LAND_MARKS[c - 1][0] - LAND_MARKS[a - 1][0])** 2 + (LAND_MARKS[c - 1][1] - LAND_MARKS[a - 1][1])** 2)    
 
-    if ab > 12 and bc > 12:
+    #if ab > 12 and bc > 12:
+    if bc > 12:  
       for m in range(9):
         if second_b < y_test_beta[0][m] and first_b != y_test_beta[0][m]:
           second_b = y_test_beta[0][m]
           b = m + 1
-    if bc > 12 and ca > 12:
+    #if bc > 12 and ca > 12:
+    if ca > 12:
       for m in range(9):
         if second_c < y_test_gamma[0][m] and first_c != y_test_gamma[0][m]:
           second_c = y_test_gamma[0][m]
           c = m + 1
-    if ca > 12 and ab > 12:
+    #if ca > 12 and ab > 12:
+    if ab > 12:
       for m in range(9):
         if second_a < y_test_alpha[0][m] and first_a != y_test_alpha[0][m]:
           second_a = y_test_alpha[0][m] 
@@ -109,6 +112,10 @@ class compare():
     print('NEW a_id : ', a)
     print('NEW b_id : ', b)
     print('NEW c_id : ', c)
+
+    tree_id = Float32MultiArray()
+    tree_id.data = np.array([a, b, c])
+    self.tree_id_pub.publish(tree_id)
 
     return
 

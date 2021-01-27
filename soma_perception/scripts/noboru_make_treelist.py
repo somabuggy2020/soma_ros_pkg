@@ -24,12 +24,13 @@ class make_treelist():
     self.tree_num = len(center.poses)
 
     if self.tree_num >= 3 and self.tree_num != self.old_tree_num:
-      self.old_tree_num = self.tree_num
+      #self.old_tree_num = self.tree_num
       for n in range(len(center.poses)):
         self.list.append([center.poses[n].position.y * -1, center.poses[n].position.x])
+        
+    self.old_tree_num = self.tree_num
       
     if self.list != []:
-      print('list : ', self.list)
       self.rotate_cood()
       self.get_nearTree()
       self.make_triangle()
@@ -76,7 +77,7 @@ class make_treelist():
         if num <= 2:
           nearTree.append(np.append(self.list[m], distance))
           nearTree.sort(key=lambda x: x[2])
-        elif distance <= nearTree[2][3]:
+        elif distance <= nearTree[2][2]:
           nearTree[2] = np.append(self.list[m], distance)
           nearTree.sort(key=lambda x: x[2])
         num += 1
@@ -124,6 +125,7 @@ class make_treelist():
       tree_cood_data.data = np.array([self.NEARTREE[a][0][0], self.NEARTREE[a][0][1], 
                                       self.NEARTREE[a][1][0], self.NEARTREE[a][1][1], 
                                       self.NEARTREE[a][2][0], self.NEARTREE[a][2][1]])
+      print('list : ', tree_cood_data.data)
       self.cood_pub.publish(tree_cood_data)
 
   def convert_kyoku(self):

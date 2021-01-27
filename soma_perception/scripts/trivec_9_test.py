@@ -15,14 +15,14 @@ def main():
     # 訓練データ
     #x_train  入力（学習データ）
     #y_train  出力（教師データ）
-    dataset = np.loadtxt('/home/soma1/Documents/noboru/csv/trivec_kyoku_NEWrange_9_tree_detection_train.csv', delimiter=',', comments='#')
+    dataset = np.loadtxt('/home/soma1/Documents/noboru/csv/65m_trivec_kyoku_NEWrange_9_tree_detection_train.csv', delimiter=',', comments='#')
     x_train = dataset[:, 3:15]
     y_train_alpha = dataset[:, 18:27]
     y_train_beta = dataset[:, 27:36]
     y_train_gamma = dataset[:, 36:45]
     
     # テスト用データ
-    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/trivec_kyoku_NEWrange_9_tree_detection_test.csv', delimiter=',', comments='#')
+    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/65m_trivec_kyoku_NEWrange_9_tree_detection_test.csv', delimiter=',', comments='#')
     x_test = test_data[:, 3:15]
     y_test_alpha = test_data[:, 18:27]
     y_test_beta = test_data[:, 27:36]
@@ -38,9 +38,9 @@ def main():
     #model_beta.add(Dense(units=9, activation='softmax', input_dim=12))
     #model_gamma.add(Dense(units=9, activation='softmax', input_dim=12))
 
-    model_alpha.add(Dense(units=9, activation='sigmoid', input_dim=12)) #None
-    model_beta.add(Dense(units=9, activation='sigmoid', input_dim=12))
-    model_gamma.add(Dense(units=9, activation='sigmoid', input_dim=12))
+    model_alpha.add(Dense(units=14, activation='sigmoid', input_dim=12)) #None
+    model_beta.add(Dense(units=14, activation='sigmoid', input_dim=12))
+    model_gamma.add(Dense(units=14, activation='sigmoid', input_dim=12))
 
     model_alpha.add(Dense(units=9, activation='softmax'))
     model_beta.add(Dense(units=9, activation='softmax'))
@@ -67,26 +67,31 @@ def main():
     score_gamma = model_gamma.evaluate(x_test, y_test_gamma, verbose=0)
     print('Test gamma accuracy:', score_gamma[1])
 
+    model_alpha.save('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5')
+    model_beta.save('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_beta.h5')
+    model_gamma.save('/home/soma1/Documents/noboru/model/4_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_gamma.h5')
+
 
     #fig, [plt_alpha, plt_beta, plt_gamma] = plt.subplots(1, 3, figsize=(15, 4))
     fig, [[plt_alpha, plt_beta, plt_gamma],[plt_alpha_loss, plt_beta_loss, plt_gamma_loss]] = plt.subplots(2, 3, figsize=(10, 6))
     
-    plt_alpha.plot(history_alpha.history['accuracy'])
-    plt_alpha.plot(history_alpha.history['val_accuracy'])
+    #print(history_alpha.history)
+    plt_alpha.plot(history_alpha.history['acc'])
+    plt_alpha.plot(history_alpha.history['val_acc'])
     plt_alpha.set_title('alpha accuracy')
     plt_alpha.set_ylabel('accuracy')
     plt_alpha.set_xlabel('epoch')
     plt_alpha.legend(['train', 'test'], loc='lower right')
 
-    plt_beta.plot(history_beta.history['accuracy'])
-    plt_beta.plot(history_beta.history['val_accuracy'])
+    plt_beta.plot(history_beta.history['acc'])
+    plt_beta.plot(history_beta.history['val_acc'])
     plt_beta.set_title('beta accuracy')
     plt_beta.set_ylabel('accuracy')
     plt_beta.set_xlabel('epoch')
     plt_beta.legend(['train', 'test'], loc='lower right')
 
-    plt_gamma.plot(history_gamma.history['accuracy'])
-    plt_gamma.plot(history_gamma.history['val_accuracy'])
+    plt_gamma.plot(history_gamma.history['acc'])
+    plt_gamma.plot(history_gamma.history['val_acc'])
     plt_gamma.set_title('gamma accuracy')
     plt_gamma.set_ylabel('accuracy')
     plt_gamma.set_xlabel('epoch')
@@ -130,9 +135,7 @@ def main():
 
     #np.savetxt('tmp.txt',y_test,encoding='utf-8')
 
-    model_alpha.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_alpha.h5')
-    model_beta.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_beta.h5')
-    model_gamma.save('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node10_gamma.h5')
+    
 
 if __name__ == '__main__':
     main()

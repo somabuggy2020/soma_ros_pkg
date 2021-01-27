@@ -30,15 +30,15 @@ def setLandMarks():
 def main():
     LAND_MARKS = setLandMarks()
     # テスト用データ
-    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/noboru_make_treelist_test.csv', delimiter=',', comments='#')
+    test_data = np.loadtxt('/home/soma1/Documents/noboru/csv/fil_test.csv', delimiter=',', comments='#')
     #x_test = test_data[:, 3:15]
     x_test = np.array([test_data[3:15]])
     #print('x_test : ', x_test)
     
     # モデル生成
-    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5', compile=False)
-    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_beta.h5', compile=False)
-    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_gamma.h5', compile=False)
+    model_alpha = keras.models.load_model('/home/soma1/Documents/noboru/model/2_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_alpha.h5', compile=False)
+    model_beta = keras.models.load_model('/home/soma1/Documents/noboru/model/2_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_beta.h5', compile=False)
+    model_gamma = keras.models.load_model('/home/soma1/Documents/noboru/model/2_65m_sigmoid_kyoku_NEWrange_trivec_9_epoch50_node14_gamma.h5', compile=False)
 
     # モデルの検証・性能評価
     y_test_alpha = model_alpha.predict(x_test)
