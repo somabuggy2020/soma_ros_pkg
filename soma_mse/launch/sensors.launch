@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+	<!-- arguments -->
 	<arg name="base_link" default="soma_link" />
 	<!-- Lidar launch -->
 	<include file="$(find soma_sensor)/launch/lidar.launch">
