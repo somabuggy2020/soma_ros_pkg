@@ -31,7 +31,7 @@ private:
   ros::Timer timer;
 
   //frame ids
-  std::string base_link;
+  std::string base_link_id;
   std::string map_frame_id;
   std::string odom_frame_id;
 
@@ -60,7 +60,7 @@ public:
   {
 
     //frame id strings
-    base_link = pnh.param<std::string>("base_link", "soma_link");
+    base_link_id = pnh.param<std::string>("base_link", "soma_link");
     map_frame_id = pnh.param<std::string>("map_frame_id", "map");
     odom_frame_id = pnh.param<std::string>("odom_frame_id", "odom");
 
@@ -75,14 +75,12 @@ public:
                                                 &Behavior::odom_callback, this);
 
     //Publisher
-    state_pub = nh.advertise<std_msgs::String>("/soma_state", 3);
-    pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3);
-    xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);
-    ut_pub = nh.advertise<geo_msgs::TwistStamped>("/som_ut", 3);
+    state_pub = nh.advertise<std_msgs::String>("/soma_state", 3); //state str publisher
+    pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3); //global target position publisher
+    xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);  //state vector publisher
+    ut_pub = nh.advertise<geo_msgs::Twist>("/soma_ut", 3);  //control input publisher
 
-    //local members
-    Data_t data;
-
+    data = Data_t();
     stop = new Stop();
     moveto = new MoveTo(3.0);
     home = new Home(3.0);
@@ -103,8 +101,6 @@ private:
     ROS_INFO("State:%s / Command:%s",
              State::Str.at(data.state).c_str(),
              Command::Str.at(data.command).c_str());
-
-
 
     //fms
     int new_state = states[data.state]->Transition(&data);
@@ -135,11 +131,11 @@ private:
     xt_msgs.pose = data.x_t;
     xt_pub.publish(xt_msgs);
 
-    geo_msgs::TwistStamped ut_msgs;
-    ut_msgs.header.frame_id = base_link;
-    ut_msgs.header.stamp = ros::Time::now();
-    ut_msgs.twist = data.u_t;
-    ut_pub.publish(ut_msgs);
+    // geo_msgs::TwistStamped ut_msgs;
+    // ut_msgs.header.frame_id = base_link_id;
+    // ut_msgs.header.stamp = ros::Time::now();
+    // ut_msgs.twist = data.u_t;
+    ut_pub.publish(data.u_t);
 
     return;
   }

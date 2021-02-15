@@ -1,5 +1,5 @@
 <launch>
-	<arg name="base_link" default="soma_link" />
+	<arg name="base_link" default="base_link" />
 	<arg name="map_frame_id" default="map" />
 	<arg name="odom_frame_id" default="odom" />
 	<!--  -->
@@ -10,6 +10,8 @@
 		<!-- load local costmap parameters from yaml -->
 		<rosparam command="load" file="$(find soma_mse)/config/local_costmap.yaml" />
 		<rosparam command="load" file="$(find soma_mse)/config/local_planner.yaml" />
+		<!-- remap -->
+		<remap from="/soma_ut" to="/dtw_robot/diff_drive_controller/cmd_vel"/>
 	</node>
 	<!--  -->
 	<!-- <node pkg="rqt_ez_publisher" type="rqt_ez_publisher" name="rqtpub"/> -->
