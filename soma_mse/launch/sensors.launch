@@ -2,6 +2,7 @@
 <launch>
 	<!-- arguments -->
 	<arg name="base_link" default="soma_link" />
+	<arg name="gui" default="false"/>
 	<!-- Lidar launch -->
 	<include file="$(find soma_sensor)/launch/lidar.launch">
 		<arg name="base_link" value="$(arg base_link)" />
@@ -14,4 +15,5 @@
 	</include>
 	<!-- GPS node launch -->
 	<!-- <include file="$(find nmea_navsat_driver)/launch/nmea_serial_driver.launch" /> -->
+	<node if="$(arg gui)" pkg="rviz" name="rviz_mse_sensors" type="rviz" args="-d $(find soma_mse)/rviz/sensors.rviz"/>
 </launch>

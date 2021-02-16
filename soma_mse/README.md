@@ -11,4 +11,3 @@ roslaunch soma_mse sensor.launch
 LiDARベースSLAMであるHDL Graph SLAMを使う
 ```
 roslaunch soma_mse hdl_graph_slam.launch
-```

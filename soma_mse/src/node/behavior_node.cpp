@@ -49,14 +49,14 @@ private:
   //local members
   Data_t data;
   //state objects
-  std::map<int, StateBase*> states;
+  std::map<int, StateBase *> states;
   Stop *stop;
   MoveTo *moveto;
   Home *home;
 
 public:
   Behavior() : nh(ros::NodeHandle()),
-    pnh(ros::NodeHandle("~"))
+               pnh(ros::NodeHandle("~"))
   {
 
     //frame id strings
@@ -80,9 +80,7 @@ public:
     xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);
     ut_pub = nh.advertise<geo_msgs::TwistStamped>("/som_ut", 3);
 
-    //local members
-    Data_t data;
-
+    data = Data_t();
     stop = new Stop();
     moveto = new MoveTo(3.0);
     home = new Home(3.0);
@@ -104,19 +102,18 @@ private:
              State::Str.at(data.state).c_str(),
              Command::Str.at(data.command).c_str());
 
-
-
     //fms
     int new_state = states[data.state]->Transition(&data);
-    if(new_state != data.state){
+    if (new_state != data.state)
+    {
       states[data.state]->Exit(&data);
       states[new_state]->Enter(&data);
       data.state = new_state;
     }
-    else{
+    else
+    {
       states[data.state]->Process(&data);
     }
-
 
     //Publish
     std_msgs::String smsgs;

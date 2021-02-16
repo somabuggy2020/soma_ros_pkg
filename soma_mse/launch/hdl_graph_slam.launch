@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 	<!-- arguments -->
-	<arg name="base_link" default="base_link" />
+	<arg name="base_link" default="soma_link" />
 	<arg name="lidar_link" default="velodyne" />
+	<arg name="isManager" default="false" />
+	<arg name="gui" default="false" />
 	<arg name="nodelet_manager" default="velodyne_nodelet_manager" />
 	<arg name="enable_floor_detection" default="false" />
 	<arg name="enable_gps" default="false" />
@@ -15,7 +17,7 @@
 	<arg name="distance_far_thresh" default="100.0" />
 	<!--  -->
 	<!-- in case you use velodyne_driver, comment out the following line -->
-	<node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
+	<node if="$(arg isManager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
 	<!--  -->
 	<!-- additional filtering nodelets -->
 	<node pkg="nodelet" type="nodelet" name="lidar_pt_z" args="load pcl/PassThrough $(arg nodelet_manager)">
@@ -157,4 +159,6 @@
 		<param name="map_cloud_resolution" value="0.05" />
 	</node>
 	<node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
+	<!--  -->
+	<node if="$(arg gui)" pkg="rviz" name="rviz_slam" type="rviz" args="-d $(find soma_mse)/rviz/slam.rviz"/>
 </launch>
