@@ -21,4 +21,5 @@
 	</include>
 	<!-- rviz -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+	<!-- <node name="robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering"/> -->
 </launch>

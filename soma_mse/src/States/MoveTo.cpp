@@ -2,8 +2,8 @@
 
 MoveTo::MoveTo(double _lim_d) : lim_d(_lim_d)
 {
-  fixed_start.header.frame_id = "foot_print";
-  fixed_target.header.frame_id = "foot_print";
+  fixed_start.header.frame_id = "base_link";
+  fixed_target.header.frame_id = "base_link";
 }
 
 MoveTo::~MoveTo() {}
@@ -35,7 +35,7 @@ int MoveTo::_Process(Data_t *data)
   fixed_target.header.stamp = ros::Time(0);
 
   //ローカルプランナのためのスタート地点を作成(ようするに原点)
-  fixed_start.header.frame_id = "foot_print";
+  fixed_start.header.frame_id = "base_link";
   fixed_start.pose.position.x = 0.0;
   fixed_start.pose.position.y = 0.0;
   fixed_start.pose.position.z = 0.0;
@@ -48,19 +48,19 @@ int MoveTo::_Process(Data_t *data)
   fixed_target.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
   geometry_msgs::PoseStamped out;
-  //  data->tf->transformPose("foot_print", dummy_target, out);
+  geometry_msgs::TransformStamped t = data->tfBuf->lookupTransform("base_link", "map", ros::Time(0));
+  tf2::doTransform(fixed_target, out, t);
+  // out.pose = data->tfBuf->transform(fixed_target.pose, "base_link");
+  // data->tf->transformPose("base_link", fixed_target, out);
 
   std::vector<geometry_msgs::PoseStamped> local_path;
-  local_path.push_back(fixed_start); // start pose
-  local_path.push_back(out);         // goal pose
-  //  data->local_planner->setPlan(local_path); // planning start to gall
+  local_path.push_back(fixed_start);        // start pose
+  local_path.push_back(out);                // target pose
+  data->local_planner->setPlan(local_path); // planning start to gall
 
   geometry_msgs::Twist _cmd_vel;
-  //  data->local_planner->computeVelocityCommands(_cmd_vel);
-
-  //  data->Uin.from(_cmd_vel.linear.x, _cmd_vel.angular.z);
-  //  data->Uin.v = _cmd_vel.linear.x;
-  // data->Xtarget = data->Xt.motion(data->Uin, 1.0);
+  data->local_planner->computeVelocityCommands(_cmd_vel);
+  data->u_t = _cmd_vel;
   return 0;
 }
 
