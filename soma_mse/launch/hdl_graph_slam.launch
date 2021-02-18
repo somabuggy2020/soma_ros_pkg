@@ -162,7 +162,7 @@
 	<node name="octomap" pkg="octomap_server" type="octomap_server_node" output="screen">
 		<remap from="cloud_in" to="/filtered_points" />
 		<param name="frame_id" value="map" />
-		<param name="base_frame_id" value="velodyne" />
+		<param name="base_frame_id" value="$(arg base_link)" />
 		<param name="resolution" value="0.1" />
 		<param name="filter_ground" value="true" />
 		<param name="ground_filter/distance" value="0.1" />

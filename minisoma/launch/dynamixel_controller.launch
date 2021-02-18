@@ -1,4 +1,5 @@
 <launch>
+	<!-- argumants -->
 	<arg name="usb_port_front" default="/dev/ttyUSB1" />
 	<arg name="usb_port_rear" default="/dev/ttyUSB0" />
 	<arg name="use_front" default="true" />
@@ -7,6 +8,7 @@
 	<arg name="use_moveit" default="false" />
 	<arg name="use_joint_state" default="false" />
 	<arg name="use_cmd_vel" default="true" />
+	<arg name="twist_topic" default="/cmd_vel"/>
 	<!-- <rosparam command="load" file="$(find minisoma)/config/wheels_common.yaml" /> -->
 	<!--  -->
 	<!-- front wheels -->
@@ -17,7 +19,7 @@
 			<param name="use_joint_states_topic" value="$(arg use_joint_state)" />
 			<param name="use_cmd_vel_topic" value="$(arg use_cmd_vel)" />
 			<rosparam command="load" file="$(find minisoma)/config/wheels_common.yaml" />
-			<remap from="dynamixel_wheels_controller/cmd_vel" to="/cmd_vel" />
+			<remap from="dynamixel_wheels_controller/cmd_vel" to="$(arg twist_topic)" />
 		</node>
 	</group>
 	<!--  -->
@@ -29,7 +31,7 @@
 			<param name="use_joint_states_topic" value="$(arg use_joint_state)" />
 			<param name="use_cmd_vel_topic" value="$(arg use_cmd_vel)" />
 			<rosparam command="load" file="$(find minisoma)/config/wheels_common.yaml" />
-			<remap from="dynamixel_wheels_controller/cmd_vel" to="/cmd_vel" />
+			<remap from="dynamixel_wheels_controller/cmd_vel" to="$(arg twist_topic)" />
 		</node>
 	</group>
 </launch>
