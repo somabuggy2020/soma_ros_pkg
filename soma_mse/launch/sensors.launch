@@ -6,7 +6,7 @@
 	<!-- Lidar launch -->
 	<include file="$(find soma_sensor)/launch/lidar.launch">
 		<arg name="base_link" value="$(arg base_link)" />
-		<arg name="tfargs" default="0.5 0 1.65 0 0 0" />
+		<arg name="tfargs" default="0.55 0 0.84 0 0 0" />
 	</include>
 	<!-- IMU (xsense, MTi30) node launch -->
 	<include file="$(find soma_sensor)/launch/imu.launch">

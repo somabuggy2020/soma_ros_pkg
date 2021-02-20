@@ -2,8 +2,8 @@
 
 MoveTo::MoveTo(double _lim_d) : lim_d(_lim_d)
 {
-  fixed_start.header.frame_id = "base_link";
-  fixed_target.header.frame_id = "base_link";
+  fixed_start.header.frame_id = "soma_link";
+  fixed_target.header.frame_id = "soma_link";
 }
 
 MoveTo::~MoveTo() {}
@@ -35,7 +35,7 @@ int MoveTo::_Process(Data_t *data)
   fixed_target.header.stamp = ros::Time(0);
 
   //ローカルプランナのためのスタート地点を作成(ようするに原点)
-  fixed_start.header.frame_id = "base_link";
+  fixed_start.header.frame_id = "soma_link";
   fixed_start.pose.position.x = 0.0;
   fixed_start.pose.position.y = 0.0;
   fixed_start.pose.position.z = 0.0;
@@ -48,7 +48,7 @@ int MoveTo::_Process(Data_t *data)
   fixed_target.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
   geometry_msgs::PoseStamped out;
-  geometry_msgs::TransformStamped t = data->tfBuf->lookupTransform("base_link", "map", ros::Time(0));
+  geometry_msgs::TransformStamped t = data->tfBuf->lookupTransform("soma_link", "map", ros::Time(0));
   tf2::doTransform(fixed_target, out, t);
   // out.pose = data->tfBuf->transform(fixed_target.pose, "base_link");
   // data->tf->transformPose("base_link", fixed_target, out);
