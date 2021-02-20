@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 	<!-- arguments -->
-	<arg name="base_link" default="soma_link" />
+	<arg name="base_link" default="base_link" />
 	<arg name="lidar_link" default="velodyne" />
 	<arg name="enable_manager" default="true" />
 	<arg name="gui" default="false" />

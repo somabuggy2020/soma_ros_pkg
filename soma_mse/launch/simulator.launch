@@ -4,6 +4,8 @@
 	<arg name="model" default="$(find soma_mse)/xacro/movebase_vlp16.xacro" />
 	<arg name="world_model" default="simple3.world" />
 	<arg name="rvizconfig" default="$(find soma_mse)/rviz/simulator.rviz" />
+	<arg name="gui_rviz" default="true" />
+	<arg name="gui_gazebo" default="true" />
 	<!-- parameters -->
 	<param name="robot_description" command="$(find xacro)/xacro $(arg model) --inorder" />
 	<rosparam command="load" file="$(find soma_mse)/config/diff_drive_controller.yaml" ns="/dtw_robot" />
@@ -16,10 +18,11 @@
 	<!--  -->
 	<!-- gazebo -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="use_sim_time" value="true" />
+		<arg name="gui" value="$(arg gui_gazebo)" />
 		<arg name="world_name" value="$(arg world_model)" />
-		<arg name="headless" value="false" />
 	</include>
 	<!-- rviz -->
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+	<node if="$(arg gui_rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 	<!-- <node name="robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering"/> -->
 </launch>

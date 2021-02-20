@@ -3,8 +3,6 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PointStamped.h>
-#include <nav_msgs/Odometry.h>
-#include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <tf/tf.h>
@@ -78,7 +76,7 @@ public:
     state_pub = nh.advertise<std_msgs::String>("/soma_state", 3); //state str publisher
     pg_pub = nh.advertise<geo_msgs::PointStamped>("/soma_pg", 3); //global target position publisher
     xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);  //state vector publisher
-    ut_pub = nh.advertise<geo_msgs::Twist>("/soma_ut", 3);  //control input publisher
+    ut_pub = nh.advertise<geo_msgs::Twist>("/soma_ut", 3);        //control input publisher
 
     data = Data_t();
     stop = new Stop();

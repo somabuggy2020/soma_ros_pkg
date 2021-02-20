@@ -2,7 +2,7 @@ local_costmap:
   plugins: 
     - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
   global_frame: map
-  robot_base_frame: soma_link
+  robot_base_frame: base_link
   rolling_window: true
   width: 6
   height: 6

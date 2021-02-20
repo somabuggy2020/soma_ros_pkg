@@ -144,28 +144,6 @@
       <real_time>46 408816500</real_time>
       <wall_time>1613229492 428278900</wall_time>
       <iterations>18070</iterations>
-      <model name='dtw_robot'>
-        <pose frame=''>0.324458 0.008911 -0.000522 -2e-06 0.003851 0.054901</pose>
-        <scale>1 1 1</scale>
-        <link name='base_link'>
-          <pose frame=''>0.324458 0.008911 -0.000522 -2e-06 0.003851 0.054901</pose>
-          <velocity>0.000408 -2.8e-05 -0.056232 -0.011057 0.201776 0.00029</velocity>
-          <acceleration>-2.17998 -0.120703 -1.87582 2.97286 -0.10408 1.89882</acceleration>
-          <wrench>-4.01116 -0.222094 -3.45151 0 -0 0</wrench>
-        </link>
-        <link name='left_wheel_link'>
-          <pose frame=''>0.319163 0.108771 0.049477 -1.57081 0.105335 0.054896</pose>
-          <velocity>0.010371 0.00053 -0.056265 -0.01061 0.207448 0.001034</velocity>
-          <acceleration>-1.08727 -0.06016 -1.04786 -1.93844 -0.246586 -3.11706</acceleration>
-          <wrench>-0.108727 -0.006016 -0.104786 0 -0 0</wrench>
-        </link>
-        <link name='right_wheel_link'>
-          <pose frame=''>0.330137 -0.090928 0.049478 -1.57081 0.324963 0.054894</pose>
-          <velocity>0.010399 0.000528 -0.056247 -0.010558 0.208004 0.000912</velocity>
-          <acceleration>-1.08676 -0.060296 -1.04864 -1.93571 -0.256663 -3.12287</acceleration>
-          <wrench>-0.108676 -0.00603 -0.104864 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='ground_plane'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>

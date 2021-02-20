@@ -1,5 +1,5 @@
 <launch>
-	<arg name="base_link" default="soma_link" />
+	<arg name="base_link" default="base_link" />
 	<arg name="map_frame_id" default="map" />
 	<arg name="odom_frame_id" default="odom" />
 	<arg name="gui" default="false"/>
