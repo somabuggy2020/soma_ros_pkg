@@ -7,4 +7,5 @@
     "files.associations": {
         "unordered_map": "cpp"
     }
+    "cmakeFormat.exePath": "cmake-format"
 }

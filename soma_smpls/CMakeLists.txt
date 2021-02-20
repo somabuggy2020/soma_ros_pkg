@@ -154,13 +154,11 @@ add_executable(show_navsatfix_msgs
 add_executable(show_imu_data_msgs
   src/show_imu_data_msgs.cpp
 )
-add_executable(costmap_example
-  src/costmap_test.cpp
-)
-
 add_executable(cloud_tf4ros
   src/cloud_tf4ros.cpp
 )
+add_executable(sample_local_costmap
+src/sample_local_costmap.cpp)
 #add_executable(sample_qudp_recv
 #  src/sample_qnetwork_udp_recv.cpp
 #)
@@ -185,12 +183,12 @@ target_link_libraries(show_navsatfix_msgs
 target_link_libraries(show_imu_data_msgs
    ${catkin_LIBRARIES}
 )
-target_link_libraries(costmap_example
-  ${catkin_LIBRARIES}
-)
 target_link_libraries(cloud_tf4ros
   ${PCL_LIBRARIES}
 )
+target_link_libraries(sample_local_costmap
+${catkin_LIBRARIES})
+
 #target_link_libraries(sample_qudp_recv
 #   ${catkin_LIBRARIES}
 #   ${QT_LIBRARIES}

@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
     tf2_ros
     tf
     nav_msgs
+    geometry_msgs
     )
 
 catkin_package(
@@ -33,10 +34,10 @@ target_link_libraries(harvest_behavior_node
     ${catkin_LIBRARIES}
     )
 
-add_executable(sample_odom_subscriber
-src/node/sample_slam_odom.cpp
-)
+add_executable(sample_odom_subscriber_node
+    src/node/sample_odom_subscribe_node.cpp
+    )
 
-target_link_libraries(sample_odom_subscriber
-${catkin_LIBRARIES}
-)
+target_link_libraries(sample_odom_subscriber_node
+    ${catkin_LIBRARIES}
+    )
