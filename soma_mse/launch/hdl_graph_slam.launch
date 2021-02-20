@@ -5,7 +5,7 @@
 	<arg name="lidar_link" default="velodyne" />
 	<arg name="enable_manager" default="true" />
 	<arg name="gui" default="false" />
-	<arg name="enable_floor_detection" default="false" />
+	<arg name="enable_floor_detection" default="true" />
 	<arg name="enable_gps" default="false" />
 	<arg name="enable_imu_acc" default="false" />
 	<arg name="enable_imu_ori" default="false" />
@@ -14,23 +14,24 @@
 	<arg name="use_distance_filter" default="true" />
 	<arg name="distance_near_thresh" default="0.1" />
 	<arg name="distance_far_thresh" default="10.0" />
-	<!-- in case you use velodyne_driver, comment out the following line -->
 	<!--  -->
 	<arg name="nodelet_manager" default="velodyne_nodelet_manager" />
 	<node if="$(arg enable_manager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
 	<!--  -->
 	<!-- additional filtering nodelets -->
+	<!--
 	<node pkg="nodelet" type="nodelet" name="lidar_pt_z" args="load pcl/PassThrough $(arg nodelet_manager)">
-		<param name="filter_filed_name" value="z" />
-		<param name="filter_limit_max" value="$(arg height_max)" />
-		<param name="filter_limit_min" value="$(arg height_min)" />
-		<param name="filter_limit_negative" value="false" />
-		<param name="input_frame" value="$(arg lidar_link)" />
-		<param name="output_frame" value="$(arg lidar_link)" />
-		<remap from="~input" to="/velodyne_points" />
-		<remap from="~output" to="/velodyne_points_f" />
+	<param name="filter_filed_name" value="z" />
+	<param name="filter_limit_max" value="$(arg height_max)" />
+	<param name="filter_limit_min" value="$(arg height_min)" />
+	<param name="filter_limit_negative" value="false" />
+	<param name="input_frame" value="$(arg lidar_link)" />
+	<param name="output_frame" value="$(arg lidar_link)" />
+	<remap from="~input" to="/velodyne_points" />
+	<remap from="~output" to="/velodyne_points_f" />
 	</node>
 	<arg name="points_topic" default="/velodyne_points_f" />
+	-->
 	<!--  -->
 	<!-- prefiltering_nodelet -->
 	<node pkg="nodelet" type="nodelet" name="prefiltering_nodelet" args="load hdl_graph_slam/PrefilteringNodelet $(arg nodelet_manager)">
@@ -76,7 +77,7 @@
 	</node>
 	<!-- floor_detection_nodelet -->
 	<node pkg="nodelet" type="nodelet" name="floor_detection_nodelet" args="load hdl_graph_slam/FloorDetectionNodelet $(arg nodelet_manager)" if="$(arg enable_floor_detection)">
-		<param name="points_topic" value="/velodyne_points" />
+		<param name="points_topic" value="/filtered_points" />
 		<param name="tilt_deg" value="0.0" />
 		<param name="sensor_height" value="0.0" />
 		<param name="height_clip_range" value="1.0" />
@@ -86,7 +87,7 @@
 	</node>
 	<!-- hdl_graph_slam_nodelet -->
 	<node pkg="nodelet" type="nodelet" name="hdl_graph_slam_nodelet" args="load hdl_graph_slam/HdlGraphSlamNodelet $(arg nodelet_manager)">
-		<param name="points_topic" value="$(arg points_topic)" />
+		<param name="points_topic" value="/filtered_points" />
 		<!-- frame settings -->
 		<param name="map_frame_id" value="map" />
 		<param name="odom_frame_id" value="odom" />
@@ -152,22 +153,21 @@
 		<param name="min_stddev_q" value="0.05" />
 		<param name="max_stddev_q" value="0.2" />
 		<!-- update params -->
-		<param name="graph_update_interval" value="2.0" />
-		<param name="map_cloud_update_interval" value="2.0" />
+		<param name="graph_update_interval" value="0.5" />
+		<param name="map_cloud_update_interval" value="0.5" />
 		<param name="map_cloud_resolution" value="0.05" />
 	</node>
 	<node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
-	<!--  -->
-	<node if="$(arg gui)" pkg="rviz" name="rviz_slam" type="rviz" args="-d $(find soma_mse)/rviz/slam.rviz" />
-	<!-- <node name="octomap" pkg="octomap_server" type="octomap_server_node" output="screen">
+	<!-- octomap server node -->
+	<node name="octomap" pkg="octomap_server" type="octomap_server_node" output="screen">
 		<remap from="cloud_in" to="/filtered_points" />
 		<param name="frame_id" value="map" />
 		<param name="base_frame_id" value="$(arg base_link)" />
 		<param name="resolution" value="0.1" />
-		<param name="filter_ground" value="true" />
-		<param name="ground_filter/distance" value="0.1" />
 		<param name="sensor_model/max_range" value="20.0" />
 		<param name="pointcloud_max_z" value="2.5" />
-		<param name="pointcloud_min_z" value="-0.1" />
-	</node> -->
+		<param name="pointcloud_min_z" value="0.1" />
+	</node>
+	<!--  -->
+	<node if="$(arg gui)" pkg="rviz" name="rviz_slam" type="rviz" args="-d $(find soma_mse)/rviz/slam.rviz" />
 </launch>
