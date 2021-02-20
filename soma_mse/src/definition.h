@@ -25,6 +25,7 @@ namespace State
       {GoHome, "GoHome"}};
 } // namespace State
 
+// 
 namespace Command
 {
   const int Stop = 0;
@@ -37,6 +38,7 @@ namespace Command
       {GoHome, "GoHome"}};
 } //namespace Command
 
+// 
 struct Data_t
 {
   tf2_ros::Buffer *tfBuf;
@@ -48,24 +50,10 @@ struct Data_t
   int state;   //state variavle (State::Stop, ...)
   int command; //command variavle (Command::Stop, ...)
 
-  geo_msgs::PointStamped pg;   //global target position
-  geo_msgs::Twist u_t;  //control input
-  geo_msgs::Pose x_t;   //current pose
+  geo_msgs::PointStamped pg; //global target position
+  geo_msgs::Twist u_t;       //control input
+  geo_msgs::Pose x_t;        //current pose
 
-  Data_t() : state(State::Stop),
-             command(Command::Stop)
-  {
-    //make transform listener
-    tfBuf = new tf2_ros::Buffer();
-    tfListener = new tf2_ros::TransformListener(*tfBuf);
-
-    //make local costmap object
-    local_costmap = new costmap_2d::Costmap2DROS("local_costmap", *tfBuf);
-
-    //make dwa local planner
-    local_planner = new dwa_local_planner::DWAPlannerROS();
-    local_planner->initialize("dwa_local_planner", tfBuf, local_costmap);
-  }
 };
 
 #define POW2(x) pow(x, 2.0)

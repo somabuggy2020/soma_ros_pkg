@@ -16,7 +16,7 @@ local_costmap:
     observation_sources: pointcloud
     pointcloud: 
       sensor_frame: velodyne
-      topic: /velodyne_points
+      topic: /filtered_points
       data_type: PointCloud2
       marking: true
       clearing: true

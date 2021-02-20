@@ -17,7 +17,7 @@
 #include "../States/MoveTo.h"
 #include "../States/Home.h"
 
-#define TIMER_T 0.033 //[sec]
+#define TIMER_T 0.1 //[sec]
 
 namespace geo_msgs = geometry_msgs;
 
@@ -59,8 +59,8 @@ public:
 
     //frame id strings
     base_link_id = pnh.param<std::string>("base_link", "soma_link");
-    map_frame_id = pnh.param<std::string>("map_frame_id", "map");
     odom_frame_id = pnh.param<std::string>("odom_frame_id", "odom");
+    map_frame_id = pnh.param<std::string>("map_frame_id", "map");
 
     //Subscriber
     clicked_point_sub = nh.subscribe<geo_msgs::PointStamped>("/clicked_point", 1,
@@ -78,10 +78,17 @@ public:
     xt_pub = nh.advertise<geo_msgs::PoseStamped>("/soma_xt", 3);  //state vector publisher
     ut_pub = nh.advertise<geo_msgs::Twist>("/soma_ut", 3);        //control input publisher
 
+    //instances
     data = Data_t();
+    data.tfBuf = new tf2_ros::Buffer(ros::Duration(3.0));
+    data.tfListener = new tf2_ros::TransformListener(*data.tfBuf);
+    data.local_costmap = new costmap_2d::Costmap2DROS("local_costmap", *data.tfBuf);
+    data.local_planner = new dwa_local_planner::DWAPlannerROS();
+    data.local_planner->initialize("dwa_local_planner", data.tfBuf, data.local_costmap);
+
     stop = new Stop();
-    moveto = new MoveTo(3.0);
-    home = new Home(3.0);
+    moveto = new MoveTo(1.0);
+    home = new Home(1.0);
     states[State::Stop] = stop;
     states[State::MoveTo] = moveto;
     states[State::GoHome] = home;
@@ -100,7 +107,7 @@ private:
              State::Str.at(data.state).c_str(),
              Command::Str.at(data.command).c_str());
 
-    //fms
+    // //fms
     int new_state = states[data.state]->Transition(&data);
     if (new_state != data.state)
     {
@@ -115,27 +122,12 @@ private:
 
     //Publish
     std_msgs::String smsgs;
-    smsgs.data = State::Str.at(data.state);
+    smsgs.data = State::Str.at(data.state) + "/" + State::Str.at(data.command);
     state_pub.publish(smsgs);
 
-    // geo_msgs::PointStamped pg_msgs;
-    // pg_msgs.header = data.pg.header;
-    // pg_msgs.header.stamp = ros::Time::now();
-    // pg_msgs.point = data.pg.point;
     pg_pub.publish(data.pg);
 
-    geo_msgs::PoseStamped xt_msgs;
-    xt_msgs.header.frame_id = map_frame_id;
-    xt_msgs.header.stamp = ros::Time::now();
-    xt_msgs.pose = data.x_t;
-    xt_pub.publish(xt_msgs);
-
-    // geo_msgs::TwistStamped ut_msgs;
-    // ut_msgs.header.frame_id = base_link_id;
-    // ut_msgs.header.stamp = ros::Time::now();
-    // ut_msgs.twist = data.u_t;
     ut_pub.publish(data.u_t);
-
     return;
   }
 
@@ -158,7 +150,7 @@ private:
 
   void command_callback(const std_msgs::StringConstPtr &msg)
   {
-    //    ROS_INFO("Command:%s", msg->data.c_str());
+    ROS_INFO("Command: %s", msg->data.c_str());
 
     if (msg->data == "stop")
     {
