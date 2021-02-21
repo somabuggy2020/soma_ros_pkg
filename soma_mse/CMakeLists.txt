@@ -18,19 +18,15 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     )
 
-add_executable(harvest_behavior_node
+add_executable(harvesting_behavior_node
     src/node/behavior_node.cpp
     src/StateBase/StateBase.cpp
-    src/StateBase/StateBase.h
     src/States/Stop.cpp
-    src/States/Stop.h
     src/States/MoveTo.cpp
-    src/States/MoveTo.h
     src/States/Home.cpp
-    src/States/Home.h
     )
 
-target_link_libraries(harvest_behavior_node
+target_link_libraries(harvesting_behavior_node
     ${catkin_LIBRARIES}
     )
 

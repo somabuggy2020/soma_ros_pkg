@@ -11,15 +11,13 @@
 #include <string>
 #include <math.h>
 
-#include "soma_mse/definition.h"
-#include "../StateBase/StateBase.h"
-#include "../States/Stop.h"
-#include "../States/MoveTo.h"
-#include "../States/Home.h"
+#include "./soma_mse/definition.h"
+#include "./soma_mse/StateBase/StateBase.h"
+#include "./soma_mse/States/Stop.h"
+#include "./soma_mse/States/MoveTo.h"
+#include "./soma_mse/States/Home.h"
 
 #define TIMER_T 0.1 //[sec]
-
-namespace geo_msgs = geometry_msgs;
 
 class Behavior
 {
@@ -57,7 +55,7 @@ public:
                pnh(ros::NodeHandle("~"))
   {
     //frame id strings
-    base_link_id = pnh.param<std::string>("base_link", "soma_link");
+    base_link_id = pnh.param<std::string>("base_frame_id", "base_link");
     odom_frame_id = pnh.param<std::string>("odom_frame_id", "odom");
     map_frame_id = pnh.param<std::string>("map_frame_id", "map");
 
