@@ -8,11 +8,11 @@
 # 実行方法（How to use）
 ## 1. __センサノード起動__  
 LiDAR(velodyne, VLP-16)，IMU(Xsense, MTi-30)，RTK-GPS(emlid,)をまとめて起動する．  
-### __起動方法__  
+### **起動方法**  
 ```
 roslaunch soma_mse sensor.launch
 ```
-### __引数__  
+### **引数**  
 ()内はデフォルト値． 
   * __base_frame_id__ (base_link) : ロボット本体のframe名
   * __gui__ (true) : rviz起動フラグ
@@ -49,9 +49,8 @@ roslaunch soma_mse hdl_graph_slam enable_manager:=true gui:=true
 ```
 
 ## 3. __Harvesting Behavior ノード起動__  
-MSE用，自動伐倒作業用の自律移動ノード．
-開発したノード名は"harvesting_behavior_node"で，
-"soma_mse/src/node/behavior_node.cpp"に定義されている．
+MSE用，自動伐倒作業用の自律移動ノード．  
+ソースファイル [behavior.cpp](./src/node/behavior_node.cpp)
 
 ### __基本の起動方法__ 
 ```
