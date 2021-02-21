@@ -14,12 +14,12 @@ catkin_package(
     )
 
 include_directories(
+    include
     ${catkin_INCLUDE_DIRS}
     )
 
 add_executable(harvest_behavior_node
     src/node/behavior_node.cpp
-    src/definition.h
     src/StateBase/StateBase.cpp
     src/StateBase/StateBase.h
     src/States/Stop.cpp

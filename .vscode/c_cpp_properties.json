@@ -6,13 +6,14 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
+                "~/catkin_ws/src/som_ros_pkg/soma_mse/include",
                 "/opt/ros/melodic/include"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
-            "cppStandard": "c++17"
+            "cppStandard": "c++11"
         }
     ],
     "version": 4

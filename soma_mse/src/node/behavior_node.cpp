@@ -11,7 +11,7 @@
 #include <string>
 #include <math.h>
 
-#include "../definition.h"
+#include "soma_mse/definition.h"
 #include "../StateBase/StateBase.h"
 #include "../States/Stop.h"
 #include "../States/MoveTo.h"
@@ -56,7 +56,6 @@ public:
   Behavior() : nh(ros::NodeHandle()),
                pnh(ros::NodeHandle("~"))
   {
-
     //frame id strings
     base_link_id = pnh.param<std::string>("base_link", "soma_link");
     odom_frame_id = pnh.param<std::string>("odom_frame_id", "odom");
@@ -80,14 +79,34 @@ public:
 
     //instances
     data = Data_t();
-    data.tfBuf = new tf2_ros::Buffer(ros::Duration(3.0));
+    data.tfBuf = new tf2_ros::Buffer(ros::Duration(100));
     data.tfListener = new tf2_ros::TransformListener(*data.tfBuf);
+
+    ROS_INFO("Wait for tf between base_link and map");
+    try
+    {
+      data.transform_map2base = data.tfBuf->lookupTransform(base_link_id,
+                                                            map_frame_id,
+                                                            ros::Time(0),
+                                                            ros::Duration(5.0));
+    }
+    catch (tf2::TransformException &ex)
+    {
+      ROS_WARN("%s", ex.what());
+    }
+
     data.local_costmap = new costmap_2d::Costmap2DROS("local_costmap", *data.tfBuf);
     data.local_planner = new dwa_local_planner::DWAPlannerROS();
     data.local_planner->initialize("dwa_local_planner", data.tfBuf, data.local_costmap);
+    data.fixed_start.header.frame_id = base_link_id;
+    data.fixed_start.pose.position.x = 0.0;
+    data.fixed_start.pose.position.y = 0.0;
+    data.fixed_start.pose.position.z = 0.0;
+    data.fixed_start.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
+    data.fixed_target.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
     stop = new Stop();
-    moveto = new MoveTo(1.0);
+    moveto = new MoveTo(3.0);
     home = new Home(1.0);
     states[State::Stop] = stop;
     states[State::MoveTo] = moveto;
@@ -107,7 +126,23 @@ private:
              State::Str.at(data.state).c_str(),
              Command::Str.at(data.command).c_str());
 
-    // //fms
+    //
+    //
+    ROS_INFO("update transforms");
+    try
+    {
+      data.transform_map2base = data.tfBuf->lookupTransform(base_link_id,
+                                                            map_frame_id,
+                                                            ros::Time(0),
+                                                            ros::Duration(0.5));
+    }
+    catch (tf2::TransformException &ex)
+    {
+      ROS_WARN("%s", ex.what());
+    }
+
+    //
+    //fms
     int new_state = states[data.state]->Transition(&data);
     if (new_state != data.state)
     {
@@ -144,6 +179,7 @@ private:
 
     // data.pg = msg->point;
     data.pg = *msg;
+    data.pg.header.frame_id = msg->header.frame_id;
     data.pg.header.stamp = ros::Time::now();
     return;
   }

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "../definition.h"
+#include "./soma_mse/definition.h"
 
 class StateBase {
 public:
