@@ -6,12 +6,14 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
-                "/opt/ros/melodic/include"
+                "${workspaceFolder}/soma_mse/include",
+                "/opt/ros/melodic/include",
+                "/usr/include/eigen3"
             ],
             "name": "ROS",
-            "intelliSenseMode": "gcc-x64",
+            "intelliSenseMode": "linux-gcc-arm64",
             "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11",
+            "cStandard": "c17",
             "cppStandard": "c++17"
         }
     ],

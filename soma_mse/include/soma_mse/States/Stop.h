@@ -1,7 +1,7 @@
 #ifndef STOP_H
 #define STOP_H
 
-#include "../StateBase/StateBase.h"
+#include "./soma_mse/StateBase/StateBase.h"
 
 class Stop : public StateBase {
  public:

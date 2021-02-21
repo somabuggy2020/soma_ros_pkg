@@ -9,7 +9,6 @@
 	<arg name="use_joint_state" default="false" />
 	<arg name="use_cmd_vel" default="true" />
 	<arg name="twist_topic" default="/cmd_vel"/>
-	<!-- <rosparam command="load" file="$(find minisoma)/config/wheels_common.yaml" /> -->
 	<!--  -->
 	<!-- front wheels -->
 	<group if="$(arg use_front)" ns="front">

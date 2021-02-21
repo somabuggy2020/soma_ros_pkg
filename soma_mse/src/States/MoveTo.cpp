@@ -1,8 +1,7 @@
-#include "MoveTo.h"
+#include "./soma_mse/States/MoveTo.h"
 
 MoveTo::MoveTo(double _lim_d) : lim_d(_lim_d)
 {
-  fixed_start.header.frame_id = "soma_link";
   fixed_target.header.frame_id = "soma_link";
 }
 
@@ -31,30 +30,19 @@ int MoveTo::_Enter(Data_t *data)
 
 int MoveTo::_Process(Data_t *data)
 {
-  fixed_start.header.stamp = ros::Time(0);
-  fixed_target.header.stamp = ros::Time(0);
+  data->fixed_start.header.stamp = ros::Time::now();
+  data->fixed_target.header.stamp = ros::Time::now();
 
-  //ローカルプランナのためのスタート地点を作成(ようするに原点)
-  fixed_start.header.frame_id = "soma_link";
-  fixed_start.pose.position.x = 0.0;
-  fixed_start.pose.position.y = 0.0;
-  fixed_start.pose.position.z = 0.0;
-  fixed_start.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
-
-  //ローカルプランナのためのゴール地点を作成
-  //まずは大域座標の目標地点を取得
-  fixed_target.header.frame_id = data->pg.header.frame_id;
+  //get target position in "map" frame
   fixed_target.pose.position = data->pg.point;
-  fixed_target.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
+  //transform target point "map" to "base_link" frame
   geometry_msgs::PoseStamped out;
-  geometry_msgs::TransformStamped t = data->tfBuf->lookupTransform("soma_link", "map", ros::Time(0));
-  tf2::doTransform(fixed_target, out, t);
-  // out.pose = data->tfBuf->transform(fixed_target.pose, "base_link");
-  // data->tf->transformPose("base_link", fixed_target, out);
+  tf2::doTransform(fixed_target, out, data->transform_map2base);
 
+  //calc local plan
   std::vector<geometry_msgs::PoseStamped> local_path;
-  local_path.push_back(fixed_start);        // start pose
+  local_path.push_back(data->fixed_start);  // start pose
   local_path.push_back(out);                // target pose
   data->local_planner->setPlan(local_path); // planning start to gall
 
