@@ -11,8 +11,7 @@ int Home::_Transition(Data_t *data)
     return State::Stop;
 
   // stop?
-  if (Dist(data->pg.point.x, data->x_t.position.x,
-           data->pg.point.y, data->x_t.position.y) <= lim_d)
+  if (Dist(data->pg.point, data->x_t.position) <= lim_d)
   {
     data->command = Command::Stop;
   }
@@ -22,37 +21,31 @@ int Home::_Transition(Data_t *data)
 
 int Home::_Enter(Data_t *data)
 {
-  // PpCfg.Pt = QPointF(0.0, 0.0);
-  // PpCfg.Ps = QPointF(data->Xt.position.x, data->Xt.position.y);
   return 0;
 }
 
 int Home::_Process(Data_t *data)
 {
-  // Pure pursuit algorithm
-  // PurePursuit::X x;
-  // x.x = data->Xt.position.x;
-  // x.y = data->Xt.position.y;
+  data->fixed_start.header.stamp = ros::Time::now();
+  data->fixed_target.header.stamp = ros::Time::now();
 
-  // tf::Quaternion q;
-  // double roll, pitch, yaw;
-  // tf::quaternionMsgToTF(data->Xt.orientation, q);
-  // tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-  // x.theta = yaw;
+  data->fixed_target.pose.position.x = 0.0;
+  data->fixed_target.pose.position.y = 0.0;
+  data->fixed_target.pose.position.z = 0.0;
 
-  // PurePursuit::U u;
-  // u.v = data->Uin.v;
-  // u.lambda = 0.0;
+  //transform target point "map" to "base_link" frame
+  geometry_msgs::PoseStamped out;
+  tf2::doTransform(data->fixed_target, out, data->transform_map2base);
 
-  // PurePursuit::U _u;
+  //calc local plan
+  std::vector<geometry_msgs::PoseStamped> local_path;
+  local_path.push_back(data->fixed_start);  // start pose
+  local_path.push_back(out);                // target pose
+  data->local_planner->setPlan(local_path); // planning start to gall
 
-  // _u = PurePursuit::calc(x, u, PpCfg, true); // backward calculation
-
-  // data->Uin.lambda = _u.lambda;
-  // data->Uin.v = _u.v;
-
-  // data->Xtarget = data->Xt.motion(data->Uin, PpCfg.dt);
-
+  geometry_msgs::Twist _cmd_vel;
+  data->local_planner->computeVelocityCommands(_cmd_vel);
+  data->u_t = _cmd_vel;
   return 0;
 }
 

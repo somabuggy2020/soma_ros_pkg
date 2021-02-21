@@ -14,8 +14,7 @@ int MoveTo::_Transition(Data_t *data)
     return State::Stop;
 
   // reach global target position?
-  if (Dist(data->pg.point.x, data->x_t.position.x,
-           data->pg.point.y, data->x_t.position.y) <= lim_d)
+  if (Dist(data->pg.point, data->x_t.position) <= lim_d)
   {
     data->command = Command::Stop;
   }
@@ -34,11 +33,11 @@ int MoveTo::_Process(Data_t *data)
   data->fixed_target.header.stamp = ros::Time::now();
 
   //get target position in "map" frame
-  fixed_target.pose.position = data->pg.point;
+  data->fixed_target.pose.position = data->pg.point;
 
   //transform target point "map" to "base_link" frame
   geometry_msgs::PoseStamped out;
-  tf2::doTransform(fixed_target, out, data->transform_map2base);
+  tf2::doTransform(data->fixed_target, out, data->transform_map2base);
 
   //calc local plan
   std::vector<geometry_msgs::PoseStamped> local_path;
