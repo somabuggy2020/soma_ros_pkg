@@ -13,7 +13,7 @@
 	<arg name="height_min" default="0.0" />
 	<arg name="use_distance_filter" default="true" />
 	<arg name="distance_near_thresh" default="0.1" />
-	<arg name="distance_far_thresh" default="10.0" />
+	<arg name="distance_far_thresh" default="20.0" />
 	<!--  -->
 	<!-- nodelet manager -->
 	<arg name="nodelet_manager" default="velodyne_nodelet_manager" />
