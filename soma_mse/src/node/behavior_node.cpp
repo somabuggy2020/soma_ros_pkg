@@ -77,7 +77,7 @@ public:
 
     //instances
     data = Data_t();
-    data.tfBuf = new tf2_ros::Buffer(ros::Duration(100));
+    data.tfBuf = new tf2_ros::Buffer(ros::Duration(2.0));
     data.tfListener = new tf2_ros::TransformListener(*data.tfBuf);
 
     ROS_INFO("Wait for tf between base_link and map");
@@ -104,7 +104,7 @@ public:
     data.fixed_target.pose.orientation = tf::createQuaternionMsgFromYaw(0.0);
 
     stop = new Stop();
-    moveto = new MoveTo(3.0);
+    moveto = new MoveTo(1.0);
     home = new Home(1.0);
     states[State::Stop] = stop;
     states[State::MoveTo] = moveto;
@@ -132,7 +132,7 @@ private:
       data.transform_map2base = data.tfBuf->lookupTransform(base_link_id,
                                                             map_frame_id,
                                                             ros::Time(0),
-                                                            ros::Duration(0.5));
+                                                            ros::Duration(2.0));
     }
     catch (tf2::TransformException &ex)
     {

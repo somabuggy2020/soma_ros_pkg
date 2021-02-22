@@ -5,7 +5,7 @@
 	<arg name="lidar_link" default="velodyne" />
 	<arg name="enable_manager" default="true" />
 	<arg name="gui" default="false" />
-	<arg name="enable_floor_detection" default="true" />
+	<arg name="enable_floor_detection" default="false" />
 	<arg name="enable_gps" default="false" />
 	<arg name="enable_imu_acc" default="false" />
 	<arg name="enable_imu_ori" default="false" />
@@ -30,7 +30,7 @@
 		<param name="distance_far_thresh" value="$(arg distance_far_thresh)" />
 		<!-- NONE, VOXELGRID, or APPROX_VOXELGRID -->
 		<param name="downsample_method" value="VOXELGRID" />
-		<param name="downsample_resolution" value="0.1" />
+		<param name="downsample_resolution" value="0.05" />
 		<!-- NONE, RADIUS, or STATISTICAL -->
 		<param name="outlier_removal_method" value="RADIUS" />
 		<param name="statistical_mean_k" value="30" />
@@ -49,7 +49,7 @@
 		<param name="max_acceptable_trans" value="1.0" />
 		<param name="max_acceptable_angle" value="1.0" />
 		<param name="downsample_method" value="NONE" />
-		<param name="downsample_resolution" value="0.1" />
+		<param name="downsample_resolution" value="0.05" />
 		<!-- ICP, GICP, NDT, GICP_OMP, or NDT_OMP(recommended) -->
 		<param name="registration_method" value="NDT_OMP" />
 		<param name="transformation_epsilon" value="0.01" />
@@ -65,7 +65,7 @@
 	<node pkg="nodelet" type="nodelet" name="floor_detection_nodelet" args="load hdl_graph_slam/FloorDetectionNodelet $(arg nodelet_manager)" if="$(arg enable_floor_detection)">
 		<param name="points_topic" value="/filtered_points" />
 		<param name="tilt_deg" value="0.0" />
-		<param name="sensor_height" value="0.0" />
+		<param name="sensor_height" value="0.8" />
 		<param name="height_clip_range" value="1.0" />
 		<param name="floor_pts_thresh" value="512" />
 		<param name="use_normal_filtering" value="true" />
@@ -139,8 +139,8 @@
 		<param name="min_stddev_q" value="0.05" />
 		<param name="max_stddev_q" value="0.2" />
 		<!-- update params -->
-		<param name="graph_update_interval" value="0.5" />
-		<param name="map_cloud_update_interval" value="0.5" />
+		<param name="graph_update_interval" value="2.0" />
+		<param name="map_cloud_update_interval" value="2.0" />
 		<param name="map_cloud_resolution" value="0.05" />
 	</node>
 	<node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
@@ -150,7 +150,7 @@
 		<param name="frame_id" value="map" />
 		<param name="base_frame_id" value="$(arg base_frame_id)" />
 		<param name="resolution" value="0.1" />
-		<param name="sensor_model/max_range" value="20.0" />
+		<param name="sensor_model/max_range" value="10.0" />
 		<param name="pointcloud_max_z" value="2.5" />
 		<param name="pointcloud_min_z" value="0.1" />
 	</node>

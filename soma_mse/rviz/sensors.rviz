@@ -4,8 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1/Tree1
-        - /TF1/Tree1/base_link1
+        - /TF1
       Splitter Ratio: 0.5
     Tree Height: 416
   - Class: rviz/Selection
@@ -63,7 +62,7 @@ Visualization Manager:
           Value: true
         velodyne:
           Value: true
-      Marker Scale: 1
+      Marker Scale: 3
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -91,7 +90,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 156
+      Max Intensity: 152
       Min Color: 0; 0; 0
       Min Intensity: 1
       Name: velodyne points
@@ -100,7 +99,7 @@ Visualization Manager:
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
-      Style: Flat Squares
+      Style: Points
       Topic: /velodyne_points
       Unreliable: false
       Use Fixed Frame: true
@@ -134,25 +133,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.0478644371032715
+      Distance: 8.060182571411133
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.7506534457206726
-        Y: -1.1796205043792725
-        Z: 0.3698282837867737
+        X: 0.4037404954433441
+        Y: -1.4043885469436646
+        Z: -0.22532561421394348
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.565398097038269
+      Pitch: 0.8303978443145752
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.135400772094727
+      Yaw: 4.1204047203063965
     Saved: ~
 Window Geometry:
   Displays:

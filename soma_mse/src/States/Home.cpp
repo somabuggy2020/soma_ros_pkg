@@ -21,6 +21,9 @@ int Home::_Transition(Data_t *data)
 
 int Home::_Enter(Data_t *data)
 {
+  data->pg.point.x = 0.0;
+  data->pg.point.y = 0.0;
+  data->pg.point.z = 0.0;
   return 0;
 }
 
