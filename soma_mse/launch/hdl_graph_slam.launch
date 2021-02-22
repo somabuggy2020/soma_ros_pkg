@@ -16,7 +16,11 @@
 	<!--  -->
 	<!-- nodelet manager -->
 	<arg name="nodelet_manager" default="velodyne_nodelet_manager" />
-	<node if="$(arg enable_manager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
+	<arg name="manager_threads" default="4" />
+	<node if="$(arg enable_manager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen">
+		<param name="num_worker_threads" value="$(arg manager_threads)" />
+	</node>
+	<!--  -->
 	<!-- static transfrom publisher -->
 	<node if="$(arg enable_tf_base2lidar)" name="base2lidar" pkg="tf2_ros" type="static_transform_publisher" args="0.5 0 0.86 0 0 0 $(arg base_frame_id) $(arg lidar_link)" />
 	<!--  -->
@@ -145,16 +149,28 @@
 		<param name="map_cloud_resolution" value="0.05" />
 	</node>
 	<node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
+	<!--  -->
 	<!-- octomap server node -->
-	<!-- <node name="octomap" pkg="octomap_server" type="octomap_server_node">
-		<remap from="cloud_in" to="/velodyne_points" />
+	<node name="octomap_server_nodelet" pkg="nodelet" type="nodelet" args="load octomap_server/OctomapServerNodelet $(arg nodelet_manager)">
+		<remap from="cloud_in" to="/filtered_points" />
 		<param name="frame_id" value="map" />
 		<param name="base_frame_id" value="$(arg base_frame_id)" />
 		<param name="resolution" value="0.05" />
 		<param name="sensor_model/max_range" value="20.0" />
-		<param name="pointcloud_max_z" value="10" />
-		<param name="pointcloud_min_z" value="-0.3" />
-	</node> -->
+		<param name="pointcloud_max_z" value="10.0" />
+		<param name="pointcloud_min_z" value="0.1" />
+	</node>
+	<!--
+	<node name="octomap" pkg="octomap_server" type="octomap_server_node">
+	<remap from="cloud_in" to="/filtered_points" />
+	<param name="frame_id" value="map" />
+	<param name="base_frame_id" value="$(arg base_frame_id)" />
+	<param name="resolution" value="0.05" />
+	<param name="sensor_model/max_range" value="20.0" />
+	<param name="pointcloud_max_z" value="10.0" />
+	<param name="pointcloud_min_z" value="0.1" />
+	</node>
+	-->
 	<!--  -->
 	<node if="$(arg gui)" pkg="rviz" name="rviz_slam" type="rviz" args="-d $(find soma_mse)/rviz/slam.rviz" />
 </launch>
