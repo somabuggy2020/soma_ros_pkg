@@ -42,13 +42,13 @@
 			</inertial>
 			<visual>
 				<geometry>
-					<cylinder radius="0.05" length="0.02" />
+					<cylinder radius="0.2" length="0.1" />
 				</geometry>
 				<material name="red" />
 			</visual>
 			<collision>
 				<geometry>
-					<cylinder radius="0.05" length="0.02" />
+					<cylinder radius="0.2" length="0.1" />
 				</geometry>
 			</collision>
 		</link>
@@ -68,7 +68,7 @@
 		<joint name="body_joint" type="fixed">
 			<parent link="${parent}" />
 			<child link="body_link" />
-			<origin xyz="-0.07 0 0.07" rpy="0.0 0.0 0.0" />
+			<origin xyz="0 0 0.4" rpy="0.0 0.0 0.0" />
 		</joint>
 		<link name="body_link">
 			<inertial>
@@ -79,14 +79,14 @@
 			<visual>
 				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
 				<geometry>
-					<box size="0.24 0.18 0.06" />
+					<box size="0.6 0.40 0.6" />
 				</geometry>
 				<material name="gray" />
 			</visual>
 			<collision>
 				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
 				<geometry>
-					<box size="0.24 0.178 0.06" />
+					<box size="0.6 0.40 0.6" />
 				</geometry>
 			</collision>
 		</link>
@@ -100,20 +100,20 @@
 		<joint name="ball_joint" type="fixed">
 			<parent link="${parent}" />
 			<child link="ball_link" />
-			<origin xyz="-0.14 0 0.04" rpy="0.0 0.0 0.0" />
+			<origin xyz="-0.14 0 0.1" rpy="0.0 0.0 0.0" />
 		</joint>
 		<link name="ball_link">
 			<visual>
 				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
 				<geometry>
-					<sphere radius="0.04" />
+					<sphere radius="0.1" />
 				</geometry>
 				<material name="gray" />
 			</visual>
 			<collision>
 				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
 				<geometry>
-					<sphere radius="0.04" />
+					<sphere radius="0.1" />
 				</geometry>
 				<material name="gray" />
 			</collision>

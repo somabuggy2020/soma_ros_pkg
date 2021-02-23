@@ -2,10 +2,10 @@ dwa_local_planner:
   acc_lim_x: 2.5
   acc_lim_y: 0.0
   acc_lim_th: 5.0
-  max_vel_x: 0.5
-  min_vel_x: -0.5
-  max_rot_val: 0.314 #rad/s
-  min_rot_val: -0.314 #rad/s
+  max_vel_x: 1.0
+  min_vel_x: -1.0
+  max_rot_val: 3.14 #rad/s
+  min_rot_val: -3.14 #rad/s
   yaw_goal_tolerance: 0.05
   xy_goal_tolerance: 0.3
   sim_time: 2.0
