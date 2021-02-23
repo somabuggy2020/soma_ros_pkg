@@ -3,21 +3,26 @@
 	<!-- arguments -->
 	<arg name="base_frame_id" default="base_link" />
 	<arg name="lidar_link" default="velodyne" />
-	<arg name="enable_manager" default="true" />
+	<arg name="enable_manager" default="false" />
+	<arg name="enable_tf_base2lidar" default="true" />
 	<arg name="gui" default="false" />
-	<arg name="enable_floor_detection" default="false" />
+	<arg name="enable_floor_detection" default="true" />
 	<arg name="enable_gps" default="false" />
 	<arg name="enable_imu_acc" default="false" />
 	<arg name="enable_imu_ori" default="false" />
-	<arg name="height_max" default="1.0" />
-	<arg name="height_min" default="0.0" />
 	<arg name="use_distance_filter" default="true" />
 	<arg name="distance_near_thresh" default="0.1" />
 	<arg name="distance_far_thresh" default="20.0" />
 	<!--  -->
 	<!-- nodelet manager -->
 	<arg name="nodelet_manager" default="velodyne_nodelet_manager" />
-	<node if="$(arg enable_manager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
+	<arg name="manager_threads" default="4" />
+	<node if="$(arg enable_manager)" pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen">
+		<param name="num_worker_threads" value="$(arg manager_threads)" />
+	</node>
+	<!--  -->
+	<!-- static transfrom publisher -->
+	<node if="$(arg enable_tf_base2lidar)" name="base2lidar" pkg="tf2_ros" type="static_transform_publisher" args="0.5 0 0.86 0 0 0 $(arg base_frame_id) $(arg lidar_link)" />
 	<!--  -->
 	<!-- prefiltering_nodelet -->
 	<node pkg="nodelet" type="nodelet" name="prefiltering_nodelet" args="load hdl_graph_slam/PrefilteringNodelet $(arg nodelet_manager)">
@@ -30,7 +35,7 @@
 		<param name="distance_far_thresh" value="$(arg distance_far_thresh)" />
 		<!-- NONE, VOXELGRID, or APPROX_VOXELGRID -->
 		<param name="downsample_method" value="VOXELGRID" />
-		<param name="downsample_resolution" value="0.05" />
+		<param name="downsample_resolution" value="0.1" />
 		<!-- NONE, RADIUS, or STATISTICAL -->
 		<param name="outlier_removal_method" value="RADIUS" />
 		<param name="statistical_mean_k" value="30" />
@@ -51,21 +56,21 @@
 		<param name="downsample_method" value="NONE" />
 		<param name="downsample_resolution" value="0.05" />
 		<!-- ICP, GICP, NDT, GICP_OMP, or NDT_OMP(recommended) -->
-		<param name="registration_method" value="NDT_OMP" />
+		<param name="registration_method" value="GICP_OMP" />
 		<param name="transformation_epsilon" value="0.01" />
 		<param name="maximum_iterations" value="64" />
 		<param name="use_reciprocal_correspondences" value="false" />
 		<param name="gicp_correspondence_randomness" value="20" />
 		<param name="gicp_max_optimizer_iterations" value="20" />
-		<param name="ndt_resolution" value="2.0" />
+		<param name="ndt_resolution" value="5.0" />
 		<param name="ndt_num_threads" value="0" />
 		<param name="ndt_nn_search_method" value="DIRECT7" />
 	</node>
 	<!-- floor_detection_nodelet -->
 	<node pkg="nodelet" type="nodelet" name="floor_detection_nodelet" args="load hdl_graph_slam/FloorDetectionNodelet $(arg nodelet_manager)" if="$(arg enable_floor_detection)">
-		<param name="points_topic" value="/filtered_points" />
+		<param name="points_topic" value="/velodyne_points" />
 		<param name="tilt_deg" value="0.0" />
-		<param name="sensor_height" value="0.8" />
+		<param name="sensor_height" value="0.86" />
 		<param name="height_clip_range" value="1.0" />
 		<param name="floor_pts_thresh" value="512" />
 		<param name="use_normal_filtering" value="true" />
@@ -105,7 +110,7 @@
 		<param name="use_reciprocal_correspondences" value="false" />
 		<param name="gicp_correspondence_randomness" value="20" />
 		<param name="gicp_max_optimizer_iterations" value="20" />
-		<param name="ndt_resolution" value="1.0" />
+		<param name="ndt_resolution" value="10.0" />
 		<param name="ndt_num_threads" value="0" />
 		<param name="ndt_nn_search_method" value="DIRECT7" />
 		<!-- edge params -->
@@ -139,21 +144,33 @@
 		<param name="min_stddev_q" value="0.05" />
 		<param name="max_stddev_q" value="0.2" />
 		<!-- update params -->
-		<param name="graph_update_interval" value="2.0" />
-		<param name="map_cloud_update_interval" value="2.0" />
+		<param name="graph_update_interval" value="3.0" />
+		<param name="map_cloud_update_interval" value="3.0" />
 		<param name="map_cloud_resolution" value="0.05" />
 	</node>
 	<node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
+	<!--  -->
 	<!-- octomap server node -->
-	<node name="octomap" pkg="octomap_server" type="octomap_server_node">
+	<node name="octomap_server_nodelet" pkg="nodelet" type="nodelet" args="load octomap_server/OctomapServerNodelet $(arg nodelet_manager)">
 		<remap from="cloud_in" to="/filtered_points" />
 		<param name="frame_id" value="map" />
 		<param name="base_frame_id" value="$(arg base_frame_id)" />
-		<param name="resolution" value="0.1" />
-		<param name="sensor_model/max_range" value="10.0" />
-		<param name="pointcloud_max_z" value="2.5" />
+		<param name="resolution" value="0.05" />
+		<param name="sensor_model/max_range" value="20.0" />
+		<param name="pointcloud_max_z" value="10.0" />
 		<param name="pointcloud_min_z" value="0.1" />
 	</node>
+	<!--
+	<node name="octomap" pkg="octomap_server" type="octomap_server_node">
+	<remap from="cloud_in" to="/filtered_points" />
+	<param name="frame_id" value="map" />
+	<param name="base_frame_id" value="$(arg base_frame_id)" />
+	<param name="resolution" value="0.05" />
+	<param name="sensor_model/max_range" value="20.0" />
+	<param name="pointcloud_max_z" value="10.0" />
+	<param name="pointcloud_min_z" value="0.1" />
+	</node>
+	-->
 	<!--  -->
 	<node if="$(arg gui)" pkg="rviz" name="rviz_slam" type="rviz" args="-d $(find soma_mse)/rviz/slam.rviz" />
 </launch>

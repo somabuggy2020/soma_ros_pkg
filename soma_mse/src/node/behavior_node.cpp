@@ -105,7 +105,7 @@ public:
 
     stop = new Stop();
     moveto = new MoveTo(1.0);
-    home = new Home(1.0);
+    home = new Home(0.5);
     states[State::Stop] = stop;
     states[State::MoveTo] = moveto;
     states[State::GoHome] = home;
