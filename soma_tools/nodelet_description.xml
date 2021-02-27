@@ -1,0 +1,6 @@
+<library path="lib/soma_tools">
+	<class name="soma_tools/ClusterPointIndicesToPCDs" type="soma_tools::ClusterPointIndicesToPCDs" base_class_type="nodelet::Nodelet">
+		<description>
+		</description>
+	</class>
+</library>
