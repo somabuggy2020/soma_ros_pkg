@@ -10,6 +10,7 @@ project(soma_tools)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   nodelet
+  pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -120,9 +121,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/soma_tools.cpp
-# )
+add_library(ClusterPointIndicesToPCDs
+  src/ClusterPointIndicesToPCDs.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -132,9 +133,9 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(ClusterPointIndicesToPCDs
-  src/ClusterPointIndicesToPCDs.cpp
-)
+# add_executable(ClusterPointIndicesToPCDs
+#   src/ClusterPointIndicesToPCDs.cpp
+# )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

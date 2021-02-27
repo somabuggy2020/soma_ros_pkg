@@ -18,7 +18,8 @@ namespace soma_tools
   };
 
   ClusterPointIndicesToPCDs::ClusterPointIndicesToPCDs()
-      : nh(getNodeHandle()), pnh(getPrivateNodeHandle())
+      : nh(getNodeHandle()),
+        pnh(getPrivateNodeHandle())
   {
   }
 
