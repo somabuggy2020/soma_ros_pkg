@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <launch>
 	<!-- arguments -->
-	<arg name="pcd_file" value="$(find soma_smpls)/Mirais-3DMap-2021-02.pcd" />
-	<arg name="pcd_pub_interval" value="1.0" />
-	<arg name="pcd_frame_id" value="map" />
+	<arg name="pcd_file" default="$(find soma_smpls)/data/Mirais-3DMap-2021-02.pcd" />
+	<arg name="pcd_pub_interval" default="1.0" />
+	<arg name="pcd_frame_id" default="map" />
+	<!--  -->
 	<arg name="nodelet_manager" default="cloud_manager" />
 	<!--  -->
 	<!-- PCD publish -->
-	<node name="pcd_publisher" pkg="pcl_ros" type="pcd_to_pointcloud" args="$(arg pcd_file) $(arg pcd_pub_interval)">
-		<param name="frame_id" value="$(arg pcd_frame_id)" />
-	</node>
+	<include file="$(find soma_smpls)/launch/pcd_publish.launch">
+		<arg name="file" value="$(arg pcd_file)" />
+		<arg name="interval" value="$(arg pcd_pub_interval)" />
+		<arg name="frame_id" value="$(arg pcd_frame_id)" />
+	</include>
 	<!-- run nodelet manager -->
-	<node name="$(arg  nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+	<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
 	<!--  -->
 	<!-- prefiltering -->
 	<node name="height_clip" pkg="nodelet" type="nodelet" args="load pcl/PassThrough $(arg nodelet_manager)">
@@ -38,25 +41,23 @@
 		<param name="radius_min_neighbors" value="2" />
 	</node>
 	<!--  -->
-	<node name="to_color" pkg="nodelet" type="nodelet" args="load jsk_pcl_utils/PointCloudXYZToXYZRGB $(arg nodelet_manager)">
+	<!-- <node name="to_color" pkg="nodelet" type="nodelet" args="load jsk_pcl_utils/PointCloudXYZToXYZRGB $(arg nodelet_manager)">
 		<remap from="~input" to="/filtered_points" />
-	</node>
-	<node name="normal_est" pkg="nodelet" type="nodelet" args="load jsk_pcl/NormalEstimationOMP $(arg nodelet_manager)">
+	</node> -->
+	<!-- <node name="normal_est" pkg="nodelet" type="nodelet" args="load jsk_pcl/NormalEstimationOMP $(arg nodelet_manager)">
 		<remap from="~input" to="/to_color/output" />
-	</node>
-	<node name="segmentation" pkg="nodelet" type="nodelet" args="load jsk_pcl/RegionGrowingSegmentation $(arg nodelet_manager)">
-		<!-- <remap from="~input" to="/filtered_points" /> -->
+	</node> -->
+	<!-- <node name="segmentation" pkg="nodelet" type="nodelet" args="load jsk_pcl/RegionGrowingSegmentation $(arg nodelet_manager)">
 		<remap from="~input" to="/normal_est/output_with_xyz" />
-	</node>
-	<node name="decomposer" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer $(arg nodelet_manager)">
+	</node> -->
+	<!-- <node name="decomposer" pkg="nodelet" type="nodelet" args="load jsk_pcl/ClusterPointIndicesDecomposer $(arg nodelet_manager)">
 		<remap from="~input" to="/normal_est/output_with_xyz" />
 		<remap from="~target" to="/segmentation/output" />
-		<!-- <param name="publish_clouds" value="true" /> -->
-	</node>
-	<node name="pcd_save" pkg="nodelet" type="nodelet" args="load soma_tools/ClusterPointIndicesToPCDs $(arg nodelet_manager)" output="screen">
+	</node> -->
+	<!-- <node name="pcd_save" pkg="nodelet" type="nodelet" args="load soma_tools/ClusterPointIndicesToPCDs $(arg nodelet_manager)" output="screen">
 		<remap from="input_points" to="/normal_est/output_with_xyz" />
 		<remap from="target_indices" to="/segmentation/output" />
-	</node>
+	</node> -->
 	<!--  -->
 	<!--  -->
 	<!--  -->
