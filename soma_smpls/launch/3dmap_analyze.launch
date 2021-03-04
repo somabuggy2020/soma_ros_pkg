@@ -1,16 +1,19 @@
 <?xml version="1.0"?>
 <launch>
 	<!-- arguments -->
-	<arg name="pcd_file" value="/home/hayashi/Mirais-Map-2021-02.pcd" />
-	<arg name="pcd_pub_interval" value="3.0" />
+	<arg name="pcd_file" value="$(find soma_smpls)/Mirais-3DMap-2021-02.pcd" />
+	<arg name="pcd_pub_interval" value="1.0" />
 	<arg name="pcd_frame_id" value="map" />
 	<arg name="nodelet_manager" default="cloud_manager" />
+	<!--  -->
 	<!-- PCD publish -->
 	<node name="pcd_publisher" pkg="pcl_ros" type="pcd_to_pointcloud" args="$(arg pcd_file) $(arg pcd_pub_interval)">
 		<param name="frame_id" value="$(arg pcd_frame_id)" />
 	</node>
-	<!-- prefiltering -->
+	<!-- run nodelet manager -->
 	<node name="$(arg  nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+	<!--  -->
+	<!-- prefiltering -->
 	<node name="height_clip" pkg="nodelet" type="nodelet" args="load pcl/PassThrough $(arg nodelet_manager)">
 		<remap from="~input" to="/cloud_pcd" />
 		<param name="filter_field_name" value="z" />
