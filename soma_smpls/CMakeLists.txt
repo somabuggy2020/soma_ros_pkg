@@ -134,9 +134,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/soma_smpls.cpp
-# )
+add_library(${PROJECT_NAME}
+  src/nodelet_temp.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -176,6 +176,10 @@ src/sample_local_costmap.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBARIES}
+)
 
 target_link_libraries(show_navsatfix_msgs
    ${catkin_LIBRARIES}

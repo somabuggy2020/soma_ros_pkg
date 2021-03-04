@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="nodelet_manager" default="cloud_manager" />
+	<node name="pcd_save" pkg="nodelet" type="nodelet" args="load soma_tools/ClusterPointIndicesToPCDs $(arg nodelet_manager)" output="screen">
+		<remap from="input_points" to="/decomposer/debug_output" />
+		<remap from="target_indices" to="/decomposer/cluster_indices" />
+		<!-- <remap from="cluster_indices" to="/segmentation/output" /> -->
+		<!-- <remap from="~points" to="/filtered_points" /> -->
+	</node>
+</launch>
