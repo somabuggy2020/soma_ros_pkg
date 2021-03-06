@@ -89,7 +89,7 @@ namespace soma_perception
       //reg.setIndices (indices);
       reg.setInputNormals (normals);
       reg.setSmoothnessThreshold (smoothThreshold / 180.0 * M_PI);
-      // reg.setSmoothnessThreshold (3.1415);
+      // reg.setSmoothnessThreshold (smoothThreshold);
       reg.setCurvatureThreshold (curvatureThreshold);
 
       std::vector <pcl::PointIndices> clusters;

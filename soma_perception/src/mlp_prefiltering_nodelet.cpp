@@ -45,6 +45,7 @@ namespace soma_perception
       this);
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+      search_radius = pnh.param<double>("search_radius", 0.05);
 
     }
 
@@ -110,7 +111,7 @@ namespace soma_perception
       impl.setInputCloud(input);
       pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
       impl.setSearchMethod(tree);
-      impl.setRadiusSearch(0.1);
+      impl.setRadiusSearch(search_radius);
       pcl::PointCloud<pcl::Normal>::Ptr normal_cloud(new pcl::PointCloud<pcl::Normal>);
       impl.compute(*normal_cloud);
 
@@ -138,6 +139,7 @@ namespace soma_perception
     ros::Publisher pub;
 
     std::string base_link_frame;
+    double search_radius;
 
   };
 }

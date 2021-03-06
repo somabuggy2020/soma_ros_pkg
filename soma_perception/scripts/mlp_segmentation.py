@@ -13,7 +13,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
-INPUT_WEIGHT_DIR = '/home/soma/development/slope_classification/weight/200_4096/mymodel.h5'
+INPUT_WEIGHT_DIR = '/home/soma/development/slope_classification6/weight/10/0.5/20210205_032021/20210205_032021.h5'
 SIZE_OF_CLOUDS = 4096
 BASE_LINK = 'soma_link'
 
@@ -62,22 +62,21 @@ def callback(data):
   print('test_clouds.shape', test_clouds.shape)
   print(test_clouds)
 
-  ##################################
-  ## choice specific number of pc ##
-  ##################################
-  N = SIZE_OF_CLOUDS
-  test_clouds = test_clouds[np.random.choice(test_clouds.shape[0], N, replace=False), :]
-  test_clouds = test_clouds.reshape(-1, N, 6)
-  print('random choiced from test_clouds', test_clouds.shape)
+  #########################
+  ## reshape test_clouds ##
+  #########################
+  x_test = test_clouds[:, 2:]
+  x_test = x_test.reshape(-1, 1, 4)
+  print('x_train.shape:', x_test.shape)
 
   ######################
   ## predict and sort ##
   ######################
-  raw_predictions = model.predict(test_clouds)
+  raw_predictions = model.predict(x_test)
   predictions = np.round(raw_predictions)
   print('predictions', predictions.shape)
-  
-  test_clouds = test_clouds.reshape(N,6)
+
+  N = x_test.shape[0]
   predictions = predictions.reshape(N,1)
   print('test', test_clouds.shape, 'predictions', predictions.shape)
   predicted_ground = np.empty((0, 3))
