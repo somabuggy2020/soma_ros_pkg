@@ -1,25 +1,32 @@
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <nodelet/nodelet.h>
-#include <pluginlib/class_list_macros.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/Imu.h>
+#include <pluginlib/class_list_macros.h>
 
 #include <tf/transform_listener.h>
+#include <geometry_msgs/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-#include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-#include <pcl/search/search.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/kdtree/kdtree.h>
 #include <pcl/search/kdtree.h>
+#include <pcl/segmentation/extract_clusters.h>
 #include <pcl/exceptions.h>
+#include <pcl_ros/transforms.h>
+#include <pcl_ros/point_cloud.h>
 #include <pcl/features/normal_3d_omp.h>
 
-#include <pcl_ros/point_cloud.h>
-#include <pcl_ros/transforms.h>
-
 #include <boost/shared_ptr.hpp>
-#include <time.h>
+
+#include <string>
+#include <vector>
+#include <math.h>
 
 namespace soma_perception
 {
@@ -45,7 +52,7 @@ namespace soma_perception
       this);
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-      search_radius = pnh.param<double>("search_radius", 0.05);
+      distance_thres = pnh.param<double>("distance_thres", 0.01);
 
     }
 
@@ -101,6 +108,40 @@ namespace soma_perception
       }
     }
 
+    int segmentation(pcl::PointCloud<PointT>::Ptr input,
+                     pcl::PointIndices &inliers,
+                     pcl::ModelCoefficients &coeffs)
+    {
+      //そもそも入力点群数が少なすぎるとRANSACの計算ができない
+      //RANSACのOptimizeCoefficientsをtrueにするときはたぶん10点以上ないとまずい
+      if (input->size() < 10)
+        return -1;
+
+      //instance of RANSAC segmentation processing object
+      pcl::SACSegmentation<PointT> sacseg;
+
+      //set RANSAC parameters
+      sacseg.setOptimizeCoefficients(true);
+      sacseg.setModelType(pcl::SACMODEL_PLANE);
+      sacseg.setMethodType(pcl::SAC_RANSAC);
+      sacseg.setMaxIterations(100);
+      sacseg.setDistanceThreshold(distance_thres); //[m]
+      sacseg.setInputCloud(input);
+
+      try
+      {
+        sacseg.segment(inliers, coeffs);
+      }
+      catch (const pcl::PCLException &e)
+      {
+        //エラーハンドリング (反応しない...)
+        NODELET_WARN("Plane Model Detection Error");
+        return -1; //failure
+      }
+
+      return 0; //success
+    }
+
   
   private:
     ros::NodeHandle nh;
@@ -112,7 +153,7 @@ namespace soma_perception
     ros::Publisher pub;
 
     std::string base_link_frame;
-    double search_radius;
+    double distance_thres; //segmentation_plane
 
   };
 }
