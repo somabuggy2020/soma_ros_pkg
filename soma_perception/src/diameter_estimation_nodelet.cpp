@@ -9,7 +9,6 @@
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 #include <pcl/filters/extract_indices.h>
@@ -21,9 +20,9 @@
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/features/normal_3d_omp.h>
+#include <pcl/common/common.h>
 
 #include <boost/shared_ptr.hpp>
-
 #include <string>
 #include <vector>
 #include <math.h>
@@ -45,7 +44,7 @@ namespace soma_perception
       nh = getNodeHandle();
       pnh = getPrivateNodeHandle();
 
-      pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_output", 3);
+      pub = nh.advertise<sensor_msgs::PointCloud2>("cylinder", 3);
       points_sub = nh.subscribe("input_points",
       3, 
       &DiameterEstimationNodelet::callback, 
@@ -71,18 +70,36 @@ namespace soma_perception
       if(cloud_transformed->empty()) return;
 
       //--------------------------------------------------
+      // segment cylinder
+      //--------------------------------------------------
+      pcl::PointIndices::Ptr inliers;
+      pcl::ModelCoefficients::Ptr coeffs;
+      inliers.reset(new pcl::PointIndices());
+      coeffs.reset(new pcl::ModelCoefficients());
+      segmentation(cloud_transformed, *inliers, *coeffs);
+
+      pcl::PointCloud<PointT>::Ptr pc_cylinder(new pcl::PointCloud<PointT>());
+      pcl::ExtractIndices<PointT> EI;
+      EI.setInputCloud(cloud_transformed);
+      EI.setIndices(inliers);
+      EI.setNegative(false);
+      EI.filter(*pc_cylinder);
+
+      //--------------------------------------------------
       // estimate diameter
       //--------------------------------------------------
-      
+      pcl::PointXYZRGB minPt, maxPt;
+      pcl::getMinMax3D(*pc_cylinder, minPt, maxPt);
+      double diameter = maxPt.x - minPt.x;
 
       //--------------------------------------------------
       // publish
       //--------------------------------------------------
-    //   sensor_msgs::PointCloud2 pc_output;
-    //   pcl::toROSMsg(*normal_output, pc_output);
-    //   pc_output.header.frame_id = base_link_frame;
-    //   NODELET_INFO("pub points size:%5d", (int)normal_output->size());
-    //   pub.publish(pc_output);
+      sensor_msgs::PointCloud2 pc_output;
+      pcl::toROSMsg(*pc_cylinder, pc_output);
+      pc_output.header.frame_id = base_link_frame;
+      NODELET_INFO("pub points size:%5d", (int)pc_cylinder->size());
+      pub.publish(pc_output);
     }
 
     void transform_pointCloud(pcl::PointCloud<PointT>::Ptr input,
@@ -90,12 +107,6 @@ namespace soma_perception
     {
       if (!base_link_frame.empty())
       {
-        // if (!tf_listener.canTransform(base_link_frame, input->header.frame_id, ros::Time(0)))
-        // {
-        //   NODELET_WARN("cannot transform %s->%s", input->header.frame_id.c_str(), base_link_frame.c_str());
-        //   return;
-        // }
-
         //get transform
         tf::StampedTransform transform;
         tf_listener.waitForTransform(base_link_frame, input->header.frame_id, ros::Time(0), ros::Duration(10.0));
@@ -108,38 +119,31 @@ namespace soma_perception
       }
     }
 
-    int segmentation(pcl::PointCloud<PointT>::Ptr input,
+    void segmentation(pcl::PointCloud<PointT>::Ptr input,
                      pcl::PointIndices &inliers,
                      pcl::ModelCoefficients &coeffs)
     {
-      //そもそも入力点群数が少なすぎるとRANSACの計算ができない
-      //RANSACのOptimizeCoefficientsをtrueにするときはたぶん10点以上ないとまずい
       if (input->size() < 10)
-        return -1;
-
+        return;
       //instance of RANSAC segmentation processing object
       pcl::SACSegmentation<PointT> sacseg;
-
       //set RANSAC parameters
       sacseg.setOptimizeCoefficients(true);
-      sacseg.setModelType(pcl::SACMODEL_PLANE);
+      sacseg.setModelType(pcl::SACMODEL_CYLINDER);
       sacseg.setMethodType(pcl::SAC_RANSAC);
       sacseg.setMaxIterations(100);
       sacseg.setDistanceThreshold(distance_thres); //[m]
       sacseg.setInputCloud(input);
-
       try
       {
         sacseg.segment(inliers, coeffs);
       }
       catch (const pcl::PCLException &e)
       {
-        //エラーハンドリング (反応しない...)
         NODELET_WARN("Plane Model Detection Error");
-        return -1; //failure
+        return; //failure
       }
-
-      return 0; //success
+      return; //success
     }
 
   
