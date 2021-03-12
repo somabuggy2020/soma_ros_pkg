@@ -71,13 +71,25 @@ namespace soma_perception
       if(cloud_transformed->empty()) return;
 
       //--------------------------------------------------
+      // estimate normal
+      //--------------------------------------------------
+      pcl::PointCloud<pcl::Normal>::Ptr input_normals(new pcl::PointCloud<pcl::Normal>);
+      pcl::NormalEstimation<PointT, pcl::Normal> ne;
+      pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+
+      ne.setSearchMethod(tree);
+      ne.setInputCloud(cloud_transformed);
+      ne.setKSearch(50);
+      ne.compute(*input_normals);
+
+      //--------------------------------------------------
       // segment cylinder
       //--------------------------------------------------
       pcl::PointIndices::Ptr inliers;
       pcl::ModelCoefficients::Ptr coeffs;
       inliers.reset(new pcl::PointIndices());
       coeffs.reset(new pcl::ModelCoefficients());
-      segmentation(cloud_transformed, *inliers, *coeffs);
+      segmentation(cloud_transformed, input_normals, *inliers, *coeffs);
 
       pcl::PointCloud<PointT>::Ptr pc_cylinder(new pcl::PointCloud<PointT>());
       pcl::ExtractIndices<PointT> EI;
@@ -121,23 +133,24 @@ namespace soma_perception
     }
 
     void segmentation(pcl::PointCloud<PointT>::Ptr input,
+                     pcl::PointCloud<pcl::Normal>::Ptr &input_normals,
                      pcl::PointIndices &inliers,
                      pcl::ModelCoefficients &coeffs)
     {
       if (input->size() < 10)
         return;
       //instance of RANSAC segmentation processing object
-      pcl::SACSegmentation<PointT> sacseg;
+      pcl::SACSegmentationFromNormals<PointT, pcl::Normal> sacseg;
       //set RANSAC parameters
       sacseg.setOptimizeCoefficients (true);
       sacseg.setModelType (pcl::SACMODEL_CYLINDER);
       sacseg.setMethodType (pcl::SAC_RANSAC);
-      // sacseg.setNormalDistanceWeight (0.1);
+      sacseg.setNormalDistanceWeight (0.1);
       sacseg.setMaxIterations (10000);
       sacseg.setDistanceThreshold (distance_thres);
       sacseg.setRadiusLimits (0, 0.1);
       sacseg.setInputCloud (input);
-      // sacseg.setInputNormals (cloud_normals2);
+      sacseg.setInputNormals (input_normals);
       try
       {
         sacseg.segment(inliers, coeffs);
