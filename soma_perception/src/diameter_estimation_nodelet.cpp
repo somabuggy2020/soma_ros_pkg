@@ -15,11 +15,12 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/search/kdtree.h>
-#include <pcl/segmentation/extract_clusters.h>
+
 #include <pcl/exceptions.h>
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/features/normal_3d_omp.h>
+#include <pcl/features/normal_3d.h>
 #include <pcl/common/common.h>
 
 #include <boost/shared_ptr.hpp>
@@ -51,7 +52,7 @@ namespace soma_perception
       this);
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
-      distance_thres = pnh.param<double>("distance_thres", 0.01);
+      distance_thres = pnh.param<double>("distance_thres", 0.05);
 
     }
 
@@ -128,19 +129,22 @@ namespace soma_perception
       //instance of RANSAC segmentation processing object
       pcl::SACSegmentation<PointT> sacseg;
       //set RANSAC parameters
-      sacseg.setOptimizeCoefficients(true);
-      sacseg.setModelType(pcl::SACMODEL_CYLINDER);
-      sacseg.setMethodType(pcl::SAC_RANSAC);
-      sacseg.setMaxIterations(100);
-      sacseg.setDistanceThreshold(distance_thres); //[m]
-      sacseg.setInputCloud(input);
+      sacseg.setOptimizeCoefficients (true);
+      sacseg.setModelType (pcl::SACMODEL_CYLINDER);
+      sacseg.setMethodType (pcl::SAC_RANSAC);
+      // sacseg.setNormalDistanceWeight (0.1);
+      sacseg.setMaxIterations (10000);
+      sacseg.setDistanceThreshold (distance_thres);
+      sacseg.setRadiusLimits (0, 0.1);
+      sacseg.setInputCloud (input);
+      // sacseg.setInputNormals (cloud_normals2);
       try
       {
         sacseg.segment(inliers, coeffs);
       }
       catch (const pcl::PCLException &e)
       {
-        NODELET_WARN("Plane Model Detection Error");
+        NODELET_WARN("Cylinder Model Detection Error");
         return; //failure
       }
       return; //success

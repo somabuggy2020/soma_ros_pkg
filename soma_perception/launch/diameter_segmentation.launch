@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<launch>
+  <arg name="camera_name" default="camera_F"/>
+  <arg name="frame_id" default="soma_link"/>
+  <arg name="input_points" default="/$(arg camera_name)/depth_registered/points"/>
+  <!-- <arg name="input_imu" default="/imu/data"/> -->
+
+  <!-- launch the nodelet manager -->
+  <arg name="nodelet_manager_name" default="soma_vision_manager"/>
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" output="screen" />
+
+  <!-- launch Plane Segmentation nodelet -->
+  <node pkg="nodelet" type="nodelet" name="diameter_estimation"
+        args="load soma_perception/DiameterEstimationNodelet $(arg nodelet_manager_name)">
+    <param name="base_link" value="$(arg frame_id)"/>
+    <param name="distance_thres" value="0.01" />
+
+    <remap from="input_points" to="/$(arg camera_name)/depth_registered/points"/>
+  </node>
+</launch>
