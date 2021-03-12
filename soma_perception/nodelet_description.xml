@@ -34,8 +34,10 @@
 		</description>
 	</class>
 </library>
-<library path="lib/libsoma_diameter_estimation_nodelet">
-	<class name="soma_perception/DiameterEstimationNodelet" type="soma_perception::DiameterEstimationNodelet" base_class_type="nodelet::Nodelet">
+<library path="lib/libsoma_perception">
+	<class name="soma_perception/DiameterEstimationNodelet"
+	 type="soma_perception::DiameterEstimationNodelet"
+	  base_class_type="nodelet::Nodelet">
 		<description>
 		</description>
 	</class>

@@ -58,7 +58,7 @@ add_library(soma_octree_voxel_grid_nodelet
 add_library(soma_mlp_prefiltering_nodelet
     src/mlp_prefiltering_nodelet.cpp
     )
-add_library(soma_diameter_estimation_nodelet
+add_library(${PROJECT_NAME}
     src/diameter_estimation_nodelet.cpp
     )
 
@@ -75,14 +75,11 @@ target_link_libraries(soma_prefiltering_nodelet
     ${catkin_LIBRARIES}
     )
 
-target_link_libraries(soma_octree_voxel_grid_nodelet
+target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
     )
 
 target_link_libraries(soma_mlp_prefiltering_nodelet
-    ${catkin_LIBRARIES}
-    )
-target_link_libraries(soma_diameter_estimation_nodelet
     ${catkin_LIBRARIES}
     )
 
