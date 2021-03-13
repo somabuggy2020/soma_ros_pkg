@@ -52,14 +52,16 @@ namespace soma_perception
       this);
 
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
+      normal_distance_weight = pnh.param<double>("normal_distance_weight", 0.1);
+      max_iterations = pnh.param<double>("max_iterations", 10000);
       distance_thres = pnh.param<double>("distance_thres", 0.05);
-
+      radius_min = pnh.param<double>("radius_min", 0);
+      radius_max = pnh.param<double>("radius_max", 0.1);
     }
 
     void callback(const sensor_msgs::PointCloud2ConstPtr &_input)
     {
-      // NODELET_INFO("point size: %d", _input->data.size());
-
+      NODELET_INFO("point size: %d", _input->data.size());
       pcl::PointCloud<PointT>::Ptr input(new pcl::PointCloud<PointT>());
       pcl::fromROSMsg(*_input, *input);
 
@@ -133,7 +135,7 @@ namespace soma_perception
     }
 
     void segmentation(pcl::PointCloud<PointT>::Ptr input,
-                     pcl::PointCloud<pcl::Normal>::Ptr &input_normals,
+                     pcl::PointCloud<pcl::Normal>::Ptr input_normals,
                      pcl::PointIndices &inliers,
                      pcl::ModelCoefficients &coeffs)
     {
@@ -145,10 +147,10 @@ namespace soma_perception
       sacseg.setOptimizeCoefficients (true);
       sacseg.setModelType (pcl::SACMODEL_CYLINDER);
       sacseg.setMethodType (pcl::SAC_RANSAC);
-      sacseg.setNormalDistanceWeight (0.1);
-      sacseg.setMaxIterations (10000);
+      sacseg.setNormalDistanceWeight (normal_distance_weight);
+      sacseg.setMaxIterations (max_iterations);
       sacseg.setDistanceThreshold (distance_thres);
-      sacseg.setRadiusLimits (0, 0.1);
+      sacseg.setRadiusLimits (radius_min, radius_max);
       sacseg.setInputCloud (input);
       sacseg.setInputNormals (input_normals);
       try
@@ -174,7 +176,11 @@ namespace soma_perception
     ros::Publisher pub;
 
     std::string base_link_frame;
-    double distance_thres; //segmentation_plane
+    double normal_distance_weight;
+    double max_iterations;
+    double distance_thres;
+    double radius_min;
+    double radius_max;
 
   };
 }
