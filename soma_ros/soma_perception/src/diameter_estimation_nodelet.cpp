@@ -44,13 +44,16 @@ namespace soma_perception
 
       nh = getNodeHandle();
       pnh = getPrivateNodeHandle();
-
+      initialize_params();
       pub = nh.advertise<sensor_msgs::PointCloud2>("cylinder", 3);
       points_sub = nh.subscribe("input_points",
       3, 
       &DiameterEstimationNodelet::callback, 
       this);
+    }
 
+    void initialize_params()
+    {
       base_link_frame = pnh.param<std::string>("base_link", "soma_link");
       normal_distance_weight = pnh.param<double>("normal_distance_weight", 0.1);
       max_iterations = pnh.param<double>("max_iterations", 10000);
@@ -62,7 +65,6 @@ namespace soma_perception
     void callback(const sensor_msgs::PointCloud2ConstPtr &_input)
     {
       NODELET_INFO("point size: %d", _input->data.size());
-
       pcl::PointCloud<PointT>::Ptr input(new pcl::PointCloud<PointT>());
       pcl::PointCloud<PointT>::Ptr cloud_transformed(new pcl::PointCloud<PointT>());
       pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
@@ -72,23 +74,22 @@ namespace soma_perception
       transform_pointCloud(input, *cloud_transformed);
       if(cloud_transformed->empty()) return;
       estimate_normal(cloud_transformed, cloud_normals);
-      segmentation(cloud_transformed, cloud_normals, pc_cylinder);
+      segment_cylinder(cloud_transformed, cloud_normals, pc_cylinder);
 
       //--------------------------------------------------
-      // estimate diameter
+      // calcurate diameter
       //--------------------------------------------------
       pcl::PointXYZRGB minPt, maxPt;
       pcl::getMinMax3D(*pc_cylinder, minPt, maxPt);
       double diameter = maxPt.y - minPt.y;
 
       //--------------------------------------------------
-      // publish
+      // publish topic and print logs
       //--------------------------------------------------
       sensor_msgs::PointCloud2 pc_output;
       pcl::toROSMsg(*pc_cylinder, pc_output);
       pc_output.header.frame_id = base_link_frame;
       pub.publish(pc_output);
-
       NODELET_INFO("pub points size: %5d", (int)pc_cylinder->size());
       NODELET_INFO("diameter: %5lf [m]", diameter);
       NODELET_INFO("--------------------------");
@@ -107,7 +108,6 @@ namespace soma_perception
           pcl_ros::transformPointCloud(*input, output, transform);
           output.header.frame_id = base_link_frame;
           output.header.stamp = input->header.stamp;
-          // NODELET_INFO("transformed point cloud (frame_id=%s)", output.header.frame_id.c_str());
         }
       }
 
@@ -116,14 +116,13 @@ namespace soma_perception
       {
         pcl::NormalEstimation<PointT, pcl::Normal> ne;
         pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-
         ne.setSearchMethod(tree);
         ne.setInputCloud(input);
         ne.setKSearch(50);
         ne.compute(*output_normal);
       }
 
-      void segmentation(pcl::PointCloud<PointT>::Ptr input,
+      void segment_cylinder(pcl::PointCloud<PointT>::Ptr input,
                       pcl::PointCloud<pcl::Normal>::Ptr input_normals,
                       pcl::PointCloud<PointT>::Ptr output)
       {
@@ -131,12 +130,11 @@ namespace soma_perception
           return;
         //instance of RANSAC segmentation processing object
         pcl::SACSegmentationFromNormals<PointT, pcl::Normal> sacseg;
+        pcl::ExtractIndices<PointT> EI;
         pcl::PointIndices::Ptr inliers;
         pcl::ModelCoefficients::Ptr coeffs;
         inliers.reset(new pcl::PointIndices());
         coeffs.reset(new pcl::ModelCoefficients());
-        pcl::ExtractIndices<PointT> EI;
-
         //set RANSAC parameters
         sacseg.setOptimizeCoefficients (true);
         sacseg.setModelType (pcl::SACMODEL_CYLINDER);
@@ -163,13 +161,10 @@ namespace soma_perception
         return; //success
       }
 
-  
   private:
     ros::NodeHandle nh;
     ros::NodeHandle pnh;
-
     tf::TransformListener tf_listener;
-
     ros::Subscriber points_sub;
     ros::Publisher pub;
 
@@ -179,7 +174,6 @@ namespace soma_perception
     double distance_thres;
     double radius_min;
     double radius_max;
-
   };
 }
 PLUGINLIB_EXPORT_CLASS(soma_perception::DiameterEstimationNodelet, nodelet::Nodelet)
