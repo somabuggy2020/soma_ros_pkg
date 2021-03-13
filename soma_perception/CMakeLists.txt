@@ -40,46 +40,16 @@ include_directories(
     )
 
 ## Declare a C++ library
-add_library(soma_plane_segmentation_nodelet
-    src/plane_segmentation_nodelet.cpp
-    )
-add_library(soma_sample_segmentation_nodelet
-    src/sample_segmentation_nodelet.cpp
-    )
-add_library(soma_floor_detection_nodelet
-    src/floor_detection_nodelet.cpp
-    )
-add_library(soma_prefiltering_nodelet
-    src/prefiltering_nodelet.cpp
-    )
-add_library(soma_octree_voxel_grid_nodelet
-    src/octree_voxel_grid_nodelet.cpp
-    )
-add_library(soma_mlp_prefiltering_nodelet
-    src/mlp_prefiltering_nodelet.cpp
-    )
 add_library(${PROJECT_NAME}
     src/diameter_estimation_nodelet.cpp
-    )
-
-target_link_libraries(soma_plane_segmentation_nodelet
-    ${catkin_LIBRARIES}
-    )
-target_link_libraries(soma_sample_segmentation_nodelet
-    ${catkin_LIBRARIES}
-    )
-target_link_libraries(soma_floor_detection_nodelet
-    ${catkin_LIBRARIES}
-    )
-target_link_libraries(soma_prefiltering_nodelet
-    ${catkin_LIBRARIES}
+    src/plane_segmentation_nodelet.cpp
+    src/sample_segmentation_nodelet.cpp
+    src/floor_detection_nodelet.cpp
+    src/octree_voxel_grid_nodelet.cpp
+    src/mlp_prefiltering_nodelet.cpp
     )
 
 target_link_libraries(${PROJECT_NAME}
-    ${catkin_LIBRARIES}
-    )
-
-target_link_libraries(soma_mlp_prefiltering_nodelet
     ${catkin_LIBRARIES}
     )
 
